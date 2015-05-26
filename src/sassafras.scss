@@ -1,7 +1,25 @@
-$tree: (key: value);
+$tests: ();
+$variables: ();
 
 @mixin describe($description) {
-  $tree: map-merge($tree, ($description: @content));
-  map-keys($tree);
-  map-values($tree);
+  $tests: append($tests, $description);
+  $variables: map-merge($variables, (#{$description}: ()));
+  @content;
+}
+
+@mixin let($variable, $value) {
+  @if empty($tests) == false {
+    $scope: last($tests);
+    $locals: map-get($variables, $description);
+    $locals: map-merge($locals, (#{$variable}: $value));
+    content: map-keys($locals);
+  }
+}
+
+@function last($list) {
+  @return nth($list, length($list));
+}
+
+@function empty($list) {
+  @return length($list) > 0
 }

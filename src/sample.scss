@@ -1,7 +1,7 @@
 @import 'sassafras';
 
 @include describe("font-size") {
-  $var: 4;
+  @include let(var, 4px);
 
   // @include it("should do stuff") {
   //   @include assert-equal($var, 4);
@@ -22,4 +22,8 @@
   // @include it("should do stuff") {
   //   @include assert-false(false);
   // }
+}
+
+@include describe("media-query") {
+  
 }
