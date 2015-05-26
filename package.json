@@ -1,0 +1,19 @@
+{
+  "name": "sassafras",
+  "version": "0.0.1",
+  "description": "A unit testing library for SASS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryanbahniuk/sassafras"
+  },
+  "main": "dist/js/main",
+  "dependencies": {
+    "node-sass": "^3.1.2"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-sass": "^1.0.0",
+    "load-grunt-tasks": "^3.2.0"
+  }
+}

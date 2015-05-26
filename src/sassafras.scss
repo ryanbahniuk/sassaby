@@ -1,0 +1,7 @@
+$tree: (key: value);
+
+@mixin describe($description) {
+  $tree: map-merge($tree, ($description: @content));
+  map-keys($tree);
+  map-values($tree);
+}
