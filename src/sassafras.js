@@ -59,8 +59,16 @@ function wrapFunction(call) {
   return ".test{content:" + call + "}";
 }
 
-function unwrapFunction(css) {
-  return css.replace(".test{content:", "").replace("}", "");
+function wrapIncludedMixin(call) {
+  return ".test{@include " + call + "}";
+}
+
+function wrapIncludedOutput(css) {
+  return cssmin(".test{" + css + "}");
+}
+
+function wrapStandaloneMixin(call) {
+  return "@include " + call + ";";
 }
 
 var Sassafras = {
@@ -76,40 +84,50 @@ var Sassafras = {
   },
 
   createCss: function() {
-    var css = compileWithFile(this.file, this.call);
-    return cssmin(css);
+    return cssmin(compileWithFile(this.file, this.call));
   },
 
   createAst: function() {
     return css.parse(this.createCss());
   },
 
-  assertDeclarationsNumber: function(num) {
-    var ast = this.createAst();
-    assert.equal(countDeclarations(ast), num);
+  includedMixin: {
+    assertDeclarationsNumber: function(num) {
+      Sassafras.setCall(wrapIncludedMixin(Sassafras.call));
+      var ast = Sassafras.createAst();
+      assert.equal(countDeclarations(ast), num);
+    },
+
+    includesDeclaration: function(property, value) {
+      Sassafras.setCall(wrapIncludedMixin(Sassafras.call));
+      var ast = Sassafras.createAst();
+      var declaration = findDeclaration(ast, property);
+      assert.equal(scrubQuotes(declaration.value), value);
+    },
+
+    assertEntireOutput: function(output) {
+      Sassafras.setCall(wrapIncludedMixin(Sassafras.call));
+      var css = Sassafras.createCss();
+      assert.equal(css, wrapIncludedOutput(output));
+    },
   },
 
-  assertDeclaration: function(property, value) {
-    var ast = this.createAst();
-    var declaration = findDeclaration(ast, property);
-    assert.equal(scrubQuotes(declaration.value), value);
+  standaloneMixin: {
+    assertSelectorCreation: function(selector) {
+      Sassafras.setCall(wrapStandaloneMixin(Sassafras.call));
+      var ast = Sassafras.createAst();
+      assert(hasSelector(ast, selector));
+    }
   },
 
-  assertSelectorCreation: function(selector) {
-    var ast = this.createAst();
-    assert(hasSelector(ast, selector));
-  },
-
-  assertEntireOutput: function(output) {
-    var css = this.createCss();
-    assert.equal(css, cssmin(output));
-  },
-
-  assertFunctionEqual: function(result) {
-    this.setCall(wrapFunction(this.call));
-    var css = this.createCss();
-    assert.equal(unwrapFunction(css), cssmin(result));
+  fnction: {
+    assertEqual: function(result) {
+      Sassafras.setCall(wrapFunction(Sassafras.call));
+      var css = Sassafras.createCss();
+      assert.equal(css, wrapFunction(result));
+    }
   }
+
 };
 
 module.exports = Sassafras;
