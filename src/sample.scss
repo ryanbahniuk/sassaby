@@ -1,25 +1,12 @@
-@import 'sassafras';
+@mixin make-column($label, $width) {
+  .col-#{$label}-#{$width} {
+    flex-basis: percentage($width / $grid-columns);
+    max-width: percentage($width / $grid-columns);
+  }
+}
 
-@include describe("font-size") {
-  $var: 4;
-
-  // @include it("should do stuff") {
-  //   @include assert-equal($var, 4);
-  // }
-
-  // @include context("booleans") {
-  //   $var: 10;
-
-  //   @include it("should do stuff") {
-  //     @include assert-true(true);
-  //   }
-
-  //   @include it("should do stuff") {
-  //     @include assert-false(false);
-  //   }
-  // }
-
-  // @include it("should do stuff") {
-  //   @include assert-false(false);
-  // }
+@mixin appearance($value) {
+  -webkit-appearance: $value;
+  -moz-appearance: $value;
+  appearance: $value;
 }
