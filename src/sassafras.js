@@ -4,6 +4,7 @@ var assert = require("assert");
 var sass = require('node-sass');
 var fs = require('fs');
 var css = require('css');
+var cssmin = require('cssmin');
 
 function compileFromString(string, callback) {
   var s = sass.renderSync({data: string}, callback);
@@ -66,9 +67,13 @@ var Sassafras = {
     this.call = call;
   },
 
+  createCss: function() {
+    var css = compileWithFile(this.file, this.call);
+    return cssmin(css);
+  },
+
   createAst: function() {
-    var compiled = compileWithFile(this.file, this.call);
-    return css.parse(compiled);
+    return css.parse(this.createCss());
   },
 
   assertDeclarationsNumber: function(num) {
@@ -85,6 +90,11 @@ var Sassafras = {
   assertSelectorCreation: function(selector) {
     var ast = this.createAst();
     assert(hasSelector(ast, selector));
+  },
+
+  assertEntireOutput: function(output) {
+    var css = this.createCss();
+    assert.equal(css, cssmin(output));
   }
 };
 

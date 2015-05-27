@@ -1,9 +1,10 @@
 'use strict';
 
 var sassafras = require('./sassafras');
-sassafras.setFile('src/sample.scss');
 
-describe('sample', function() {
+describe('sample.scss', function() {
+  sassafras.setFile('src/sample.scss');
+  
   describe('#appearance', function() {
     it('should return 3 declarations', function() {
       sassafras.setCall(".test { @include appearance('button') }");
@@ -18,6 +19,12 @@ describe('sample', function() {
     it('should define the correct class', function() {
       sassafras.setCall("@include make-column(md, 6);");
       sassafras.assertSelectorCreation(".col-md-6");
+    });
+
+    it('should have the correct entire output', function() {
+      sassafras.setCall(".test { @include appearance(button) }");
+      var result = ".test { -webkit-appearance: button; -moz-appearance: button; appearance: button; }";
+      sassafras.assertEntireOutput(result);
     });
   });
 });
