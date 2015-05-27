@@ -1,7 +1,7 @@
 @mixin make-column($label, $width) {
   .col-#{$label}-#{$width} {
-    flex-basis: percentage($width / $grid-columns);
-    max-width: percentage($width / $grid-columns);
+    flex-basis: percentage($width / 12);
+    max-width: percentage($width / 12);
   }
 }
 

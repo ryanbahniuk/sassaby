@@ -14,5 +14,10 @@ describe('sample', function() {
       var call = ".test { @include appearance('button') }";
       sassafras.assertDeclaration(call, "-webkit-appearance", "button");
     });
+
+    it('should define the correct class', function() {
+      var call = "@include make-column(md, 6);";
+      sassafras.assertSelectorCreation(call, ".col-md-6");
+    });
   });
 });

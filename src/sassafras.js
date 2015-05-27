@@ -37,6 +37,19 @@ function findDeclaration(ast, property) {
   return found;
 }
 
+function hasSelector(ast, selectorValue) {
+  var found = false;
+
+  ast.stylesheet.rules.forEach(function(rule) {
+    rule.selectors.forEach(function(selector) {
+      if (selector === selectorValue) {
+        found = true;
+      }
+    });
+  });
+  return found;
+}
+
 function scrubQuotes(string) {
   return string.replace(/["']/g, "");
 }
@@ -59,6 +72,12 @@ var Sassafras = {
     var ast = css.parse(compiled);
     var declaration = findDeclaration(ast, property);
     assert.equal(scrubQuotes(declaration.value), value);
+  },
+
+  assertSelectorCreation: function(mixin, selector) {
+    var compiled = compileWithFile(this.file, mixin);
+    var ast = css.parse(compiled);
+    assert(hasSelector(ast, selector));
   }
 };
 
