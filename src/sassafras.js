@@ -24,6 +24,23 @@ function countDeclarations(ast) {
   return ast.stylesheet.rules[0].declarations.length;
 }
 
+function findDeclaration(ast, property) {
+  var found;
+
+  ast.stylesheet.rules.forEach(function(rule) {
+    rule.declarations.forEach(function(declaration) {
+      if (declaration.property === property) {
+        found = declaration;
+      }
+    });
+  });
+  return found;
+}
+
+function scrubQuotes(string) {
+  return string.replace(/["']/g, "");
+}
+
 var Sassafras = {
   file: null,
 
@@ -31,10 +48,17 @@ var Sassafras = {
     this.file = file;
   },
 
-  assertDeclarations: function(mixin, num) {
+  assertDeclarationsNumber: function(mixin, num) {
     var compiled = compileWithFile(this.file, mixin);
     var ast = css.parse(compiled);
-    assert(num === countDeclarations(ast));
+    assert.equal(countDeclarations(ast), num);
+  },
+
+  assertDeclaration: function(mixin, property, value) {
+    var compiled = compileWithFile(this.file, mixin);
+    var ast = css.parse(compiled);
+    var declaration = findDeclaration(ast, property);
+    assert.equal(scrubQuotes(declaration.value), value);
   }
 };
 
