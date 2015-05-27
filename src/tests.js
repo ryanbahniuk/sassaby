@@ -29,4 +29,11 @@ describe('sample.scss', function() {
       sassafras.assertSelectorCreation(".col-md-6");
     });
   });
+
+  describe('#remy', function() {
+    it('convert to px units to rem units', function() {
+      sassafras.setCall("remy(32px, 16px)");
+      sassafras.assertFunctionEqual("2rem");
+    });
+  });
 });

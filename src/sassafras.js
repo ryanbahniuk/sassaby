@@ -55,6 +55,14 @@ function scrubQuotes(string) {
   return string.replace(/["']/g, "");
 }
 
+function wrapFunction(call) {
+  return ".test{content:" + call + "}";
+}
+
+function unwrapFunction(css) {
+  return css.replace(".test{content:", "").replace("}", "");
+}
+
 var Sassafras = {
   file: null,
   call: null,
@@ -95,6 +103,12 @@ var Sassafras = {
   assertEntireOutput: function(output) {
     var css = this.createCss();
     assert.equal(css, cssmin(output));
+  },
+
+  assertFunctionEqual: function(result) {
+    this.setCall(wrapFunction(this.call));
+    var css = this.createCss();
+    assert.equal(unwrapFunction(css), cssmin(result));
   }
 };
 

@@ -10,3 +10,7 @@
   -moz-appearance: $value;
   appearance: $value;
 }
+
+@function remy($pxsize, $rembase) {
+  @return ($pxsize/$rembase)+rem;
+}
