@@ -12,7 +12,7 @@ function compileFromString(string, callback) {
 
 function compileWithFile(file, string, callback) {
   var mixins = fs.readFileSync(file).toString();
-  var stringWithImport = mixins + "\n\n" + string;
+  var stringWithImport = mixins + string;
   return compileFromString(stringWithImport, callback);
 }
 
@@ -31,7 +31,7 @@ var Sassafras = {
     this.file = file;
   },
 
-  nDeclarations: function(mixin, num) {
+  assertDeclarations: function(mixin, num) {
     var compiled = compileWithFile(this.file, mixin);
     var ast = css.parse(compiled);
     assert(num === countDeclarations(ast));
