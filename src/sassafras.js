@@ -56,27 +56,34 @@ function scrubQuotes(string) {
 
 var Sassafras = {
   file: null,
+  call: null,
 
   setFile: function(file) {
     this.file = file;
   },
 
-  assertDeclarationsNumber: function(mixin, num) {
-    var compiled = compileWithFile(this.file, mixin);
-    var ast = css.parse(compiled);
+  setCall: function(call) {
+    this.call = call;
+  },
+
+  createAst: function() {
+    var compiled = compileWithFile(this.file, this.call);
+    return css.parse(compiled);
+  },
+
+  assertDeclarationsNumber: function(num) {
+    var ast = this.createAst();
     assert.equal(countDeclarations(ast), num);
   },
 
-  assertDeclaration: function(mixin, property, value) {
-    var compiled = compileWithFile(this.file, mixin);
-    var ast = css.parse(compiled);
+  assertDeclaration: function(property, value) {
+    var ast = this.createAst();
     var declaration = findDeclaration(ast, property);
     assert.equal(scrubQuotes(declaration.value), value);
   },
 
-  assertSelectorCreation: function(mixin, selector) {
-    var compiled = compileWithFile(this.file, mixin);
-    var ast = css.parse(compiled);
+  assertSelectorCreation: function(selector) {
+    var ast = this.createAst();
     assert(hasSelector(ast, selector));
   }
 };
