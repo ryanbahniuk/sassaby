@@ -7,33 +7,28 @@ describe('sample.scss', function() {
   
   describe('#appearance', function() {
     it('should return 3 declarations', function() {
-      sassafras.setCall("appearance(button)");
-      sassafras.includedMixin.assertDeclarationsNumber(3);
+      sassafras.includedMixin("appearance(button)").hasNDeclarations(3);
     });
 
     it('should have a webkit prefixed declaration', function() {
-      sassafras.setCall("appearance(button)");
-      sassafras.includedMixin.includesDeclaration("-webkit-appearance", "button");
+      sassafras.includedMixin("appearance(button)").includesDeclaration("-webkit-appearance", "button");
     });
 
     it('should have the correct entire output', function() {
-      sassafras.setCall("appearance(button)");
       var result = "-webkit-appearance: button; -moz-appearance: button; appearance: button;";
-      sassafras.includedMixin.assertEntireOutput(result);
+      sassafras.includedMixin("appearance(button)").equals(result);
     });
   });
 
   describe('#make-column', function() {
     it('should define the correct class', function() {
-      sassafras.setCall("make-column(md, 6)");
-      sassafras.standaloneMixin.assertSelectorCreation(".col-md-6");
+      sassafras.standaloneMixin("make-column(md, 6)").createsSelector(".col-md-6");
     });
   });
 
   describe('#remy', function() {
     it('convert to px units to rem units', function() {
-      sassafras.setCall("remy(32px, 16px)");
-      sassafras.fnction.assertEqual("2rem");
+      sassafras.fnction("remy(32px, 16px)").equals("2rem");
     });
   });
 });

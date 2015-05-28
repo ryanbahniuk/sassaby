@@ -21,6 +21,14 @@ function checkError(err, data) {
   if (err) { throw err; }
 }
 
+function createCss(file, call) {
+  return cssmin(compileWithFile(file, call));
+}
+
+function createAst(file, call) {
+  return css.parse(createCss(file, call));
+}
+
 function countDeclarations(ast) {
   return ast.stylesheet.rules[0].declarations.length;
 }
@@ -71,61 +79,70 @@ function wrapStandaloneMixin(call) {
   return "@include " + call + ";";
 }
 
+function IncludedMixin(file, call) {
+  this.file = file;
+  this.call = wrapIncludedMixin(call);
+}
+
+IncludedMixin.prototype = {
+  hasNDeclarations: function(num) {
+    var ast = createAst(this.file, this.call);
+    assert.equal(countDeclarations(ast), num);
+  },
+
+  includesDeclaration: function(property, value) {
+    var ast = createAst(this.file, this.call);
+    var declaration = findDeclaration(ast, property);
+    assert.equal(scrubQuotes(declaration.value), value);
+  },
+
+  equals: function(output) {
+    var css = createCss(this.file, this.call);
+    assert.equal(css, wrapIncludedOutput(output));
+  }
+};
+
+function StandaloneMixin(file, call) {
+  this.file = file;
+  this.call = wrapStandaloneMixin(call);
+}
+
+StandaloneMixin.prototype = {
+  createsSelector: function(selector) {
+    var ast = createAst(this.file, this.call);
+    assert(hasSelector(ast, selector));
+  }
+};
+
+function Fnction(file, call) {
+  this.file = file;
+  this.call = wrapFunction(call);
+}
+
+Fnction.prototype = {
+  equals: function(result) {
+    var css = createCss(this.file, this.call);
+    assert.equal(css, wrapFunction(result));
+  }
+};
+
 var Sassafras = {
   file: null,
-  call: null,
 
   setFile: function(file) {
     this.file = file;
   },
 
-  setCall: function(call) {
-    this.call = call;
+  includedMixin: function(call) {
+    return new IncludedMixin(Sassafras.file, call);
   },
 
-  createCss: function() {
-    return cssmin(compileWithFile(this.file, this.call));
+  standaloneMixin: function(call) {
+    return new StandaloneMixin(Sassafras.file, call);
   },
 
-  createAst: function() {
-    return css.parse(this.createCss());
-  },
-
-  includedMixin: {
-    assertDeclarationsNumber: function(num) {
-      Sassafras.setCall(wrapIncludedMixin(Sassafras.call));
-      var ast = Sassafras.createAst();
-      assert.equal(countDeclarations(ast), num);
-    },
-
-    includesDeclaration: function(property, value) {
-      Sassafras.setCall(wrapIncludedMixin(Sassafras.call));
-      var ast = Sassafras.createAst();
-      var declaration = findDeclaration(ast, property);
-      assert.equal(scrubQuotes(declaration.value), value);
-    },
-
-    assertEntireOutput: function(output) {
-      Sassafras.setCall(wrapIncludedMixin(Sassafras.call));
-      var css = Sassafras.createCss();
-      assert.equal(css, wrapIncludedOutput(output));
-    },
-  },
-
-  standaloneMixin: {
-    assertSelectorCreation: function(selector) {
-      Sassafras.setCall(wrapStandaloneMixin(Sassafras.call));
-      var ast = Sassafras.createAst();
-      assert(hasSelector(ast, selector));
-    }
-  },
-
-  fnction: {
-    assertEqual: function(result) {
-      Sassafras.setCall(wrapFunction(Sassafras.call));
-      var css = Sassafras.createCss();
-      assert.equal(css, wrapFunction(result));
-    }
+  fnction: function(call) {
+    return new Fnction(Sassafras.file, call);
   }
 
 };
