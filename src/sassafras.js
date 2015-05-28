@@ -12,8 +12,7 @@ function compileFromString(string, callback) {
 }
 
 function compileWithFile(file, string, callback) {
-  var mixins = fs.readFileSync(file).toString();
-  var stringWithImport = mixins + string;
+  var stringWithImport = file + string;
   return compileFromString(stringWithImport, callback);
 }
 
@@ -129,8 +128,9 @@ Fnction.prototype = {
 var Sassafras = {
   file: null,
 
-  setFile: function(file) {
-    this.file = file;
+  setFile: function(filename) {
+    this.filename = filename;
+    this.file = fs.readFileSync(filename).toString();
   },
 
   includedMixin: function(call) {
