@@ -18,10 +18,6 @@ function wrapIncludedOutput(css) {
   return cssmin(".test{" + css + "}");
 }
 
-function scrubQuotes(string) {
-  return string.replace(/["']/g, "");
-}
-
 IncludedMixin.prototype = {
   hasNDeclarations: function(num) {
     var ast = utilities.createAst(this.file, this.call);
@@ -31,7 +27,7 @@ IncludedMixin.prototype = {
   includesDeclaration: function(property, value) {
     var ast = utilities.createAst(this.file, this.call);
     var declaration = parsers.findDeclaration(ast, property);
-    assert.equal(scrubQuotes(declaration.value), value);
+    assert.equal(utilities.scrubQuotes(declaration.value), value);
   },
 
   equals: function(output) {

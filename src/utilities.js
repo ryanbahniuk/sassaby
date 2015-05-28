@@ -25,6 +25,10 @@ var Utilities = {
 
   createAst: function(file, call) {
     return css.parse(this.createCss(file, call));
+  },
+
+  scrubQuotes: function(string) {
+    return string.replace(/["']/g, "");
   }
 };
 
