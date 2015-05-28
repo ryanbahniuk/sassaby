@@ -68,4 +68,12 @@ describe('sample.scss', function() {
       sassafras.fnction("return-self(null)").isFalsey();
     });
   });
+
+  describe('#make-general-alignments', function() {
+    it('should call the correct mixins', function() {
+      sassafras.standaloneMixin("make-general-alignments(md)").calls("make-align-left(md)");
+      sassafras.standaloneMixin("make-general-alignments(md)").calls("make-align-center(md)");
+      sassafras.standaloneMixin("make-general-alignments(md)").calls("make-align-right(md)");
+    });
+  });
 });

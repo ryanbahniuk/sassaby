@@ -34,6 +34,12 @@ StandaloneMixin.prototype = {
   equals: function(output) {
     var css = utilities.createCss(this.file, this.call);
     assert.equal(css, cssmin(output));
+  },
+
+  calls: function(mixin) {
+    var css = utilities.createCss(this.file, this.call);
+    var mixinCss = utilities.createCss(this.file, wrapStandaloneMixin(mixin));
+    assert(css.indexOf(mixinCss) > -1);
   }
 };
 

@@ -26,3 +26,27 @@
 @function return-self($var) {
   @return $var;
 }
+
+@mixin make-align-left($label) {
+  .align-left-#{$label} {
+    justify-content: flex-start;
+  }
+}
+
+@mixin make-align-center($label) {
+  .align-center-#{$label} {
+    justify-content: center;
+  }
+}
+
+@mixin make-align-right($label) {
+  .align-right-#{$label} {
+    justify-content: flex-end;
+  }
+}
+
+@mixin make-general-alignments($label) {
+  @include make-align-left($label);
+  @include make-align-center($label);
+  @include make-align-right($label);
+}
