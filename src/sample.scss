@@ -14,3 +14,15 @@
 @function remy($pxsize, $rembase) {
   @return ($pxsize/$rembase)+rem;
 }
+
+@function boolean-switch($var) {
+  @if $var {
+    @return true
+  } @else {
+    @return false
+  }
+}
+
+@function return-self($var) {
+  @return $var;
+}

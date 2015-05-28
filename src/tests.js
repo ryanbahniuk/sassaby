@@ -44,4 +44,26 @@ describe('sample.scss', function() {
       sassafras.fnction("remy(32px, 16px)").equals("2rem");
     });
   });
+
+  describe('#boolean-switch', function() {
+    it('should return true if passed true', function() {
+      sassafras.fnction("boolean-switch(true)").isTrue();
+    });
+
+    it('should return false if passed false', function() {
+      sassafras.fnction("boolean-switch(false)").isFalse();
+    });
+
+    it('testing truthy', function() {
+      sassafras.fnction("return-self(true)").isTruthy();
+      sassafras.fnction("return-self(1)").isTruthy();
+      sassafras.fnction("return-self('a')").isTruthy();
+      sassafras.fnction("return-self('')").isTruthy();
+    });
+
+    it('testing falsey', function() {
+      sassafras.fnction("return-self(false)").isFalsey();
+      sassafras.fnction("return-self(null)").isFalsey();
+    });
+  });
 });
