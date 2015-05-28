@@ -76,4 +76,18 @@ describe('sample.scss', function() {
       sassafras.standaloneMixin("make-general-alignments(md)").calls("make-align-right(md)");
     });
   });
+
+  describe('#animation', function() {
+    it('should have the correct output', function() {
+      sassafras.includedMixin("animation(test, 500)").includesDeclaration("animation-name", "test");
+      sassafras.includedMixin("animation(test, 500)").includesDeclaration("animation-duration", 500);
+    });
+
+    it('should call the correct mixins', function() {
+      sassafras.includedMixin("animation(test, 500)").calls("prefixer(webkit, animation-name, test)");
+      sassafras.includedMixin("animation(test, 500)").calls("prefixer(moz, animation-name, test)");
+      sassafras.includedMixin("animation(test, 500)").calls("prefixer(webkit, animation-duration, 500)");
+      sassafras.includedMixin("animation(test, 500)").calls("prefixer(moz, animation-duration, 500)");
+    });
+  });
 });

@@ -50,3 +50,16 @@
   @include make-align-center($label);
   @include make-align-right($label);
 }
+
+@mixin prefixer($prefix, $property, $value) {
+  -#{$prefix}-#{$property}: $value;
+}
+
+@mixin animation($name, $duration) {
+  animation-name: $name;
+  @include prefixer(webkit, animation-name, $name);
+  @include prefixer(moz, animation-name, $name);
+  animation-duration: $duration;
+  @include prefixer(webkit, animation-duration, $duration);
+  @include prefixer(moz, animation-duration, $duration);
+}

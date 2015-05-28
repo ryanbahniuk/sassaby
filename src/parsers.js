@@ -6,7 +6,7 @@ var Parsers = {
   },
 
   findDeclaration: function(ast, property) {
-    var found;
+    var found = null;
 
     ast.stylesheet.rules.forEach(function(rule) {
       rule.declarations.forEach(function(declaration) {

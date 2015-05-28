@@ -14,6 +14,10 @@ function wrapIncludedMixin(call) {
   return ".test{@include " + call + "}";
 }
 
+function unwrapIncludedMixin(css) {
+  return css.replace(".test{", "").replace("}", "");
+}
+
 function wrapIncludedOutput(css) {
   return cssmin(".test{" + css + "}");
 }
@@ -33,6 +37,12 @@ IncludedMixin.prototype = {
   equals: function(output) {
     var css = utilities.createCss(this.file, this.call);
     assert.equal(css, wrapIncludedOutput(output));
+  },
+
+  calls: function(mixin) {
+    var css = utilities.createCss(this.file, this.call);
+    var mixinCss = utilities.createCss(this.file, wrapIncludedMixin(mixin));
+    assert(css.indexOf(unwrapIncludedMixin(mixinCss)) > -1);
   }
 };
 
