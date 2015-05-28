@@ -1,9 +1,9 @@
 'use strict';
 
 var fs = require('fs');
-var IncludedMixin = require('./includedMixin');
-var StandaloneMixin = require('./standaloneMixin');
-var Fnction = require('./fnction');
+var IncludedMixin = require('./types/includedMixin');
+var StandaloneMixin = require('./types/standaloneMixin');
+var Fnction = require('./types/fnction');
 
 var Sassafras = {
   file: null,

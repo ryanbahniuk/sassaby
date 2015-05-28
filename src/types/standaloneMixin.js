@@ -2,23 +2,24 @@
 
 var assert = require("assert");
 var cssmin = require('cssmin');
-var utilities = require('./utilities');
-var parsers = require('./parsers');
+var utilities = require('../utilities');
+var parsers = require('../parsers');
 
-function IncludedMixin(file, call) {
+function wrapStandaloneMixin(call) {
+  return "@include " + call + ";";
+}
+
+function StandaloneMixin(file, call) {
   this.file = file;
-  this.call = wrapIncludedMixin(call);
+  this.call = wrapStandaloneMixin(call);
 }
 
-function wrapIncludedMixin(call) {
-  return ".test{@include " + call + "}";
-}
+StandaloneMixin.prototype = {
+  createsSelector: function(selector) {
+    var ast = utilities.createAst(this.file, this.call);
+    assert(parsers.hasSelector(ast, selector));
+  },
 
-function wrapIncludedOutput(css) {
-  return cssmin(".test{" + css + "}");
-}
-
-IncludedMixin.prototype = {
   hasNDeclarations: function(num) {
     var ast = utilities.createAst(this.file, this.call);
     assert.equal(parsers.countDeclarations(ast), num);
@@ -32,8 +33,8 @@ IncludedMixin.prototype = {
 
   equals: function(output) {
     var css = utilities.createCss(this.file, this.call);
-    assert.equal(css, wrapIncludedOutput(output));
+    assert.equal(css, cssmin(output));
   }
 };
 
-module.exports = IncludedMixin;
+module.exports = StandaloneMixin;

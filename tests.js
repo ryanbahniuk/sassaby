@@ -1,9 +1,9 @@
 'use strict';
 
-var sassafras = require('./sassafras');
+var sassafras = require('./src/sassafras');
 
 describe('sample.scss', function() {
-  sassafras.setFile('src/sample.scss');
+  sassafras.setFile('sample.scss');
   
   describe('#appearance', function() {
     it('should return 3 declarations', function() {

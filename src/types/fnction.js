@@ -1,7 +1,7 @@
 'use strict';
 
 var assert = require("assert");
-var utilities = require('./utilities');
+var utilities = require('../utilities');
 
 function wrapFunction(call) {
   return ".test{content:" + call + "}";
