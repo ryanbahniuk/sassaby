@@ -15,7 +15,7 @@ describe('sample.scss', function() {
     });
 
     it('should have a webkit prefixed declaration', function() {
-      mixin.includesDeclaration("-webkit-appearance", "button");
+      mixin.declares("-webkit-appearance", "button");
     });
 
     it('should have the correct entire output', function() {
@@ -35,7 +35,7 @@ describe('sample.scss', function() {
     });
 
     it('should have a webkit prefixed declaration', function() {
-      mixin.includesDeclaration("max-width", "50%");
+      mixin.declares("max-width", "50%");
     });
 
     it('should have the correct entire output', function() {
@@ -45,31 +45,31 @@ describe('sample.scss', function() {
 
   describe('#remy', function() {
     it('convert to px units to rem units', function() {
-      sassafras.fnction("remy(32px, 16px)").equals("2rem");
+      sassafras.func("remy(32px, 16px)").equals("2rem");
     });
   });
 
   describe('#boolean-switch', function() {
     it('should return true if passed true', function() {
-      sassafras.fnction("boolean-switch(true)").isTrue();
+      sassafras.func("boolean-switch(true)").isTrue();
     });
 
     it('should return false if passed false', function() {
-      sassafras.fnction("boolean-switch(false)").isFalse();
+      sassafras.func("boolean-switch(false)").isFalse();
     });
   });
 
   describe('#return-self', function() {
     it('testing truthy', function() {
-      sassafras.fnction("return-self(true)").isTruthy();
-      sassafras.fnction("return-self(1)").isTruthy();
-      sassafras.fnction("return-self('a')").isTruthy();
-      sassafras.fnction("return-self('')").isTruthy();
+      sassafras.func("return-self(true)").isTruthy();
+      sassafras.func("return-self(1)").isTruthy();
+      sassafras.func("return-self('a')").isTruthy();
+      sassafras.func("return-self('')").isTruthy();
     });
 
     it('testing falsey', function() {
-      sassafras.fnction("return-self(false)").isFalsey();
-      sassafras.fnction("return-self(null)").isFalsey();
+      sassafras.func("return-self(false)").isFalsey();
+      sassafras.func("return-self(null)").isFalsey();
     });
   });
 
@@ -87,8 +87,8 @@ describe('sample.scss', function() {
     var mixin = sassafras.includedMixin("animation(test, 500)");
 
     it('should have the correct output', function() {
-      mixin.includesDeclaration("animation-name", "test");
-      mixin.includesDeclaration("animation-duration", 500);
+      mixin.declares("animation-name", "test");
+      mixin.declares("animation-duration", 500);
     });
 
     it('should call the correct mixins', function() {

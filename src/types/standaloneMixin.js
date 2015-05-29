@@ -25,7 +25,7 @@ StandaloneMixin.prototype = {
     assert.equal(parsers.countDeclarations(ast), num);
   },
 
-  includesDeclaration: function(property, value) {
+  declares: function(property, value) {
     var ast = utilities.createAst(this.file, this.call);
     var declaration = parsers.findDeclaration(ast, property);
     assert.equal(utilities.scrubQuotes(declaration.value), value);

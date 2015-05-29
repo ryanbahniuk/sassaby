@@ -15,12 +15,12 @@ function sassTruthy() {
   return "@function truthy($value) { @if $value { @return true } @else { @return false } }";
 }
 
-function Fnction(file, call) {
+function Func(file, call) {
   this.file = file;
   this.call = call;
 }
 
-Fnction.prototype = {
+Func.prototype = {
   equals: function(result) {
     var css = utilities.createCss(this.file, wrapFunction(this.call));
     assert.equal(css, wrapFunction(result));
@@ -47,4 +47,4 @@ Fnction.prototype = {
   }
 };
 
-module.exports = Fnction;
+module.exports = Func;

@@ -3,7 +3,7 @@
 var fs = require('fs');
 var IncludedMixin = require('./types/includedMixin');
 var StandaloneMixin = require('./types/standaloneMixin');
-var Fnction = require('./types/fnction');
+var Func = require('./types/func');
 
 var Sassafras = {
   file: null,
@@ -21,8 +21,8 @@ var Sassafras = {
     return new StandaloneMixin(Sassafras.file, call);
   },
 
-  fnction: function(call) {
-    return new Fnction(Sassafras.file, call);
+  func: function(call) {
+    return new Func(Sassafras.file, call);
   }
 };
 
