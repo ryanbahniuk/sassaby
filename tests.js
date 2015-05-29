@@ -1,41 +1,45 @@
+/* jshint globalstrict: true, node:true, mocha: true */
+
 'use strict';
 
 var sassafras = require('./src/sassafras');
 
 describe('sample.scss', function() {
   sassafras.setFile('sample.scss');
-  
+
   describe('#appearance', function() {
+    var mixin = sassafras.includedMixin("appearance(button)");
+
     it('should return 3 declarations', function() {
-      sassafras.includedMixin("appearance(button)").hasNDeclarations(3);
+      mixin.hasNDeclarations(3);
     });
 
     it('should have a webkit prefixed declaration', function() {
-      sassafras.includedMixin("appearance(button)").includesDeclaration("-webkit-appearance", "button");
+      mixin.includesDeclaration("-webkit-appearance", "button");
     });
 
     it('should have the correct entire output', function() {
-      var result = "-webkit-appearance: button; -moz-appearance: button; appearance: button;";
-      sassafras.includedMixin("appearance(button)").equals(result);
+      mixin.equals("-webkit-appearance: button; -moz-appearance: button; appearance: button;");
     });
   });
 
   describe('#make-column', function() {
+    var mixin = sassafras.standaloneMixin("make-column(md, 6)");
+
     it('should define the correct class', function() {
-      sassafras.standaloneMixin("make-column(md, 6)").createsSelector(".col-md-6");
+      mixin.createsSelector(".col-md-6");
     });
 
     it('should return 2 declarations', function() {
-      sassafras.standaloneMixin("make-column(md, 6)").hasNDeclarations(2);
+      mixin.hasNDeclarations(2);
     });
 
     it('should have a webkit prefixed declaration', function() {
-      sassafras.standaloneMixin("make-column(md, 6)").includesDeclaration("max-width", "50%");
+      mixin.includesDeclaration("max-width", "50%");
     });
 
     it('should have the correct entire output', function() {
-      var result = ".col-md-6 { flex-basis: 50%; max-width: 50%; }";
-      sassafras.standaloneMixin("make-column(md, 6)").equals(result);
+      mixin.equals(".col-md-6 { flex-basis: 50%; max-width: 50%; }");
     });
   });
 
@@ -70,24 +74,28 @@ describe('sample.scss', function() {
   });
 
   describe('#make-general-alignments', function() {
+    var mixin = sassafras.standaloneMixin("make-general-alignments(md)");
+
     it('should call the correct mixins', function() {
-      sassafras.standaloneMixin("make-general-alignments(md)").calls("make-align-left(md)");
-      sassafras.standaloneMixin("make-general-alignments(md)").calls("make-align-center(md)");
-      sassafras.standaloneMixin("make-general-alignments(md)").calls("make-align-right(md)");
+      mixin.calls("make-align-left(md)");
+      mixin.calls("make-align-center(md)");
+      mixin.calls("make-align-right(md)");
     });
   });
 
   describe('#animation', function() {
+    var mixin = sassafras.includedMixin("animation(test, 500)");
+
     it('should have the correct output', function() {
-      sassafras.includedMixin("animation(test, 500)").includesDeclaration("animation-name", "test");
-      sassafras.includedMixin("animation(test, 500)").includesDeclaration("animation-duration", 500);
+      mixin.includesDeclaration("animation-name", "test");
+      mixin.includesDeclaration("animation-duration", 500);
     });
 
     it('should call the correct mixins', function() {
-      sassafras.includedMixin("animation(test, 500)").calls("prefixer(webkit, animation-name, test)");
-      sassafras.includedMixin("animation(test, 500)").calls("prefixer(moz, animation-name, test)");
-      sassafras.includedMixin("animation(test, 500)").calls("prefixer(webkit, animation-duration, 500)");
-      sassafras.includedMixin("animation(test, 500)").calls("prefixer(moz, animation-duration, 500)");
+      mixin.calls("prefixer(webkit, animation-name, test)");
+      mixin.calls("prefixer(moz, animation-name, test)");
+      mixin.calls("prefixer(webkit, animation-duration, 500)");
+      mixin.calls("prefixer(moz, animation-duration, 500)");
     });
   });
 });
