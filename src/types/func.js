@@ -1,6 +1,8 @@
+/* jshint globalstrict: true, node:true, mocha: true */
+
 'use strict';
 
-var assert = require("assert");
+var equals = require("../equals");
 var utilities = require('../utilities');
 
 function wrapFunction(call) {
@@ -23,27 +25,27 @@ function Func(file, call) {
 Func.prototype = {
   equals: function(result) {
     var css = utilities.createCss(this.file, wrapFunction(this.call));
-    assert.equal(css, wrapFunction(result));
+    return equals(css, wrapFunction(result));
   },
 
   isTrue: function() {
     var css = utilities.createCss(this.file, wrapFunction(this.call));
-    assert.equal(css, wrapFunction(true));
+    return equals(css, wrapFunction(true));
   },
 
   isFalse: function() {
     var css = utilities.createCss(this.file, wrapFunction(this.call));
-    assert.equal(css, wrapFunction(false));
+    return equals(css, wrapFunction(false));
   },
 
   isTruthy: function() {
     var css = utilities.createCss(this.file, wrapWithTruthyFunction(this.call));
-    assert.equal(css, wrapFunction(true));
+    return equals(css, wrapFunction(true));
   },
 
   isFalsey: function() {
     var css = utilities.createCss(this.file, wrapWithTruthyFunction(this.call));
-    assert.equal(css, wrapFunction(false));
+    return equals(css, wrapFunction(false));
   }
 };
 

@@ -1,9 +1,11 @@
+/* jshint globalstrict: true, node:true, mocha: true */
+
 'use strict';
 
-var assert = require("assert");
 var cssmin = require('cssmin');
 var utilities = require('../utilities');
 var parsers = require('../parsers');
+var equals = require("../equals");
 
 function IncludedMixin(file, call) {
   this.file = file;
@@ -25,24 +27,24 @@ function wrapIncludedOutput(css) {
 IncludedMixin.prototype = {
   hasNDeclarations: function(num) {
     var ast = utilities.createAst(this.file, this.call);
-    assert.equal(parsers.countDeclarations(ast), num);
+    return equals(parsers.countDeclarations(ast), num);
   },
 
   declares: function(property, value) {
     var ast = utilities.createAst(this.file, this.call);
     var declaration = parsers.findDeclaration(ast, property);
-    assert.equal(utilities.scrubQuotes(declaration.value), value);
+    return equals(utilities.scrubQuotes(declaration.value), value.toString());
   },
 
   equals: function(output) {
     var css = utilities.createCss(this.file, this.call);
-    assert.equal(css, wrapIncludedOutput(output));
+    return equals(css, wrapIncludedOutput(output));
   },
 
   calls: function(mixin) {
     var css = utilities.createCss(this.file, this.call);
     var mixinCss = utilities.createCss(this.file, wrapIncludedMixin(mixin));
-    assert(css.indexOf(unwrapIncludedMixin(mixinCss)) > -1);
+    return css.indexOf(unwrapIncludedMixin(mixinCss)) > -1;
   }
 };
 
