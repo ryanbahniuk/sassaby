@@ -25,7 +25,7 @@ function wrapIncludedOutput(css) {
 }
 
 IncludedMixin.prototype = {
-  hasNDeclarations: function(num) {
+  hasNumDeclarations: function(num) {
     var ast = utilities.createAst(this.file, this.call);
     var numDeclarations = parsers.countDeclarations(ast);
     var message = "Mixin has " + numDeclarations + " declarations, but you gave " + num + ".";
@@ -40,6 +40,14 @@ IncludedMixin.prototype = {
     assert.equal(declarationValue, value.toString(), message);
   },
 
+  doesNotDeclare: function(property, value) {
+    var ast = utilities.createAst(this.file, this.call);
+    var declaration = parsers.findDeclaration(ast, property);
+    var declarationValue = utilities.scrubQuotes(declaration.value);
+    var message = "Value: " + declarationValue + " equals value: " + value + ".";
+    assert.notEqual(declarationValue, value.toString(), message);
+  },
+
   equals: function(output) {
     var css = utilities.createCss(this.file, this.call);
     var wrappedOutput = wrapIncludedOutput(output);
@@ -47,11 +55,25 @@ IncludedMixin.prototype = {
     assert.equal(css, wrappedOutput, message);
   },
 
+  doesNotEqual: function(output) {
+    var css = utilities.createCss(this.file, this.call);
+    var wrappedOutput = wrapIncludedOutput(output);
+    var message = "Mixin output equals " + output + ".";
+    assert.notEqual(css, wrappedOutput, message);
+  },
+
   calls: function(mixin) {
     var css = utilities.createCss(this.file, this.call);
     var mixinCss = utilities.createCss(this.file, wrapIncludedMixin(mixin));
     var message = "Could not find the output from " + mixin + " in mixin.";
     assert(css.indexOf(unwrapIncludedMixin(mixinCss)) > -1, message);
+  },
+
+  doesNotCall: function(mixin) {
+    var css = utilities.createCss(this.file, this.call);
+    var mixinCss = utilities.createCss(this.file, wrapIncludedMixin(mixin));
+    var message = "Mixin called " + mixin + ".";
+    assert(css.indexOf(unwrapIncludedMixin(mixinCss)) === -1, message);
   }
 };
 

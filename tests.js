@@ -12,15 +12,23 @@ describe('sample.scss', function() {
     var mixin = assert.includedMixin("appearance(button)");
 
     it('should return 3 declarations', function() {
-      mixin.hasNDeclarations(3);
+      mixin.hasNumDeclarations(3);
     });
 
     it('should have a webkit prefixed declaration', function() {
       mixin.declares("-webkit-appearance", "button");
     });
 
+    it('should not make an incorrect declaration', function() {
+      mixin.doesNotDeclare("-webkit-appearance", "none");
+    });
+
     it('should have the correct entire output', function() {
       mixin.equals("-webkit-appearance: button; -moz-appearance: button; appearance: button;");
+    });
+
+    it('should not equal the incorrect output', function() {
+      mixin.doesNotEqual("-moz-appearance: button; appearance: button;");
     });
   });
 
@@ -31,22 +39,38 @@ describe('sample.scss', function() {
       mixin.createsSelector(".col-md-6");
     });
 
-    it('should return 2 declarations', function() {
-      mixin.hasNDeclarations(2);
+    it('should not define the incorrect class', function() {
+      mixin.doesNotCreateSelector(".col-lg-6");
     });
 
-    it('should have a webkit prefixed declaration', function() {
+    it('should return 2 declarations', function() {
+      mixin.hasNumDeclarations(2);
+    });
+
+    it('should declare the correct width', function() {
       mixin.declares("max-width", "50%");
+    });
+
+    it('should not declare the incorrect width', function() {
+      mixin.doesNotDeclare("max-width", "60%");
     });
 
     it('should have the correct entire output', function() {
       mixin.equals(".col-md-6 { flex-basis: 50%; max-width: 50%; }");
+    });
+
+    it('should not have incorrect output', function() {
+      mixin.doesNotEqual(".col-md-8 { flex-basis: 50%; max-width: 50%; }");
     });
   });
 
   describe('#remy', function() {
     it('convert to px units to rem units', function() {
       assert.func("remy(32px, 16px)").equals("2rem");
+    });
+
+    it('has the correct output unit', function() {
+      assert.func("remy(32px, 16px)").doesNotEqual("2em");
     });
   });
 
@@ -82,6 +106,10 @@ describe('sample.scss', function() {
       mixin.calls("make-align-center(md)");
       mixin.calls("make-align-right(md)");
     });
+
+    it('should not call the incorrect mixin', function() {
+      mixin.doesNotCall("make-align-left(lg)");
+    });
   });
 
   describe('#animation', function() {
@@ -97,6 +125,10 @@ describe('sample.scss', function() {
       mixin.calls("prefixer(moz, animation-name, test)");
       mixin.calls("prefixer(webkit, animation-duration, 500)");
       mixin.calls("prefixer(moz, animation-duration, 500)");
+    });
+
+    it('should not call the incorrect mixins', function() {
+      mixin.doesNotCall("prefixer(o, animation-name, test)");
     });
   });
 });

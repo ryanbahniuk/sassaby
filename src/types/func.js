@@ -29,6 +29,12 @@ Func.prototype = {
     assert.equal(css, wrapFunction(result), message);
   },
 
+  doesNotEqual: function(result) {
+    var css = utilities.createCss(this.file, wrapFunction(this.call));
+    var message = "Function: " + this.call + " equals " + result + ".";
+    assert.notEqual(css, wrapFunction(result), message);
+  },
+
   isTrue: function() {
     var css = utilities.createCss(this.file, wrapFunction(this.call));
     var message = "Function does not equal true.";
