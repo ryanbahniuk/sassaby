@@ -2,10 +2,10 @@
 
 'use strict';
 
+var assert = require("assert");
 var cssmin = require('cssmin');
 var utilities = require('../utilities');
 var parsers = require('../parsers');
-var equals = require("../equals");
 
 function IncludedMixin(file, call) {
   this.file = file;
@@ -27,24 +27,31 @@ function wrapIncludedOutput(css) {
 IncludedMixin.prototype = {
   hasNDeclarations: function(num) {
     var ast = utilities.createAst(this.file, this.call);
-    return equals(parsers.countDeclarations(ast), num);
+    var numDeclarations = parsers.countDeclarations(ast);
+    var message = "Mixin has " + numDeclarations + " declarations, but you gave " + num + ".";
+    assert.equal(numDeclarations, num, message);
   },
 
   declares: function(property, value) {
     var ast = utilities.createAst(this.file, this.call);
     var declaration = parsers.findDeclaration(ast, property);
-    return equals(utilities.scrubQuotes(declaration.value), value.toString());
+    var declarationValue = utilities.scrubQuotes(declaration.value);
+    var message = "Value: " + declarationValue + " does not equal value: " + value + ".";
+    assert.equal(declarationValue, value.toString(), message);
   },
 
   equals: function(output) {
     var css = utilities.createCss(this.file, this.call);
-    return equals(css, wrapIncludedOutput(output));
+    var wrappedOutput = wrapIncludedOutput(output);
+    var message = "Mixin output does not equal " + output + ".";
+    assert.equal(css, wrappedOutput, message);
   },
 
   calls: function(mixin) {
     var css = utilities.createCss(this.file, this.call);
     var mixinCss = utilities.createCss(this.file, wrapIncludedMixin(mixin));
-    return css.indexOf(unwrapIncludedMixin(mixinCss)) > -1;
+    var message = "Could not find the output from " + mixin + " in mixin.";
+    assert(css.indexOf(unwrapIncludedMixin(mixinCss)) > -1, message);
   }
 };
 

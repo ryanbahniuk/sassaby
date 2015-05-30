@@ -2,10 +2,10 @@
 
 'use strict';
 
+var assert = require('assert');
 var cssmin = require('cssmin');
 var utilities = require('../utilities');
 var parsers = require('../parsers');
-var equals = require("../equals");
 
 function wrapStandaloneMixin(call) {
   return "@include " + call + ";";
@@ -19,29 +19,37 @@ function StandaloneMixin(file, call) {
 StandaloneMixin.prototype = {
   createsSelector: function(selector) {
     var ast = utilities.createAst(this.file, this.call);
-    return parsers.hasSelector(ast, selector);
+    var message = "Could not find selector " + selector + " in mixin output.";
+    assert(parsers.hasSelector(ast, selector), message);
   },
 
   hasNDeclarations: function(num) {
     var ast = utilities.createAst(this.file, this.call);
-    return equals(parsers.countDeclarations(ast), num);
+    var numDeclarations = parsers.countDeclarations(ast);
+    var message = "Mixin has " + numDeclarations + " declarations, but you gave " + num + ".";
+    assert.equal(numDeclarations, num, message);
   },
 
   declares: function(property, value) {
     var ast = utilities.createAst(this.file, this.call);
     var declaration = parsers.findDeclaration(ast, property);
-    return equals(utilities.scrubQuotes(declaration.value), value.toString());
+    var declarationValue = utilities.scrubQuotes(declaration.value);
+    var message = "Value: " + declarationValue + " does not equal value: " + value + ".";
+    assert.equal(declarationValue, value.toString(), message);
   },
 
   equals: function(output) {
     var css = utilities.createCss(this.file, this.call);
-    return equals(css, cssmin(output));
+    var wrappedOutput = cssmin(output);
+    var message = "Mixin output is " + css + " and you gave " + wrappedOutput + ".";
+    assert.equal(css, wrappedOutput, message);
   },
 
   calls: function(mixin) {
     var css = utilities.createCss(this.file, this.call);
     var mixinCss = utilities.createCss(this.file, wrapStandaloneMixin(mixin));
-    return css.indexOf(mixinCss) > -1;
+    var message = "Could not find the output from " + mixin + " in mixin.";
+    assert(css.indexOf(mixinCss) > -1, message);
   }
 };
 

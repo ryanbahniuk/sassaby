@@ -2,7 +2,7 @@
 
 'use strict';
 
-var equals = require("../equals");
+var assert = require('assert');
 var utilities = require('../utilities');
 
 function wrapFunction(call) {
@@ -25,27 +25,32 @@ function Func(file, call) {
 Func.prototype = {
   equals: function(result) {
     var css = utilities.createCss(this.file, wrapFunction(this.call));
-    return equals(css, wrapFunction(result));
+    var message = "Function: " + this.call + " does not equal " + result + ".";
+    assert.equal(css, wrapFunction(result), message);
   },
 
   isTrue: function() {
     var css = utilities.createCss(this.file, wrapFunction(this.call));
-    return equals(css, wrapFunction(true));
+    var message = "Function does not equal true.";
+    assert.equal(css, wrapFunction(true), message);
   },
 
   isFalse: function() {
     var css = utilities.createCss(this.file, wrapFunction(this.call));
-    return equals(css, wrapFunction(false));
+    var message = "Function does not equal false.";
+    assert.equal(css, wrapFunction(false), message);
   },
 
   isTruthy: function() {
     var css = utilities.createCss(this.file, wrapWithTruthyFunction(this.call));
-    return equals(css, wrapFunction(true));
+    var message = "Function is not truthy.";
+    assert.equal(css, wrapFunction(true), message);
   },
 
   isFalsey: function() {
     var css = utilities.createCss(this.file, wrapWithTruthyFunction(this.call));
-    return equals(css, wrapFunction(false));
+    var message = "Function is not falsy.";
+    assert.equal(css, wrapFunction(false), message);
   }
 };
 
