@@ -10,7 +10,7 @@ var parsers = require('../src/parsers');
 var ast = require('./fixtures/ast.json');
 
 var cssmin = sinon.spy(function(input) { return input; });
-var IncludedMixin = proxyquire('../src/types/IncludedMixin', {
+var IncludedMixin = proxyquire('../src/types/includedMixin', {
   '../utilities': utilities,
   '../parsers': parsers,
   'cssmin': cssmin
