@@ -6,6 +6,7 @@ var StandaloneMixin = require('./types/standaloneMixin');
 var Func = require('./types/func');
 
 var Sassafras = {
+  filename: null,
   file: null,
 
   setFile: function(filename) {
