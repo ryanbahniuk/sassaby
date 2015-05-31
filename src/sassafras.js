@@ -1,17 +1,20 @@
+/* jshint globalstrict: true, node:true, mocha: true */
+
 'use strict';
 
 var fs = require('fs');
+var path = require('path');
 var IncludedMixin = require('./types/includedMixin');
 var StandaloneMixin = require('./types/standaloneMixin');
 var Func = require('./types/func');
 
 var Sassafras = {
-  filename: null,
+  path: null,
   file: null,
 
-  setFile: function(filename) {
-    this.filename = filename;
-    this.file = fs.readFileSync(filename).toString();
+  setFile: function(path) {
+    this.path = path;
+    this.file = fs.readFileSync(this.path).toString();
   },
 
   assert: {

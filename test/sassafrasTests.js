@@ -20,11 +20,11 @@ var fileContents = 'File Contents!!!!!!';
 describe('Sassafras', function() {
   describe('#setFile', function() {
     it('should set this.filename and this.file', function() {
-      assert.equal(sassafras.filename, null);
+      assert.equal(sassafras.path, null);
       assert.equal(sassafras.file, null);
       sassafras.setFile(filename);
       readFileSync.calledWith(filename);
-      assert.equal(sassafras.filename, filename);
+      assert.equal(sassafras.path, filename);
       assert.equal(sassafras.file, fileContents);
     });
   });

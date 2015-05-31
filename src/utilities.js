@@ -1,3 +1,5 @@
+/* jshint globalstrict: true, node:true, mocha: true */
+
 'use strict';
 
 var sass = require('node-sass');

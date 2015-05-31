@@ -2,11 +2,11 @@
 
 'use strict';
 
-var sassafras = require('./src/sassafras');
+var sassafras = require('../src/sassafras');
 var assert = sassafras.assert;
 
 describe('sample.scss', function() {
-  sassafras.setFile('sample.scss');
+  sassafras.setFile(__dirname + '/fixtures/sample.scss');
 
   describe('#appearance', function() {
     var mixin = assert.includedMixin("appearance(button)");
@@ -21,6 +21,7 @@ describe('sample.scss', function() {
 
     it('should not make an incorrect declaration', function() {
       mixin.doesNotDeclare("-webkit-appearance", "none");
+      mixin.doesNotDeclare("color", "red");
     });
 
     it('should have the correct entire output', function() {
@@ -53,6 +54,7 @@ describe('sample.scss', function() {
 
     it('should not declare the incorrect width', function() {
       mixin.doesNotDeclare("max-width", "60%");
+      mixin.doesNotDeclare("appearance", "button");
     });
 
     it('should have the correct entire output', function() {
