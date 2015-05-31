@@ -53,11 +53,17 @@ Func.prototype = {
     assert.equal(css, wrapFunction(true), message);
   },
 
-  isFalsey: function() {
+  isFalsy: function() {
     var css = utilities.createCss(this.file, wrapWithTruthyFunction(this.call));
     var message = "Function is not falsy.";
     assert.equal(css, wrapFunction(false), message);
   }
 };
+
+if (process.env.NODE_ENV === 'test') {
+  Func.wrapFunction = wrapFunction;
+  Func.wrapWithTruthyFunction = wrapWithTruthyFunction;
+  Func.sassTruthy = sassTruthy;
+}
 
 module.exports = Func;
