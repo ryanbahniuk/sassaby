@@ -9,25 +9,29 @@ var utilities = require('../src/utilities');
 var parsers = require('../src/parsers');
 var ast = require('./fixtures/ast.json');
 
-var cssmin = sinon.spy(function(input) { return input; });
-var IncludedMixin = proxyquire('../src/types/includedMixin', {
-  '../utilities': utilities,
-  '../parsers': parsers,
-  'cssmin': cssmin
-});
-
+var IncludedMixin;
+var cssmin;
 var mockUtilities;
 var mockParsers;
+var includedMixin;
+
 var file = '@mixin test($input) { color: $input }';
 var call = '@include test(red)';
 var property = 'color';
 var value = 'red';
 var result = property + ":" + value;
 var wrappedResult = '.test{' + result + '}';
-var includedMixin = new IncludedMixin(file, call);
 
 describe('IncludedMixin', function() {
   beforeEach(function() {
+    cssmin = sinon.spy(function(input) { return input; });
+    IncludedMixin = proxyquire('../src/types/includedMixin', {
+      '../utilities': utilities,
+      '../parsers': parsers,
+      'cssmin': cssmin
+    });
+
+    includedMixin = new IncludedMixin(file, call);
     mockUtilities = sinon.mock(utilities);
     mockParsers = sinon.mock(parsers);
   });

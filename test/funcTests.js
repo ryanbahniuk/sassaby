@@ -7,18 +7,20 @@ var sinon = require('sinon');
 var proxyquire =  require('proxyquire');
 var utilities = require('../src/utilities');
 
-var Func = proxyquire('../src/types/func', {
-  '../utilities': utilities
-});
-
+var Func;
+var func;
 var mockUtilities;
+
 var file = '@function test($input) { @return 2 * $input }';
 var call = 'test(5)';
 var result = '10';
-var func = new Func(file, call);
 
 describe('Func', function() {
   beforeEach(function() {
+    Func = proxyquire('../src/types/func', {
+      '../utilities': utilities
+    });
+    func = new Func(file, call);
     mockUtilities = sinon.mock(utilities);
   });
 

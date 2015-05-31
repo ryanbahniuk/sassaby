@@ -9,15 +9,20 @@ var IncludedMixin = require('../src/types/includedMixin');
 var StandaloneMixin = require('../src/types/standaloneMixin');
 var Func = require('../src/types/func');
 
-var readFileSync = sinon.spy(function(filename) { return fileContents; });
-var sassafras = proxyquire('../src/sassafras', {
-  'fs': { 'readFileSync': readFileSync }
-});
+var sassafras;
+var readFileSync;
 
 var filename = 'file.scss';
 var fileContents = 'File Contents!!!!!!';
 
 describe('Sassafras', function() {
+  beforeEach(function() {
+    readFileSync = sinon.spy(function(filename) { return fileContents; });
+    sassafras = proxyquire('../src/sassafras', {
+      'fs': { 'readFileSync': readFileSync }
+    });
+  });
+
   describe('#setFile', function() {
     it('should set this.filename and this.file', function() {
       assert.equal(sassafras.path, null);
