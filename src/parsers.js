@@ -2,20 +2,24 @@
 
 var Parsers = {
   countDeclarations: function(ast) {
-    return ast.stylesheet.rules[0].declarations.length;
+    if (ast.stylesheet && ast.stylesheet.rules && ast.stylesheet.rules[0].declarations) {
+      return ast.stylesheet.rules[0].declarations.length;
+    } else {
+      return 0;
+    }
   },
 
   findDeclaration: function(ast, property) {
-    var found = null;
+    var found = [];
 
     ast.stylesheet.rules.forEach(function(rule) {
       rule.declarations.forEach(function(declaration) {
         if (declaration.property === property) {
-          found = declaration;
+          found.push(declaration);
         }
       });
     });
-    return found;
+    return found[0];
   },
 
   hasSelector: function(ast, selectorValue) {
