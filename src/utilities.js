@@ -9,14 +9,14 @@ function checkError(err, data) {
 }
 
 var Utilities = {
-  compileFromString: function(string, callback) {
-    var s = sass.renderSync({data: string}, callback);
+  compileFromString: function(string) {
+    var s = sass.renderSync({data: string});
     return s.css.toString();
   },
 
-  compileWithFile: function(file, string, callback) {
+  compileWithFile: function(file, string) {
     var stringWithImport = file + string;
-    return this.compileFromString(stringWithImport, callback);
+    return this.compileFromString(stringWithImport);
   },
 
   createCss: function(file, call) {
