@@ -35,20 +35,20 @@ describe('StandaloneMixin', function() {
     mockParsers.restore();
   });
 
-  describe('#wrapStandaloneMixin', function() {
+  describe('wrapStandaloneMixin', function() {
     it('wrap the function with the necessary SCSS to not fail the compiler', function() {
       assert.equal(StandaloneMixin.wrapStandaloneMixin(call), "@include " + call + ";");
     });
   });
 
-  describe('#new', function() {
+  describe('new', function() {
     it('should set file and call from the arguments', function() {
       assert.equal(standaloneMixin.file, file);
       assert.equal(standaloneMixin.call, call);
     });
   });
 
-  describe('#createsSelector', function() {
+  describe('createsSelector', function() {
     it('should not throw an error if the selector is created by the mixin', function() {
       mockUtilities.expects('createAst').withArgs(file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('hasSelector').withArgs(ast, selector).returns(true);
@@ -62,7 +62,7 @@ describe('StandaloneMixin', function() {
     });
   });
 
-  describe('#doesNotCreateSelector', function() {
+  describe('doesNotCreateSelector', function() {
     it('should not throw an error if the selector is not created by the mixin', function() {
       mockUtilities.expects('createAst').withArgs(file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('hasSelector').withArgs(ast, selector).returns(false);
@@ -76,7 +76,7 @@ describe('StandaloneMixin', function() {
     });
   });
 
-  describe('#hasNumDeclarations', function() {
+  describe('hasNumDeclarations', function() {
     it('should not throw an error if mixin creates the given amount of declarations', function() {
       mockUtilities.expects('createAst').withArgs(file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('countDeclarations').withArgs(ast).returns(4);
@@ -90,7 +90,7 @@ describe('StandaloneMixin', function() {
     });
   });
 
-  describe('#declares', function() {
+  describe('declares', function() {
     it('should not throw an error if mixin creates a declaration with the given property and value', function() {
       mockUtilities.expects('createAst').withArgs(file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns({value: value});
@@ -112,7 +112,7 @@ describe('StandaloneMixin', function() {
     });
   });
 
-  describe('#doesNotDeclare', function() {
+  describe('doesNotDeclare', function() {
     it('should throw an error if mixin creates a declaration with the given property and value', function() {
       mockUtilities.expects('createAst').withArgs(file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns({value: value});
@@ -134,7 +134,7 @@ describe('StandaloneMixin', function() {
     });
   });
 
-  describe('#equals', function() {
+  describe('equals', function() {
     it('should not throw an error if the output matches the input', function() {
       mockUtilities.expects('createCss').withArgs(file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
       standaloneMixin.equals(result);
@@ -146,7 +146,7 @@ describe('StandaloneMixin', function() {
     });
   });
 
-  describe('#doesNotEqual', function() {
+  describe('doesNotEqual', function() {
     it('should not throw an error if the output does not match the input', function() {
       mockUtilities.expects('createCss').withArgs(file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
       standaloneMixin.doesNotEqual('.blah{color:red}');
@@ -158,7 +158,7 @@ describe('StandaloneMixin', function() {
     });
   });
 
-  describe('#calls', function() {
+  describe('calls', function() {
     it('should not throw an error if the given call is included in the mixins call', function() {
       mockUtilities.expects('createCss').twice().withArgs(file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
       standaloneMixin.calls(call);
@@ -172,7 +172,7 @@ describe('StandaloneMixin', function() {
     });
   });
 
-  describe('#doesNotCall', function() {
+  describe('doesNotCall', function() {
     it('should not throw an error if the given call is included in the mixins call', function() {
       var otherCall = '@include other(blue)';
       mockUtilities.expects('createCss').withArgs(file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);

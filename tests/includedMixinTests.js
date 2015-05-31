@@ -37,33 +37,33 @@ describe('IncludedMixin', function() {
     mockParsers.restore();
   });
 
-  describe('#wrapIncludedMixin', function() {
+  describe('wrapIncludedMixin', function() {
     it('wraps the function with the necessary SCSS to not fail the compiler', function() {
       assert.equal(IncludedMixin.wrapIncludedMixin(call), ".test{@include " + call + "}");
     });
   });
 
-  describe('#unwrapIncludedMixin', function() {
+  describe('unwrapIncludedMixin', function() {
     it('unwraps the function with the necessary SCSS to not fail the compiler', function() {
       assert.equal(IncludedMixin.unwrapIncludedMixin(wrappedResult), result);
     });
   });
 
-  describe('#wrapIncludedOutput', function() {
+  describe('wrapIncludedOutput', function() {
     it('unwraps the function with the necessary SCSS to not fail the compiler', function() {
       assert.equal(IncludedMixin.wrapIncludedOutput(result), wrappedResult);
       cssmin.calledWith(wrappedResult);
     });
   });
 
-  describe('#new', function() {
+  describe('new', function() {
     it('should set file and call from the arguments', function() {
       assert.equal(includedMixin.file, file);
       assert.equal(includedMixin.call, call);
     });
   });
 
-  describe('#hasNumDeclarations', function() {
+  describe('hasNumDeclarations', function() {
     it('should not throw an error if mixin creates the given amount of declarations', function() {
       mockUtilities.expects('createAst').withArgs(file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
       mockParsers.expects('countDeclarations').withArgs(ast).returns(4);
@@ -77,7 +77,7 @@ describe('IncludedMixin', function() {
     });
   });
 
-  describe('#declares', function() {
+  describe('declares', function() {
     it('should not throw an error if mixin creates a declaration with the given property and value', function() {
       mockUtilities.expects('createAst').withArgs(file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns({value: value});
@@ -99,7 +99,7 @@ describe('IncludedMixin', function() {
     });
   });
 
-  describe('#doesNotDeclare', function() {
+  describe('doesNotDeclare', function() {
     it('should throw an error if mixin creates a declaration with the given property and value', function() {
       mockUtilities.expects('createAst').withArgs(file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns({value: value});
@@ -121,7 +121,7 @@ describe('IncludedMixin', function() {
     });
   });
 
-  describe('#equals', function() {
+  describe('equals', function() {
     it('should not throw an error if the output matches the input', function() {
       mockUtilities.expects('createCss').withArgs(file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
       includedMixin.equals(result);
@@ -133,7 +133,7 @@ describe('IncludedMixin', function() {
     });
   });
 
-  describe('#doesNotEqual', function() {
+  describe('doesNotEqual', function() {
     it('should not throw an error if the output does not match the input', function() {
       mockUtilities.expects('createCss').withArgs(file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
       includedMixin.doesNotEqual('color:red;');
@@ -145,7 +145,7 @@ describe('IncludedMixin', function() {
     });
   });
 
-  describe('#calls', function() {
+  describe('calls', function() {
     it('should not throw an error if the given call is included in the mixins call', function() {
       mockUtilities.expects('createCss').twice().withArgs(file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
       includedMixin.calls(call);
@@ -159,7 +159,7 @@ describe('IncludedMixin', function() {
     });
   });
 
-  describe('#doesNotCall', function() {
+  describe('doesNotCall', function() {
     it('should not throw an error if the given call is included in the mixins call', function() {
       var otherCall = '@include other(blue)';
       mockUtilities.expects('createCss').withArgs(file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);

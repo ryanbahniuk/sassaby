@@ -29,22 +29,22 @@ describe('Sassafras', function() {
     });
   });
 
-  describe('#assert', function() {
-    describe('#includedMixin', function() {
+  describe('assert', function() {
+    describe('includedMixin', function() {
       it('return a new instance of IncludedMixin', function() {
         var call = "@include test(blue);";
         assert(sassafras.assert.includedMixin(call) instanceof IncludedMixin);
       });
     });
 
-    describe('#standaloneMixin', function() {
+    describe('standaloneMixin', function() {
       it('return a new instance of StandaloneMixin', function() {
         var call = "@include test(blue);";
         assert(sassafras.assert.standaloneMixin(call) instanceof StandaloneMixin);
       });
     });
 
-    describe('#func', function() {
+    describe('func', function() {
       it('return a new instance of Func', function() {
         var call = "test(blue);";
         assert(sassafras.assert.func(call) instanceof Func);

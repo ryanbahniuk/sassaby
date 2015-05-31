@@ -9,7 +9,7 @@ var parsers = require('../src/parsers');
 var ast = require('./fixtures/ast.json');
 
 describe('Parsers', function() {
-  describe('#countDeclarations', function() {
+  describe('countDeclarations', function() {
     it('should return the number of declarations in the first ruleset', function() {
       assert.equal(parsers.countDeclarations(ast), 1);
     });
@@ -27,7 +27,7 @@ describe('Parsers', function() {
     });
   });
 
-  describe('#findDeclaration', function() {
+  describe('findDeclaration', function() {
     it('should return the declaration object if the property is found', function() {
       var declaration = {
         "type": "declaration",
@@ -71,7 +71,7 @@ describe('Parsers', function() {
     });
   });
 
-  describe('#hasSelector', function() {
+  describe('hasSelector', function() {
     it('should return true if the selector is defined by itself', function() {
       assert(parsers.hasSelector(ast, '.test'));
     });

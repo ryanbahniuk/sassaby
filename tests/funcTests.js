@@ -26,32 +26,32 @@ describe('Func', function() {
     mockUtilities.restore();
   });
 
-  describe('#wrapFunction', function() {
+  describe('wrapFunction', function() {
     it('wrap the function with the necessary SCSS to not fail the compiler', function() {
       assert.equal(Func.wrapFunction(call), ".test{content:" + call + "}");
     });
   });
 
-  describe('#wrapWithTruthyFunction', function() {
+  describe('wrapWithTruthyFunction', function() {
     it('wrap the function with the necessary SCSS to not fail the compiler', function() {
       assert.equal(Func.wrapWithTruthyFunction(call), Func.sassTruthy() + Func.wrapFunction("truthy(" + call + ")"));
     });
   });
 
-  describe('#sassTruthy', function() {
+  describe('sassTruthy', function() {
     it('returns the sass truthy function as a string', function() {
       assert.equal(Func.sassTruthy(), "@function truthy($value) { @if $value { @return true } @else { @return false } }");
     });
   });
 
-  describe('#new', function() {
+  describe('new', function() {
     it('should set file and call from the arguments', function() {
       assert.equal(func.file, file);
       assert.equal(func.call, call);
     });
   });
 
-  describe('#equals', function() {
+  describe('equals', function() {
     it('should not throw an error if the output matches the input', function() {
       mockUtilities.expects('createCss').withArgs(file, Func.wrapFunction(call)).returns(Func.wrapFunction(result));
       func.equals(result);
@@ -62,7 +62,7 @@ describe('Func', function() {
     });
   });
 
-  describe('#doesNotEqual', function() {
+  describe('doesNotEqual', function() {
     it('should not throw an error if the output does not match the input', function() {
       mockUtilities.expects('createCss').withArgs(file, Func.wrapFunction(call)).returns(Func.wrapFunction(20));
       func.doesNotEqual(result);
@@ -76,7 +76,7 @@ describe('Func', function() {
     });
   });
 
-  describe('#isTrue', function() {
+  describe('isTrue', function() {
     it('should not throw an error if the output is true', function() {
       mockUtilities.expects('createCss').withArgs(file, Func.wrapFunction(call)).returns(Func.wrapFunction(true));
       func.isTrue();
@@ -90,7 +90,7 @@ describe('Func', function() {
     });
   });
 
-  describe('#isFalse', function() {
+  describe('isFalse', function() {
     it('should not throw an error if the output is false', function() {
       mockUtilities.expects('createCss').withArgs(file, Func.wrapFunction(call)).returns(Func.wrapFunction(false));
       func.isFalse();
@@ -104,7 +104,7 @@ describe('Func', function() {
     });
   });
 
-  describe('#isTruthy', function() {
+  describe('isTruthy', function() {
     it('should not throw an error if the output is truthy', function() {
       mockUtilities.expects('createCss').withArgs(file, Func.wrapWithTruthyFunction(call)).returns(Func.wrapFunction(true));
       func.isTruthy();
@@ -118,7 +118,7 @@ describe('Func', function() {
     });
   });
 
-  describe('#isFalsy', function() {
+  describe('isFalsy', function() {
     it('should not throw an error if the output is truthy', function() {
       mockUtilities.expects('createCss').withArgs(file, Func.wrapWithTruthyFunction(call)).returns(Func.wrapFunction(false));
       func.isFalsy();
