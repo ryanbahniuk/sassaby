@@ -94,9 +94,9 @@ describe('sample.scss', function() {
       assert.func("return-self('')").isTruthy();
     });
 
-    it('testing falsey', function() {
-      assert.func("return-self(false)").isFalsey();
-      assert.func("return-self(null)").isFalsey();
+    it('testing falsy', function() {
+      assert.func("return-self(false)").isFalsy();
+      assert.func("return-self(null)").isFalsy();
     });
   });
 
