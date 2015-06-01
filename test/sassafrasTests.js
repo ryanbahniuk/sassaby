@@ -1,5 +1,3 @@
-/* jshint globalstrict: true, node:true, mocha: true */
-
 'use strict';
 
 var assert = require('assert');
@@ -40,7 +38,7 @@ describe('Sassafras', function() {
         'color': 'blue',
         'font-size': '16px'
       };
-      assert.equal(sassafras.variables, null);
+      assert.equal(sassafras.variables, '');
       sassafras.setVariables(variables);
       assert.equal(sassafras.variables, '$color:blue;$font-size:16px;');
     });

@@ -9,8 +9,8 @@ function wrapStandaloneMixin(call) {
   return "@include " + call + ";";
 }
 
-function StandaloneMixin(file, call) {
-  this.file = file;
+function StandaloneMixin(variables, file, call) {
+  this.file = variables + file;
   this.call = call;
 }
 

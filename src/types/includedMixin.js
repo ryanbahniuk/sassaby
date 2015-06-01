@@ -17,8 +17,8 @@ function wrapIncludedOutput(css) {
   return cssmin(".test{" + css + "}");
 }
 
-function IncludedMixin(file, call) {
-  this.file = file;
+function IncludedMixin(variables, file, call) {
+  this.file = variables + file;
   this.call = call;
 }
 

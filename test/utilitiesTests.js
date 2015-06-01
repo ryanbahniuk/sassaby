@@ -1,5 +1,3 @@
-/* jshint globalstrict: true, node:true, mocha: true */
-
 'use strict';
 
 var assert = require('assert');

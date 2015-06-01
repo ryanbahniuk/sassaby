@@ -8,7 +8,7 @@ var Func = require('./types/func');
 var Sassafras = {
   path: null,
   file: null,
-  variables: null,
+  variables: '',
 
   setFile: function(path) {
     this.path = path;
@@ -25,15 +25,15 @@ var Sassafras = {
 
   assert: {
     includedMixin: function(call) {
-      return new IncludedMixin(Sassafras.file, call);
+      return new IncludedMixin(Sassafras.variables, Sassafras.file, call);
     },
 
     standaloneMixin: function(call) {
-      return new StandaloneMixin(Sassafras.file, call);
+      return new StandaloneMixin(Sassafras.variables, Sassafras.file, call);
     },
 
     func: function(call) {
-      return new Func(Sassafras.file, call);
+      return new Func(Sassafras.variables, Sassafras.file, call);
     }
   }
 };
