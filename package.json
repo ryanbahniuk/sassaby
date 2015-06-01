@@ -2,6 +2,7 @@
   "name": "sassafras",
   "version": "0.0.1",
   "description": "A unit testing library for SASS",
+  "keywords": ["sass", "scss", "testing", "unit testing", "bdd", "tdd", "test"],
   "repository": {
     "type": "git",
     "url": "https://github.com/ryanbahniuk/sassafras"
