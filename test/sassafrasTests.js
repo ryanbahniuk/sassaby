@@ -34,6 +34,18 @@ describe('Sassafras', function() {
     });
   });
 
+  describe('#setVariables', function() {
+    it('should set this.variables to a string of SASS variable declarations', function() {
+      var variables = {
+        'color': 'blue',
+        'font-size': '16px'
+      };
+      assert.equal(sassafras.variables, null);
+      sassafras.setVariables(variables);
+      assert.equal(sassafras.variables, '$color:blue;$font-size:16px;');
+    });
+  });
+
   describe('assert', function() {
     describe('includedMixin', function() {
       it('return a new instance of IncludedMixin', function() {

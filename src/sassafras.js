@@ -8,10 +8,19 @@ var Func = require('./types/func');
 var Sassafras = {
   path: null,
   file: null,
+  variables: null,
 
   setFile: function(path) {
     this.path = path;
     this.file = fs.readFileSync(this.path).toString();
+  },
+
+  setVariables: function(varz) {
+    var sassVariables = "";
+    for (var variableName in varz) {
+      sassVariables = sassVariables + '$' + variableName + ':' + varz[variableName] + ';';
+    }
+    this.variables = sassVariables;
   },
 
   assert: {
