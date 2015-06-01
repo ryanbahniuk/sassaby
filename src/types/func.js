@@ -15,8 +15,8 @@ function wrapWithTruthyFunction(call) {
   return sassTruthy() + wrapFunction("truthy(" + call + ")");
 }
 
-function Func(variables, file, call) {
-  this.file = variables + file;
+function Func(variables, dependencies, file, call) {
+  this.file = variables + dependencies + file;
   this.call = call;
 }
 

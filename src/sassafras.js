@@ -34,15 +34,15 @@ var Sassafras = {
 
   assert: {
     includedMixin: function(call) {
-      return new IncludedMixin(Sassafras.variables, Sassafras.file, call);
+      return new IncludedMixin(Sassafras.variables, Sassafras.dependencies, Sassafras.file, call);
     },
 
     standaloneMixin: function(call) {
-      return new StandaloneMixin(Sassafras.variables, Sassafras.file, call);
+      return new StandaloneMixin(Sassafras.variables, Sassafras.dependencies, Sassafras.file, call);
     },
 
     func: function(call) {
-      return new Func(Sassafras.variables, Sassafras.file, call);
+      return new Func(Sassafras.variables, Sassafras.dependencies, Sassafras.file, call);
     }
   }
 };

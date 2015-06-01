@@ -14,6 +14,7 @@ var mockParsers;
 var includedMixin;
 
 var variables = '$test:5;';
+var dependencies = "@import 'file';";
 var file = '@mixin test($input) { color: $input }';
 var call = '@include test(red)';
 var property = 'color';
@@ -30,7 +31,7 @@ describe('IncludedMixin', function() {
       'cssmin': cssmin
     });
 
-    includedMixin = new IncludedMixin(variables, file, call);
+    includedMixin = new IncludedMixin(variables, dependencies, file, call);
     mockUtilities = sinon.mock(utilities);
     mockParsers = sinon.mock(parsers);
   });
@@ -61,20 +62,20 @@ describe('IncludedMixin', function() {
 
   describe('new', function() {
     it('should set file and call from the arguments', function() {
-      assert.equal(includedMixin.file, variables + file);
+      assert.equal(includedMixin.file, variables + dependencies + file);
       assert.equal(includedMixin.call, call);
     });
   });
 
   describe('hasNumDeclarations', function() {
     it('should not throw an error if mixin creates the given amount of declarations', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
       mockParsers.expects('countDeclarations').withArgs(ast).returns(4);
       includedMixin.hasNumDeclarations(4);
     });
 
     it('should throw an error if mixin does not create the given amount of declarations', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
       mockParsers.expects('countDeclarations').withArgs(ast).returns(4);
       assert.throws(function() { includedMixin.hasNumDeclarations(5); });
     });
@@ -82,21 +83,21 @@ describe('IncludedMixin', function() {
 
   describe('declares', function() {
     it('should not throw an error if mixin creates a declaration with the given property and value', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns({value: value});
       mockUtilities.expects('scrubQuotes').withArgs(value).returns(value);
       includedMixin.declares(property, value);
     });
 
     it('should throw an error if mixin creates a declaration with the given property and not the value', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns({value: value});
       mockUtilities.expects('scrubQuotes').withArgs(value).returns(value);
       assert.throws(function() { includedMixin.declares(property, 'blue'); });
     });
 
     it('should throw an error if the given property cannot be found in mixin output', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns(undefined);
       assert.throws(function() { includedMixin.declares(property, value); });
     });
@@ -104,21 +105,21 @@ describe('IncludedMixin', function() {
 
   describe('doesNotDeclare', function() {
     it('should throw an error if mixin creates a declaration with the given property and value', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns({value: value});
       mockUtilities.expects('scrubQuotes').withArgs(value).returns(value);
       assert.throws(function() { includedMixin.doesNotDeclare(property, value); });
     });
 
     it('should not throw an error if mixin creates a declaration with the given property and not the value', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns({value: value});
       mockUtilities.expects('scrubQuotes').withArgs(value).returns(value);
       includedMixin.doesNotDeclare(property, 'blue');
     });
 
     it('should not throw an error if the given property cannot be found in mixin output', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns(undefined);
       includedMixin.doesNotDeclare(property, value);
     });
@@ -126,38 +127,38 @@ describe('IncludedMixin', function() {
 
   describe('equals', function() {
     it('should not throw an error if the output matches the input', function() {
-      mockUtilities.expects('createCss').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
       includedMixin.equals(result);
     });
 
     it('throws an error if the output does not match the input', function() {
-      mockUtilities.expects('createCss').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
       assert.throws(function() { includedMixin.equals('.blah{color:red}'); });
     });
   });
 
   describe('doesNotEqual', function() {
     it('should not throw an error if the output does not match the input', function() {
-      mockUtilities.expects('createCss').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
       includedMixin.doesNotEqual('color:red;');
     });
 
     it('throws an error if the output does match the input', function() {
-      mockUtilities.expects('createCss').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
       assert.throws(function() { includedMixin.doesNotEqual(result); });
     });
   });
 
   describe('calls', function() {
     it('should not throw an error if the given call is included in the mixins call', function() {
-      mockUtilities.expects('createCss').twice().withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
+      mockUtilities.expects('createCss').twice().withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
       includedMixin.calls(call);
     });
 
     it('throws an error if the given call is not included in the mixins call', function() {
       var otherCall = '@include other(blue)';
-      mockUtilities.expects('createCss').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
-      mockUtilities.expects('createCss').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns('.blah{color:red}');
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns('.blah{color:red}');
       assert.throws(function() { includedMixin.calls(otherCall); });
     });
   });
@@ -165,13 +166,13 @@ describe('IncludedMixin', function() {
   describe('doesNotCall', function() {
     it('should not throw an error if the given call is included in the mixins call', function() {
       var otherCall = '@include other(blue)';
-      mockUtilities.expects('createCss').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
-      mockUtilities.expects('createCss').withArgs(variables + file, IncludedMixin.wrapIncludedMixin(otherCall)).returns('.blah{color:red}');
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(otherCall)).returns('.blah{color:red}');
       includedMixin.doesNotCall(otherCall);
     });
 
     it('throws an error if the given call is not included in the mixins call', function() {
-      mockUtilities.expects('createCss').twice().withArgs(variables + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
+      mockUtilities.expects('createCss').twice().withArgs(variables + dependencies + file, IncludedMixin.wrapIncludedMixin(call)).returns(wrappedResult);
       assert.throws(function() { includedMixin.doesNotCall(call); });
     });
   });

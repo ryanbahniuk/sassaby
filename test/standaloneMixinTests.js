@@ -13,6 +13,7 @@ var mockUtilities;
 var mockParsers;
 
 var variables = '$test:5;';
+var dependencies = "@import 'file';";
 var selector = '.text';
 var file = '@mixin test($input) { .test { color: $input } }';
 var call = '@include test(red)';
@@ -26,7 +27,7 @@ describe('StandaloneMixin', function() {
       '../utilities': utilities,
       '../parsers': parsers,
     });
-    standaloneMixin = new StandaloneMixin(variables, file, call);
+    standaloneMixin = new StandaloneMixin(variables, dependencies, file, call);
     mockUtilities = sinon.mock(utilities);
     mockParsers = sinon.mock(parsers);
   });
@@ -44,20 +45,20 @@ describe('StandaloneMixin', function() {
 
   describe('new', function() {
     it('should set file and call from the arguments', function() {
-      assert.equal(standaloneMixin.file, variables + file);
+      assert.equal(standaloneMixin.file, variables + dependencies + file);
       assert.equal(standaloneMixin.call, call);
     });
   });
 
   describe('createsSelector', function() {
     it('should not throw an error if the selector is created by the mixin', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('hasSelector').withArgs(ast, selector).returns(true);
       standaloneMixin.createsSelector(selector);
     });
 
     it('throws an error if the selector is not created by the mixin', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('hasSelector').withArgs(ast, selector).returns(false);
       assert.throws(function() { standaloneMixin.createsSelector(selector); });
     });
@@ -65,13 +66,13 @@ describe('StandaloneMixin', function() {
 
   describe('doesNotCreateSelector', function() {
     it('should not throw an error if the selector is not created by the mixin', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('hasSelector').withArgs(ast, selector).returns(false);
       standaloneMixin.doesNotCreateSelector(selector);
     });
 
     it('throws an error if the selector is created by the mixin', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('hasSelector').withArgs(ast, selector).returns(true);
       assert.throws(function() { standaloneMixin.doesNotCreateSelector(selector); });
     });
@@ -79,13 +80,13 @@ describe('StandaloneMixin', function() {
 
   describe('hasNumDeclarations', function() {
     it('should not throw an error if mixin creates the given amount of declarations', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('countDeclarations').withArgs(ast).returns(4);
       standaloneMixin.hasNumDeclarations(4);
     });
 
     it('should throw an error if mixin does not create the given amount of declarations', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('countDeclarations').withArgs(ast).returns(4);
       assert.throws(function() { standaloneMixin.hasNumDeclarations(5); });
     });
@@ -93,21 +94,21 @@ describe('StandaloneMixin', function() {
 
   describe('declares', function() {
     it('should not throw an error if mixin creates a declaration with the given property and value', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns({value: value});
       mockUtilities.expects('scrubQuotes').withArgs(value).returns(value);
       standaloneMixin.declares(property, value);
     });
 
     it('should throw an error if mixin creates a declaration with the given property and not the value', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns({value: value});
       mockUtilities.expects('scrubQuotes').withArgs(value).returns(value);
       assert.throws(function() { standaloneMixin.declares(property, 'blue'); });
     });
 
     it('should throw an error if the given property cannot be found in mixin output', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns(undefined);
       assert.throws(function() { standaloneMixin.declares(property, value); });
     });
@@ -115,21 +116,21 @@ describe('StandaloneMixin', function() {
 
   describe('doesNotDeclare', function() {
     it('should throw an error if mixin creates a declaration with the given property and value', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns({value: value});
       mockUtilities.expects('scrubQuotes').withArgs(value).returns(value);
       assert.throws(function() { standaloneMixin.doesNotDeclare(property, value); });
     });
 
     it('should not throw an error if mixin creates a declaration with the given property and not the value', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns({value: value});
       mockUtilities.expects('scrubQuotes').withArgs(value).returns(value);
       standaloneMixin.doesNotDeclare(property, 'blue');
     });
 
     it('should not throw an error if the given property cannot be found in mixin output', function() {
-      mockUtilities.expects('createAst').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
+      mockUtilities.expects('createAst').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(ast);
       mockParsers.expects('findDeclaration').withArgs(ast, property).returns(undefined);
       standaloneMixin.doesNotDeclare(property, value);
     });
@@ -137,38 +138,38 @@ describe('StandaloneMixin', function() {
 
   describe('equals', function() {
     it('should not throw an error if the output matches the input', function() {
-      mockUtilities.expects('createCss').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
       standaloneMixin.equals(result);
     });
 
     it('throws an error if the output does not match the input', function() {
-      mockUtilities.expects('createCss').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
       assert.throws(function() { standaloneMixin.equals('.blah{color:red}'); });
     });
   });
 
   describe('doesNotEqual', function() {
     it('should not throw an error if the output does not match the input', function() {
-      mockUtilities.expects('createCss').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
       standaloneMixin.doesNotEqual('.blah{color:red}');
     });
 
     it('throws an error if the output does match the input', function() {
-      mockUtilities.expects('createCss').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
       assert.throws(function() { standaloneMixin.doesNotEqual(result); });
     });
   });
 
   describe('calls', function() {
     it('should not throw an error if the given call is included in the mixins call', function() {
-      mockUtilities.expects('createCss').twice().withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
+      mockUtilities.expects('createCss').twice().withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
       standaloneMixin.calls(call);
     });
 
     it('throws an error if the given call is not included in the mixins call', function() {
       var otherCall = '@include other(blue)';
-      mockUtilities.expects('createCss').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
-      mockUtilities.expects('createCss').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(otherCall)).returns('.blah{color:red}');
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(otherCall)).returns('.blah{color:red}');
       assert.throws(function() { standaloneMixin.calls(otherCall); });
     });
   });
@@ -176,13 +177,13 @@ describe('StandaloneMixin', function() {
   describe('doesNotCall', function() {
     it('should not throw an error if the given call is included in the mixins call', function() {
       var otherCall = '@include other(blue)';
-      mockUtilities.expects('createCss').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
-      mockUtilities.expects('createCss').withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(otherCall)).returns('.blah{color:red}');
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
+      mockUtilities.expects('createCss').withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(otherCall)).returns('.blah{color:red}');
       standaloneMixin.doesNotCall(otherCall);
     });
 
     it('throws an error if the given call is not included in the mixins call', function() {
-      mockUtilities.expects('createCss').twice().withArgs(variables + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
+      mockUtilities.expects('createCss').twice().withArgs(variables + dependencies + file, StandaloneMixin.wrapStandaloneMixin(call)).returns(result);
       assert.throws(function() { standaloneMixin.doesNotCall(call); });
     });
   });
