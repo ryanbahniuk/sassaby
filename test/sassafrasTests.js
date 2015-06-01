@@ -33,7 +33,16 @@ describe('Sassafras', function() {
   });
 
   describe('#setVariables', function() {
-    it('should set this.variables to a string of SASS variable declarations', function() {
+    it('should set this.variables to a string of the SASS variable declaration', function() {
+      var variables = {
+        'color': 'blue'
+      };
+      assert.equal(sassafras.variables, '');
+      sassafras.setVariables(variables);
+      assert.equal(sassafras.variables, '$color:blue;');
+    });
+
+    it('should set this.variables to a string of SASS variable declarations if more than one is passed', function() {
       var variables = {
         'color': 'blue',
         'font-size': '16px'
@@ -41,6 +50,27 @@ describe('Sassafras', function() {
       assert.equal(sassafras.variables, '');
       sassafras.setVariables(variables);
       assert.equal(sassafras.variables, '$color:blue;$font-size:16px;');
+    });
+  });
+
+  describe('#setDependencies', function() {
+    it('should set this.dependencies to a string of the SASS import', function() {
+      var dependencies = [
+        'firstImport'
+      ];
+      assert.equal(sassafras.dependencies, '');
+      sassafras.setDependencies(dependencies);
+      assert.equal(sassafras.dependencies, "@import 'firstImport';");
+    });
+
+    it('should set this.dependencies to a string of SASS imports if more than one is passed', function() {
+      var dependencies = [
+        'firstImport',
+        'secondImport'
+      ];
+      assert.equal(sassafras.dependencies, '');
+      sassafras.setDependencies(dependencies);
+      assert.equal(sassafras.dependencies, "@import 'firstImport';@import 'secondImport';");
     });
   });
 
