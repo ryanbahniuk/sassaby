@@ -13,7 +13,7 @@ npm install --save-dev sassafras
 
 ## Setup
 
-Setting up Sassafras is simple with easy integration into your existing Javascript testing library. After installation, simply require it at the top of the file and extract the assert object. Here is a sample file using Mocha.
+Setting up Sassafras is simple with easy integration into your existing Javascript testing library. After installation, simply require it at the top of the file, extract the assert object, and set the .sass or .scss file that you want to include. Here is a sample file using Mocha.
 
 ```js
 var sassafras = require('sassafras');
@@ -29,6 +29,8 @@ describe('sample.scss', function() {
   });
 });
 ```
+
+Note that `sassafras.setFile` takes the absolute path to the SASS file. We recommend using Node's `__direname` plus the remaining path here. Also, note that this file must ONLY include SASS function and mixin declarations. Any code that compiles to CSS in this file will cause Sassafras' parsers to give inconsistent results.
 
 ## Features
 
@@ -46,7 +48,7 @@ Functions are your typical SASS functions, defined like this:
 }
 ```
 
-Standalone Mixins are mixins that do define new rules, like this:
+Standalone Mixins are mixins that define new rules, like this:
 
 ```scss
 @mixin align-right($label) {
@@ -108,6 +110,7 @@ Assert that the function output is a falsy value in SASS.
 assert.func('returns-falsy(null)').isFalsy();
 ```
 
+
 ### Standalone Mixin Rules
 
 #### createsSelector
@@ -129,13 +132,13 @@ assert.standaloneMixin('align-right(md)').hasNumDeclarations(1);
 ```
 
 #### declares
-Assert that the mixin makes a declaration of the given rule property pair.
+Assert that the mixin makes a declaration of the given rule-property pair.
 ```js
 assert.standaloneMixin('align-right(md)').declares('justify-content', 'flex-end');
 ```
 
 #### doesNotDeclare
-Assert that the mixin does not make a declaration of the given rule property pair.
+Assert that the mixin does not make a declaration of the given rule-property pair.
 ```js
 assert.standaloneMixin('align-right(md)').doesNotDeclare('text-align', 'right');
 ```
@@ -164,6 +167,7 @@ Assert that the mixin does not call another mixin.
 assert.standaloneMixin('build-alignments(md)').doesNotCall('align-right(lg)');
 ```
 
+
 ### Included Mixin Rules
 
 #### hasNumDeclarations
@@ -173,13 +177,13 @@ assert.includedMixin('appearance(button)').hasNumDeclarations(3);
 ```
 
 #### declares
-Assert that the mixin makes a declaration of the given rule property pair.
+Assert that the mixin makes a declaration of the given rule-property pair.
 ```js
 assert.includedMixin('appearance(button)').declares('-webkit-appearance', 'button');
 ```
 
 #### doesNotDeclare
-Assert that the mixin does not make a declaration of the given rule property pair.
+Assert that the mixin does not make a declaration of the given rule-property pair.
 ```js
 assert.includedMixin('appearance(button)').doesNotDeclare('-o-appearance', 'button');
 ```
