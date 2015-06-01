@@ -1,5 +1,3 @@
-/* jshint globalstrict: true, node:true, mocha: true */
-
 'use strict';
 
 var assert = require('assert');
@@ -9,12 +7,12 @@ function wrapFunction(call) {
   return ".test{content:" + call + "}";
 }
 
-function wrapWithTruthyFunction(call) {
-  return sassTruthy() + wrapFunction("truthy(" + call + ")");
-}
-
 function sassTruthy() {
   return "@function truthy($value) { @if $value { @return true } @else { @return false } }";
+}
+
+function wrapWithTruthyFunction(call) {
+  return sassTruthy() + wrapFunction("truthy(" + call + ")");
 }
 
 function Func(file, call) {

@@ -1,5 +1,3 @@
-/* jshint globalstrict: true, node:true, mocha: true */
-
 'use strict';
 
 var assert = require("assert");
@@ -43,7 +41,8 @@ IncludedMixin.prototype = {
   doesNotDeclare: function(property, value) {
     var ast = utilities.createAst(this.file, wrapIncludedMixin(this.call));
     var declaration = parsers.findDeclaration(ast, property);
-    var declarationValue = declaration ? utilities.scrubQuotes(declaration.value) : "";    var message = "Value: " + declarationValue + " equals value: " + value + ".";
+    var declarationValue = declaration ? utilities.scrubQuotes(declaration.value) : "";
+    var message = "Value: " + declarationValue + " equals value: " + value + ".";
     assert.notEqual(declarationValue, value.toString(), message);
   },
 

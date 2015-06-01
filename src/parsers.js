@@ -1,5 +1,3 @@
-/* jshint globalstrict: true, node:true, mocha: true */
-
 'use strict';
 
 var Parsers = {
@@ -21,6 +19,7 @@ var Parsers = {
         }
       });
     });
+
     return found[0];
   },
 
@@ -34,6 +33,7 @@ var Parsers = {
         }
       });
     });
+
     return found;
   }
 };

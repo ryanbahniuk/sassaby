@@ -1,9 +1,6 @@
-/* jshint globalstrict: true, node:true, mocha: true */
-
 'use strict';
 
 var fs = require('fs');
-var path = require('path');
 var IncludedMixin = require('./types/includedMixin');
 var StandaloneMixin = require('./types/standaloneMixin');
 var Func = require('./types/func');

@@ -1,14 +1,8 @@
-/* jshint globalstrict: true, node:true, mocha: true */
-
 'use strict';
 
 var sass = require('node-sass');
 var cssmin = require('cssmin');
 var css = require('css');
-
-function checkError(err, data) {
-  if (err) { throw err; }
-}
 
 var Utilities = {
   compileFromString: function(string) {
