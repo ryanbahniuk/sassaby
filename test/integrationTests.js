@@ -1,10 +1,10 @@
 'use strict';
 
-var sassafras = require('../src/sassafras');
-var assert = sassafras.assert;
+var sassaby = require('../src/sassaby');
+var assert = sassaby.assert;
 
 describe('sample.scss', function() {
-  sassafras.setFile(__dirname + '/fixtures/sample.scss');
+  sassaby.setFile(__dirname + '/fixtures/sample.scss');
 
   describe('appearance', function() {
     var mixin = assert.includedMixin("appearance(button)");

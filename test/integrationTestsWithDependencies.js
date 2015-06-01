@@ -1,11 +1,11 @@
 'use strict';
 
-var sassafras = require('../src/sassafras');
-var assert = sassafras.assert;
+var sassaby = require('../src/sassaby');
+var assert = sassaby.assert;
 
 describe('sample-with-dependencies.scss', function() {
-  sassafras.setFile(__dirname + '/fixtures/sample-with-dependencies.scss');
-  sassafras.setDependencies([
+  sassaby.setFile(__dirname + '/fixtures/sample-with-dependencies.scss');
+  sassaby.setDependencies([
     __dirname + '/fixtures/sample.scss'
   ]);
 

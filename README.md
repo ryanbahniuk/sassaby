@@ -1,26 +1,26 @@
-# Sassafras
+# Sassaby
 A Unit Testing Library for SASS
 
-Sassafras is a unit testing library for SASS mixins and functions. It is written in Node to provide a consistent interface with other front-end tests in your system and for easy integration into a build system. It provides an interface for testing these SASS features and can be used with any Node testing library (Mocha, Jasmine, etc.).
+Sassaby is a unit testing library for SASS mixins and functions. It is written in Node to provide a consistent interface with other front-end tests in your system and for easy integration into a build system. It provides an interface for testing these SASS features and can be used with any Node testing library (Mocha, Jasmine, etc.).
 
 ## Installation
 
 Install via npm:
 
  ```sh
-npm install --save-dev sassafras
+npm install --save-dev sassaby
  ```
 
 ## Setup
 
-Setting up Sassafras is simple with easy integration into your existing Javascript testing library. After installation, simply require it at the top of the file, extract the assert object, and set the .sass or .scss file that you want to include. Here is a sample file using Mocha.
+Setting up Sassaby is simple with easy integration into your existing Javascript testing library. After installation, simply require it at the top of the file, extract the assert object, and set the .sass or .scss file that you want to include. Here is a sample file using Mocha.
 
 ```js
-var sassafras = require('sassafras');
-var assert = sassafras.assert;
+var sassaby = require('sassaby');
+var assert = sassaby.assert;
 
 describe('sample.scss', function() {
-  sassafras.setFile(__dirname + '/sample.scss');
+  sassaby.setFile(__dirname + '/sample.scss');
 
   describe('#appearance', function() {
     it('should have a webkit prefixed declaration', function() {
@@ -30,22 +30,22 @@ describe('sample.scss', function() {
 });
 ```
 
-Note that `setFile` takes the absolute path to the SASS file. We recommend using Node's `__dirname` (which gives you the directory of the test file) plus the remaining path here. Also, note that this file must **ONLY** include SASS function and mixin declarations. Any code that compiles to CSS in this file will cause Sassafras' parsers to give inconsistent results.
+Note that `setFile` takes the absolute path to the SASS file. We recommend using Node's `__dirname` (which gives you the directory of the test file) plus the remaining path here. Also, note that this file must **ONLY** include SASS function and mixin declarations. Any code that compiles to CSS in this file will cause Sassaby's parsers to give inconsistent results.
 
 ## Dependencies
 
 We recommend testing SASS files in isolation. However, depending on the setup of your SASS import tree some functions and mixins may rely on externally declared variables, mixins, or functions. In this case, you can use the `setVariables` and `setDependencies` functions. Here is the sample file with these functions called:
 
 ```js
-var sassafras = require('sassafras');
-var assert = sassafras.assert;
+var sassaby = require('sassaby');
+var assert = sassaby.assert;
 
 describe('sample.scss', function() {
-  sassafras.setFile(__dirname + '/sample.scss');
-  sassafras.setVariables({
+  sassaby.setFile(__dirname + '/sample.scss');
+  sassaby.setVariables({
     'grid-columns': 12
   });
-  sassafras.setDependencies([
+  sassaby.setDependencies([
     __dirname + '/need-this-to-compile.scss'
   ]);
 
@@ -62,7 +62,7 @@ describe('sample.scss', function() {
 
 ## Features
 
-Sassafras breaks down testable features into three categories:
+Sassaby breaks down testable features into three categories:
 
 * Functions
 * Standalone Mixins
@@ -243,11 +243,11 @@ assert.includedMixin('appearance(button)').doesNotCall('prefixer(-webkit-button)
 ## Contributing
 
 Pull requests are welcome. If you add functionality, then please add unit tests
-to cover it. Continuous Integration is handled by [Travis](https://travis-ci.org/ryanbahniuk/sassafras "Travis").
+to cover it. Continuous Integration is handled by [Travis](https://travis-ci.org/ryanbahniuk/sassaby "Travis").
 
 ## License
 
 MIT © Ryan Bahniuk
 
-[ci]:      https://travis-ci.org/ryanbahniuk/sassafras
-[npm]:     https://www.npmjs.com/package/sassafras
+[ci]:      https://travis-ci.org/ryanbahniuk/sassaby
+[npm]:     https://www.npmjs.com/package/sassaby

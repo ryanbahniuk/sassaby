@@ -1,11 +1,11 @@
 'use strict';
 
-var sassafras = require('../src/sassafras');
-var assert = sassafras.assert;
+var sassaby = require('../src/sassaby');
+var assert = sassaby.assert;
 
 describe('sample-with-variables.scss', function() {
-  sassafras.setFile(__dirname + '/fixtures/sample-with-variables.scss');
-  sassafras.setVariables({
+  sassaby.setFile(__dirname + '/fixtures/sample-with-variables.scss');
+  sassaby.setVariables({
     'grid-columns': 12
   });
 

@@ -7,28 +7,28 @@ var IncludedMixin = require('../src/types/includedMixin');
 var StandaloneMixin = require('../src/types/standaloneMixin');
 var Func = require('../src/types/func');
 
-var sassafras;
+var sassaby;
 var readFileSync;
 
 var filename = 'file.scss';
 var fileContents = 'File Contents!!!!!!';
 
-describe('Sassafras', function() {
+describe('Sassaby', function() {
   beforeEach(function() {
     readFileSync = sinon.spy(function(filename) { return fileContents; });
-    sassafras = proxyquire('../src/sassafras', {
+    sassaby = proxyquire('../src/sassaby', {
       'fs': { 'readFileSync': readFileSync }
     });
   });
 
   describe('#setFile', function() {
     it('should set this.filename and this.file', function() {
-      assert.equal(sassafras.path, null);
-      assert.equal(sassafras.file, null);
-      sassafras.setFile(filename);
+      assert.equal(sassaby.path, null);
+      assert.equal(sassaby.file, null);
+      sassaby.setFile(filename);
       readFileSync.calledWith(filename);
-      assert.equal(sassafras.path, filename);
-      assert.equal(sassafras.file, fileContents);
+      assert.equal(sassaby.path, filename);
+      assert.equal(sassaby.file, fileContents);
     });
   });
 
@@ -37,9 +37,9 @@ describe('Sassafras', function() {
       var variables = {
         'color': 'blue'
       };
-      assert.equal(sassafras.variables, '');
-      sassafras.setVariables(variables);
-      assert.equal(sassafras.variables, '$color:blue;');
+      assert.equal(sassaby.variables, '');
+      sassaby.setVariables(variables);
+      assert.equal(sassaby.variables, '$color:blue;');
     });
 
     it('should set this.variables to a string of SASS variable declarations if more than one is passed', function() {
@@ -47,9 +47,9 @@ describe('Sassafras', function() {
         'color': 'blue',
         'font-size': '16px'
       };
-      assert.equal(sassafras.variables, '');
-      sassafras.setVariables(variables);
-      assert.equal(sassafras.variables, '$color:blue;$font-size:16px;');
+      assert.equal(sassaby.variables, '');
+      sassaby.setVariables(variables);
+      assert.equal(sassaby.variables, '$color:blue;$font-size:16px;');
     });
   });
 
@@ -58,9 +58,9 @@ describe('Sassafras', function() {
       var dependencies = [
         'firstImport'
       ];
-      assert.equal(sassafras.dependencies, '');
-      sassafras.setDependencies(dependencies);
-      assert.equal(sassafras.dependencies, "@import 'firstImport';");
+      assert.equal(sassaby.dependencies, '');
+      sassaby.setDependencies(dependencies);
+      assert.equal(sassaby.dependencies, "@import 'firstImport';");
     });
 
     it('should set this.dependencies to a string of SASS imports if more than one is passed', function() {
@@ -68,9 +68,9 @@ describe('Sassafras', function() {
         'firstImport',
         'secondImport'
       ];
-      assert.equal(sassafras.dependencies, '');
-      sassafras.setDependencies(dependencies);
-      assert.equal(sassafras.dependencies, "@import 'firstImport';@import 'secondImport';");
+      assert.equal(sassaby.dependencies, '');
+      sassaby.setDependencies(dependencies);
+      assert.equal(sassaby.dependencies, "@import 'firstImport';@import 'secondImport';");
     });
   });
 
@@ -78,21 +78,21 @@ describe('Sassafras', function() {
     describe('includedMixin', function() {
       it('return a new instance of IncludedMixin', function() {
         var call = "@include test(blue);";
-        assert(sassafras.assert.includedMixin(call) instanceof IncludedMixin);
+        assert(sassaby.assert.includedMixin(call) instanceof IncludedMixin);
       });
     });
 
     describe('standaloneMixin', function() {
       it('return a new instance of StandaloneMixin', function() {
         var call = "@include test(blue);";
-        assert(sassafras.assert.standaloneMixin(call) instanceof StandaloneMixin);
+        assert(sassaby.assert.standaloneMixin(call) instanceof StandaloneMixin);
       });
     });
 
     describe('func', function() {
       it('return a new instance of Func', function() {
         var call = "test(blue);";
-        assert(sassafras.assert.func(call) instanceof Func);
+        assert(sassaby.assert.func(call) instanceof Func);
       });
     });
   });
