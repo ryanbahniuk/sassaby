@@ -57,8 +57,8 @@ describe('sample.scss', function() {
 });
 ```
 
-`setDependencies` takes an array of file paths to be imported into the compiled SASS. We recommend using the same `__dirname` approach that is used in `setFile`.
 `setVariables` takes an object with string keys. It will declare each key-value pair as a SASS variable before compiling the given function/mixin.
+`setDependencies` takes an array of file paths to be imported into the compiled SASS. We recommend using the same `__dirname` approach that is used in `setFile`.
 
 ## Features
 
