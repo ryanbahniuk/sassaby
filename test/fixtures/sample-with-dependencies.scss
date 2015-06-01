@@ -1,0 +1,5 @@
+@mixin make-button($label) {
+  .btn-#{$label} {
+    @include appearance(button);
+  }
+}

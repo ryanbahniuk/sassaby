@@ -1,0 +1,27 @@
+'use strict';
+
+var sassafras = require('../src/sassafras');
+var assert = sassafras.assert;
+
+describe('sample-with-variables.scss', function() {
+  sassafras.setFile(__dirname + '/fixtures/sample-with-variables.scss');
+  sassafras.setVariables({
+    'grid-columns': 12
+  });
+
+  describe('make-offset', function() {
+    var mixin = assert.standaloneMixin("make-offset(md, 6)");
+
+    it('should return 1 declarations', function() {
+      mixin.hasNumDeclarations(1);
+    });
+
+    it('should create the correct class', function() {
+      mixin.createsSelector(".col-md-offset-6");
+    });
+
+    it('should have a webkit prefixed declaration', function() {
+      mixin.declares("margin-left", "50%");
+    });
+  });
+});

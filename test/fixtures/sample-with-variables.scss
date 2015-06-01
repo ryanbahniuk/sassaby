@@ -1,0 +1,5 @@
+@mixin make-offset($label, $width) {
+  .col-#{$label}-offset-#{$width} {
+    margin-left: percentage($width / $grid-columns);
+  }
+}

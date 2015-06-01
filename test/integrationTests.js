@@ -6,7 +6,7 @@ var assert = sassafras.assert;
 describe('sample.scss', function() {
   sassafras.setFile(__dirname + '/fixtures/sample.scss');
 
-  describe('#appearance', function() {
+  describe('appearance', function() {
     var mixin = assert.includedMixin("appearance(button)");
 
     it('should return 3 declarations', function() {
@@ -31,7 +31,7 @@ describe('sample.scss', function() {
     });
   });
 
-  describe('#make-column', function() {
+  describe('make-column', function() {
     var mixin = assert.standaloneMixin("make-column(md, 6)");
 
     it('should define the correct class', function() {
@@ -64,7 +64,7 @@ describe('sample.scss', function() {
     });
   });
 
-  describe('#remy', function() {
+  describe('remy', function() {
     it('convert to px units to rem units', function() {
       assert.func("remy(32px, 16px)").equals("2rem");
     });
@@ -74,7 +74,7 @@ describe('sample.scss', function() {
     });
   });
 
-  describe('#boolean-switch', function() {
+  describe('boolean-switch', function() {
     it('should return true if passed true', function() {
       assert.func("boolean-switch(true)").isTrue();
     });
@@ -84,7 +84,7 @@ describe('sample.scss', function() {
     });
   });
 
-  describe('#return-self', function() {
+  describe('return-self', function() {
     it('testing truthy', function() {
       assert.func("return-self(true)").isTruthy();
       assert.func("return-self(1)").isTruthy();
@@ -98,7 +98,7 @@ describe('sample.scss', function() {
     });
   });
 
-  describe('#make-general-alignments', function() {
+  describe('make-general-alignments', function() {
     var mixin = assert.standaloneMixin("make-general-alignments(md)");
 
     it('should call the correct mixins', function() {
@@ -112,7 +112,7 @@ describe('sample.scss', function() {
     });
   });
 
-  describe('#animation', function() {
+  describe('animation', function() {
     var mixin = assert.includedMixin("animation(test, 500)");
 
     it('should have the correct output', function() {
