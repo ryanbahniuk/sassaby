@@ -30,7 +30,7 @@ describe('sample.scss', function() {
 });
 ```
 
-Note that `sassafras.setFile` takes the absolute path to the SASS file. We recommend using Node's `__direname` plus the remaining path here. Also, note that this file must ONLY include SASS function and mixin declarations. Any code that compiles to CSS in this file will cause Sassafras' parsers to give inconsistent results.
+Note that `sassafras.setFile` takes the absolute path to the SASS file. We recommend using Node's `__direname` plus the remaining path here. Also, note that this file must *ONLY* include SASS function and mixin declarations. Any code that compiles to CSS in this file will cause Sassafras' parsers to give inconsistent results.
 
 ## Features
 
@@ -215,7 +215,7 @@ assert.includedMixin('appearance(button)').doesNotCall('prefixer(-webkit-button)
 ## Contributing
 
 Pull requests are welcome. If you add functionality, then please add unit tests
-to cover it.
+to cover it. Continuous Integration is handled by [Travis](https://travis-ci.org/ryanbahniuk/sassafras "Travis")
 
 ## License
 
