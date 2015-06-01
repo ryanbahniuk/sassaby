@@ -1,7 +1,7 @@
 # Sassaby
 A Unit Testing Library for SASS
 
-Sassaby is a unit testing library for SASS mixins and functions. It is written in Node to provide a consistent interface with other front-end tests in your system and for easy integration into a build system. It provides an interface for testing these SASS features and can be used with any Node testing library (Mocha, Jasmine, etc.).
+Sassaby is a unit testing library for SASS mixins and functions. It is written in Node to provide a consistent interface with other front-end tests in your system and for easy integration into a build system. It provides an interface for testing these SASS features and can be used with any Node testing library ([Mocha](https://www.npmjs.com/package/mocha "Mocha"), [Jasmine](https://www.npmjs.com/package/jasmine "Jasmine"), etc.).
 
 ## Installation
 
@@ -13,7 +13,7 @@ npm install --save-dev sassaby
 
 ## Setup
 
-Setting up Sassaby is simple with easy integration into your existing Javascript testing library. After installation, simply require it at the top of the file, extract the assert object, and set the .sass or .scss file that you want to include. Here is a sample file using Mocha.
+Setting up Sassaby is simple with easy integration into your existing Javascript testing library. After installation, simply require it at the top of the file, extract the assert object, and set the .sass or .scss file that you want to include. Here is a sample file using [Mocha](https://www.npmjs.com/package/mocha "Mocha").
 
 ```js
 var sassaby = require('sassaby');
