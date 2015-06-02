@@ -1,7 +1,7 @@
 # Sassaby
 A Unit Testing Library for SASS
 
-![Sassaby Logo](/logo.png?raw=true "Sassaby Logo")
+![Sassaby Logo](/logo.png?raw=true =250x "Sassaby Logo")
 
 Sassaby is a unit testing library for SASS mixins and functions. It is written in Node to provide a consistent interface with other front-end tests in your system and for easy integration into a build system. It provides an interface for testing these SASS features and can be used with any Node testing library ([Mocha](https://www.npmjs.com/package/mocha "Mocha"), [Jasmine](https://www.npmjs.com/package/jasmine "Jasmine"), etc.).
 
