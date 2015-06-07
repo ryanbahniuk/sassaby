@@ -2,17 +2,17 @@
 
 var MixinResult = require('../mixinResult');
 
-function IncludedMixin(variables, dependencies, file, call) {
-  this.type = 'included';
+function Mixin(type, variables, dependencies, file, call) {
+  this.type = type;
   this.file = variables + dependencies + file;
   this.call = call;
 }
 
-IncludedMixin.prototype = {
+Mixin.prototype = {
   calledWith: function() {
     var args = Array.prototype.slice.call(arguments);
     return new MixinResult(this.type, this.file, this.call, args);
   }
 };
 
-module.exports = IncludedMixin;
+module.exports = Mixin;
