@@ -32,14 +32,14 @@ function unwrapOutput(type, css) {
   }
 }
 
-function Result(type, file, call, args) {
+function MixinResult(type, file, call, args) {
   this.type = type;
   this.file = file;
   this.css = utilities.createCss(file, wrapMixinWithArgs(type, call, args));
   this.ast = utilities.createAst(file, wrapMixinWithArgs(type, call, args));
 }
 
-Result.prototype = {
+MixinResult.prototype = {
   createsSelector: function(selector) {
     if (this.type === 'included') {
       throw "createsSelector is not available for included mixins.";
@@ -102,11 +102,11 @@ Result.prototype = {
 };
 
 if (process.env.NODE_ENV === 'test') {
-  Result.concatArgs = concatArgs;
-  Result.wrapMixinWithArgs = wrapMixinWithArgs;
-  Result.wrapMixin = wrapMixin;
-  Result.wrapOutput = wrapOutput;
-  Result.unwrapOutput = unwrapOutput;
+  MixinResult.concatArgs = concatArgs;
+  MixinResult.wrapMixinWithArgs = wrapMixinWithArgs;
+  MixinResult.wrapMixin = wrapMixin;
+  MixinResult.wrapOutput = wrapOutput;
+  MixinResult.unwrapOutput = unwrapOutput;
 }
 
-module.exports = Result;
+module.exports = MixinResult;

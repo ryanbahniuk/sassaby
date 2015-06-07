@@ -1,6 +1,6 @@
 'use strict';
 
-var Result = require('../result');
+var MixinResult = require('../mixinResult');
 
 function StandaloneMixin(variables, dependencies, file, call) {
   this.type = 'standalone';
@@ -11,7 +11,7 @@ function StandaloneMixin(variables, dependencies, file, call) {
 StandaloneMixin.prototype = {
   calledWith: function() {
     var args = Array.prototype.slice.call(arguments);
-    return new Result(this.type, this.file, this.call, args);
+    return new MixinResult(this.type, this.file, this.call, args);
   }
 };
 
