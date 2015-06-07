@@ -1,9 +1,7 @@
 'use strict';
 
 var assert = require('assert');
-var cssmin = require('cssmin');
 var utilities = require('./utilities');
-var parsers = require('./parsers');
 
 function wrapFunctionWithArgs(call, args) {
   var argString = utilities.concatArgs(args);
@@ -63,8 +61,8 @@ FuncResult.prototype = {
 
 if (process.env.NODE_ENV === 'test') {
   FuncResult.wrapFunctionWithArgs = wrapFunctionWithArgs;
-  FuncResult.wrapFunction = wrapFunction;
   FuncResult.wrapFunctionWithTruthy = wrapFunctionWithTruthy;
+  FuncResult.wrapFunction = wrapFunction;
   FuncResult.sassTruthy = sassTruthy;
 }
 
