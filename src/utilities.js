@@ -25,6 +25,14 @@ var Utilities = {
 
   scrubQuotes: function(string) {
     return string.replace(/["']/g, "");
+  },
+
+  concatArgs: function(args) {
+    var argString = '';
+    args.forEach(function(arg) {
+      argString += arg + ', ';
+    });
+    return argString.substring(0, argString.length - 2);
   }
 };
 
