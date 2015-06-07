@@ -102,7 +102,6 @@ MixinResult.prototype = {
 };
 
 if (process.env.NODE_ENV === 'test') {
-  MixinResult.concatArgs = concatArgs;
   MixinResult.wrapMixinWithArgs = wrapMixinWithArgs;
   MixinResult.wrapMixin = wrapMixin;
   MixinResult.wrapOutput = wrapOutput;
