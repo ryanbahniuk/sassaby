@@ -39,7 +39,7 @@ describe('Mixin', function() {
   describe('calledWith', function() {
     it('should return a new mixinResult', function() {
       var result = mixin.calledWith(1, 2, 'hello', true);
-      assert(result instanceof MockMixinResult)
+      assert(result instanceof MockMixinResult);
     });
 
     it('should have the correct properties', function() {
