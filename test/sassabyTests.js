@@ -3,8 +3,7 @@
 var assert = require('assert');
 var sinon = require('sinon');
 var proxyquire =  require('proxyquire');
-var IncludedMixin = require('../src/types/includedMixin');
-var StandaloneMixin = require('../src/types/standaloneMixin');
+var Mixin = require('../src/types/mixin');
 var Func = require('../src/types/func');
 
 var sassaby;
@@ -76,16 +75,16 @@ describe('Sassaby', function() {
 
   describe('assert', function() {
     describe('includedMixin', function() {
-      it('return a new instance of IncludedMixin', function() {
+      it('return a new instance of Mixin', function() {
         var call = "@include test(blue);";
-        assert(sassaby.assert.includedMixin(call) instanceof IncludedMixin);
+        assert(sassaby.assert.includedMixin(call) instanceof Mixin);
       });
     });
 
     describe('standaloneMixin', function() {
-      it('return a new instance of StandaloneMixin', function() {
+      it('return a new instance of Mixin', function() {
         var call = "@include test(blue);";
-        assert(sassaby.assert.standaloneMixin(call) instanceof StandaloneMixin);
+        assert(sassaby.assert.standaloneMixin(call) instanceof Mixin);
       });
     });
 

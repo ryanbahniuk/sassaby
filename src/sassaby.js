@@ -1,8 +1,7 @@
 'use strict';
 
 var fs = require('fs');
-var IncludedMixin = require('./types/includedMixin');
-var StandaloneMixin = require('./types/standaloneMixin');
+var Mixin = require('./types/mixin');
 var Func = require('./types/func');
 
 var Sassaby = {
@@ -34,11 +33,11 @@ var Sassaby = {
 
   assert: {
     includedMixin: function(call) {
-      return new IncludedMixin(Sassaby.variables, Sassaby.dependencies, Sassaby.file, call);
+      return new Mixin('included', Sassaby.variables, Sassaby.dependencies, Sassaby.file, call);
     },
 
     standaloneMixin: function(call) {
-      return new StandaloneMixin(Sassaby.variables, Sassaby.dependencies, Sassaby.file, call);
+      return new Mixin('standalone', Sassaby.variables, Sassaby.dependencies, Sassaby.file, call);
     },
 
     func: function(call) {
