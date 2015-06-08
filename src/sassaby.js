@@ -4,46 +4,55 @@ var fs = require('fs');
 var Mixin = require('./types/mixin');
 var Func = require('./types/func');
 
-var Sassaby = {
-  path: null,
-  file: null,
-  variables: '',
-  dependencies: '',
+function setVariables(varz) {
+  var sassVariables = '';
+  for (var variableName in varz) {
+    sassVariables = sassVariables + '$' + variableName + ':' + varz[variableName] + ';';
+  }
+  return sassVariables;
+}
 
-  setFile: function(path) {
-    this.path = path;
-    this.file = fs.readFileSync(this.path).toString();
+function setDependencies(dependencies) {
+  var sassImports = '';
+  dependencies.forEach(function(fileName) {
+    sassImports = sassImports + "@import '" + fileName + "';";
+  });
+  return sassImports;
+}
+
+function Sassaby(path, options) {
+  options = options || {};
+  this.path = path;
+  this.file = fs.readFileSync(path).toString();
+  this.variables = '';
+  this.dependencies = '';
+
+  if (options.variables) {
+    this.variables = setVariables(options.variables);
+  }
+
+  if (options.dependencies) {
+    this.dependencies = setDependencies(options.dependencies);
+  }
+}
+
+Sassaby.prototype = {
+  includedMixin: function(call) {
+    return new Mixin('included', this.variables, this.dependencies, this.file, call);
   },
 
-  setVariables: function(varz) {
-    var sassVariables = '';
-    for (var variableName in varz) {
-      sassVariables = sassVariables + '$' + variableName + ':' + varz[variableName] + ';';
-    }
-    this.variables = sassVariables;
+  standaloneMixin: function(call) {
+    return new Mixin('standalone', this.variables, this.dependencies, this.file, call);
   },
 
-  setDependencies: function(dependencies) {
-    var sassImports = '';
-    dependencies.forEach(function(fileName) {
-      sassImports = sassImports + "@import '" + fileName + "';";
-    });
-    this.dependencies = sassImports;
-  },
-
-  assert: {
-    includedMixin: function(call) {
-      return new Mixin('included', Sassaby.variables, Sassaby.dependencies, Sassaby.file, call);
-    },
-
-    standaloneMixin: function(call) {
-      return new Mixin('standalone', Sassaby.variables, Sassaby.dependencies, Sassaby.file, call);
-    },
-
-    func: function(call) {
-      return new Func(Sassaby.variables, Sassaby.dependencies, Sassaby.file, call);
-    }
+  func: function(call) {
+    return new Func(this.variables, this.dependencies, this.file, call);
   }
 };
+
+if (process.env.NODE_ENV === 'test') {
+  Sassaby.setVariables = setVariables;
+  Sassaby.setDependencies = setDependencies;
+}
 
 module.exports = Sassaby;
