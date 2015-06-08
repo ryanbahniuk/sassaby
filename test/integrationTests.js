@@ -1,11 +1,12 @@
 'use strict';
 
+var path = require('path');
 var sassaby = require('../src/sassaby');
 var assert = sassaby.assert;
 
-describe('sample.scss', function() {
-  sassaby.setFile(__dirname + '/fixtures/sample.scss');
+sassaby.setFile(path.resolve(__dirname, 'fixtures/sample.scss'));
 
+describe('sample.scss', function() {
   describe('appearance', function() {
     var mixin = assert.includedMixin('appearance');
 
