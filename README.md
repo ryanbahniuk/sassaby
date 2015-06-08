@@ -3,7 +3,7 @@ A Unit Testing Library for SASS
 
 <img src="/logo.png?raw=true" alt="Sassaby Logo" width="250">
 
-Sassaby is a unit testing library for SASS mixins and functions. It is written in Node to provide a consistent interface with other front-end tests in your system and for easy integration into a build system. It provides an interface for testing these SASS features and can be used with any Node testing library ([Mocha](https://www.npmjs.com/package/mocha "Mocha"), [Jasmine](https://www.npmjs.com/package/jasmine "Jasmine"), etc.).
+Sassaby is a unit testing library for SASS mixins and functions. It is written in Node to provide a consistent interface with other front-end tests in your system and for easy integration into a build system. Its interface can be used with any Node testing library ([Mocha](https://www.npmjs.com/package/mocha "Mocha"), [Jasmine](https://www.npmjs.com/package/jasmine "Jasmine"), etc.).
 
 ## Installation
 
@@ -101,9 +101,26 @@ Included Mixins are mixins that do not define new rules, just declarations that 
 }
 ```
 
+Each of these categories can be defined by a respective function defined on an instance of `Sassaby`. For example, you can set up each of them with this syntax:
+
+```js
+var sassaby = new Sassaby(filePath);
+var testFunction = sassaby.func('rems');
+var testStandaloneMixin = sassaby.standaloneMixin('align-right');
+var testIncludedMixin = sassaby.includedMixin('appearance');
+```
+
+These functions will read the given file (with variables and dependencies if given) and return an object that will take a `calledWith` function with arguments. SASS compilation will occur at this step. For example:
+
+```js
+testFunction.calledWith(32, 16)
+testStandaloneMixin.calledWith(32, 16)
+testIncludedMixin.calledWith(32, 16)
+```
+
 ## Rules
 
-Each of these types has their own set of functions, or rules, that assert certain conditions on the result of the function or mixin. The arguments of these rules are normalized to match the output from the SASS compilation, so it can be formatted however as long as it is compilable SASS.
+Each of these types has their own set of functions, or rules, that assert certain conditions on the result of the function or mixin. The arguments of these rules are normalized to match the output from the SASS compilation, so it can be formatted however you wish as long as it is compilable SASS.
 
 ### Function Rules
 
