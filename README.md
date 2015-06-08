@@ -18,10 +18,11 @@ npm install --save-dev sassaby
 Setting up Sassaby is simple with easy integration into your existing Javascript testing library. After installation, simply require it at the top of the file, extract the assert object, and set the .sass or .scss file that you want to include. Here is a sample file using [Mocha](https://www.npmjs.com/package/mocha "Mocha").
 
 ```js
+var path = require('path');
 var sassaby = require('sassaby');
 var assert = sassaby.assert;
 
-sassaby.setFile(__dirname + '/sample.scss');
+sassaby.setFile(path.resolve(__dirname, 'sample.scss'));
 
 describe('sample.scss', function() {
   describe('#appearance', function() {
@@ -32,22 +33,23 @@ describe('sample.scss', function() {
 });
 ```
 
-Note that `setFile` takes the absolute path to the SASS file. We recommend using Node's `__dirname` (which gives you the directory of the test file) plus the remaining path here. Also, note that this file must **ONLY** include SASS function and mixin declarations. Any code that compiles to CSS in this file will cause Sassaby's parsers to give inconsistent results.
+Note that `setFile` takes the absolute path to the SASS file. We recommend using Node's `path` and `__dirname` (which gives you the directory of the test file) plus the remaining path here. Also, note that this file must **ONLY** include SASS function and mixin declarations. Any code that compiles to CSS in this file will cause Sassaby's parsers to give inconsistent results.
 
 ## Dependencies
 
 We recommend testing SASS files in isolation. However, depending on the setup of your SASS import tree some functions and mixins may rely on externally declared variables, mixins, or functions. In this case, you can use the `setVariables` and `setDependencies` functions. Here is the sample file with these functions called:
 
 ```js
+var path = require('path');
 var sassaby = require('sassaby');
 var assert = sassaby.assert;
 
-sassaby.setFile(__dirname + '/sample.scss');
+sassaby.setFile(path.resolve(__dirname, 'sample.scss'));
 sassaby.setVariables({
   'grid-columns': 12
 });
 sassaby.setDependencies([
-  __dirname + '/need-this-to-compile.scss'
+  path.resolve(__dirname, 'need-this-to-compile.scss')
 ]);
 
 describe('sample.scss', function() {
@@ -60,7 +62,7 @@ describe('sample.scss', function() {
 ```
 
 `setVariables` takes an object with string keys. It will declare each key-value pair as a SASS variable before compiling the given function/mixin.
-`setDependencies` takes an array of file paths to be imported into the compiled SASS. We recommend using the same `__dirname` approach that is used in `setFile`.
+`setDependencies` takes an array of file paths to be imported into the compiled SASS. We recommend using the same approach (with `path` and `__dirname`) that is used in `setFile`.
 
 ## Features
 
