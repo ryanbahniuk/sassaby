@@ -65,7 +65,7 @@ describe('FuncResult', function() {
 
   describe('sassTruthy', function() {
     it('returns the sass truthy function as a string', function() {
-      assert.equal(FuncResult.sassTruthy(), "@function truthy($value) { @if $value { @return true } @else { @return false } }");
+      assert.equal(FuncResult.sassTruthy(), '@function truthy($value) { @if $value { @return true } @else { @return false } }');
     });
   });
 
@@ -135,11 +135,11 @@ describe('FuncResult', function() {
   });
 
   describe('isFalsy', function() {
-    it('should not throw an error if the output is truthy', function() {
+    it('should not throw an error if the output is falsy', function() {
       funcFalseResult.isFalsy();
     });
 
-    it('throws an error if the output is not truthy', function() {
+    it('throws an error if the output is not falsy', function() {
       assert.throws(function() {
         funcTrueResult.isFalsy();
       });

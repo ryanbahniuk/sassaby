@@ -76,21 +76,21 @@ describe('Sassaby', function() {
   describe('assert', function() {
     describe('includedMixin', function() {
       it('return a new instance of Mixin', function() {
-        var call = "@include test(blue);";
+        var call = '@include test(blue);';
         assert(sassaby.assert.includedMixin(call) instanceof Mixin);
       });
     });
 
     describe('standaloneMixin', function() {
       it('return a new instance of Mixin', function() {
-        var call = "@include test(blue);";
+        var call = '@include test(blue);';
         assert(sassaby.assert.standaloneMixin(call) instanceof Mixin);
       });
     });
 
     describe('func', function() {
       it('return a new instance of Func', function() {
-        var call = "test(blue);";
+        var call = 'test(blue);';
         assert(sassaby.assert.func(call) instanceof Func);
       });
     });

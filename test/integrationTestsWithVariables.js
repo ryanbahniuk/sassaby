@@ -10,18 +10,18 @@ describe('sample-with-variables.scss', function() {
   });
 
   describe('make-offset', function() {
-    var mixin = assert.standaloneMixin("make-offset");
+    var mixin = assert.standaloneMixin('make-offset');
 
     it('should return 1 declarations', function() {
       mixin.calledWith('md', 6).hasNumDeclarations(1);
     });
 
     it('should create the correct class', function() {
-      mixin.calledWith('md', 6).createsSelector(".col-md-offset-6");
+      mixin.calledWith('md', 6).createsSelector('.col-md-offset-6');
     });
 
     it('should have a webkit prefixed declaration', function() {
-      mixin.calledWith('md', 6).declares("margin-left", "50%");
+      mixin.calledWith('md', 6).declares('margin-left', '50%');
     });
   });
 });

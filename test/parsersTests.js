@@ -28,17 +28,17 @@ describe('Parsers', function() {
   describe('findDeclaration', function() {
     it('should return the declaration object if the property is found', function() {
       var declaration = {
-        "type": "declaration",
-        "property": "background-color",
-        "value": "blue",
-        "position": {
-          "start": {
-            "line": 7,
-            "column": 3
+        'type': 'declaration',
+        'property': 'background-color',
+        'value': 'blue',
+        'position': {
+          'start': {
+            'line': 7,
+            'column': 3
           },
-          "end": {
-            "line": 7,
-            "column": 25
+          'end': {
+            'line': 7,
+            'column': 25
           }
         }
       };
@@ -47,17 +47,17 @@ describe('Parsers', function() {
 
     it('should return the first declaration object if two of the property are found', function() {
       var declaration = {
-        "type": "declaration",
-        "property": "color",
-        "value": "red",
-        "position": {
-          "start": {
-            "line": 2,
-            "column": 3
+        'type': 'declaration',
+        'property': 'color',
+        'value': 'red',
+        'position': {
+          'start': {
+            'line': 2,
+            'column': 3
           },
-          "end": {
-            "line": 2,
-            "column": 13
+          'end': {
+            'line': 2,
+            'column': 13
           }
         }
       };

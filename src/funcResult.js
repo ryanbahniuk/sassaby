@@ -14,11 +14,11 @@ function wrapFunctionWithTruthy(call, args) {
 }
 
 function wrapFunction(call) {
-  return ".test{content:" + call + "}";
+  return '.test{content:' + call + '}';
 }
 
 function sassTruthy() {
-  return "@function truthy($value) { @if $value { @return true } @else { @return false } }";
+  return '@function truthy($value) { @if $value { @return true } @else { @return false } }';
 }
 
 
@@ -29,32 +29,32 @@ function FuncResult(file, call, args) {
 
 FuncResult.prototype = {
   equals: function(result) {
-    var message = "Function: " + this.call + " does not equal " + result + ".";
+    var message = 'Function: ' + this.call + ' does not equal ' + result + '.';
     assert.equal(this.css, wrapFunction(result), message);
   },
 
   doesNotEqual: function(result) {
-    var message = "Function: " + this.call + " equals " + result + ".";
+    var message = 'Function: ' + this.call + ' equals ' + result + '.';
     assert.notEqual(this.css, wrapFunction(result), message);
   },
 
   isTrue: function() {
-    var message = "Function does not equal true.";
+    var message = 'Function does not equal true.';
     assert.equal(this.css, wrapFunction(true), message);
   },
 
   isFalse: function() {
-    var message = "Function does not equal false.";
+    var message = 'Function does not equal false.';
     assert.equal(this.css, wrapFunction(false), message);
   },
 
   isTruthy: function() {
-    var message = "Function is not truthy.";
+    var message = 'Function is not truthy.';
     assert.equal(this.truthyCss, wrapFunction(true), message);
   },
 
   isFalsy: function() {
-    var message = "Function is not falsy.";
+    var message = 'Function is not falsy.';
     assert.equal(this.truthyCss, wrapFunction(false), message);
   }
 };

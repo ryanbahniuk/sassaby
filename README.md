@@ -26,7 +26,7 @@ sassaby.setFile(__dirname + '/sample.scss');
 describe('sample.scss', function() {
   describe('#appearance', function() {
     it('should have a webkit prefixed declaration', function() {
-      assert.includedMixin("appearance").calledWith("button").declares("-webkit-appearance", "button");
+      assert.includedMixin('appearance').calledWith('button').declares('-webkit-appearance', 'button');
     });
   });
 });
@@ -53,7 +53,7 @@ sassaby.setDependencies([
 describe('sample.scss', function() {
   describe('#appearance', function() {
     it('should have a webkit prefixed declaration', function() {
-      assert.includedMixin("appearance").calledWith("button").declares("-webkit-appearance", "button");
+      assert.includedMixin('appearance').calledWith('button').declares('-webkit-appearance', 'button');
     });
   });
 });

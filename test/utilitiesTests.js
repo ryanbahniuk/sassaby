@@ -71,7 +71,7 @@ describe('Utilities', function() {
 
   describe('concatArgs', function() {
     it('should return the args in the given array as a comma separated string', function() {
-      var args = [1, 2, 'hello', true]
+      var args = [1, 2, 'hello', true];
       assert.equal(utilities.concatArgs(args), '1, 2, hello, true');
     });
   });

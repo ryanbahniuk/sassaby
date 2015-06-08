@@ -20,7 +20,7 @@ var call = '@include test(red)';
 var selector = '.test';
 var property = 'color';
 var value = 'red';
-var result = property + ":" + value;
+var result = property + ':' + value;
 var wrappedResult = selector + '{' + result + '}';
 
 var args = [1, 2, 'hello', true];
