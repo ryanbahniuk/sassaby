@@ -1,17 +1,20 @@
 'use strict';
 
 var path = require('path');
-var sassaby = require('../src/sassaby');
-var assert = sassaby.assert;
-
-sassaby.setFile(path.resolve(__dirname, 'fixtures/sample-with-variables.scss'));
-sassaby.setVariables({
-  'grid-columns': 12
-});
+var Sassaby = require('../src/sassaby');
 
 describe('sample-with-variables.scss', function() {
+  var sassaby = new Sassaby(path.resolve(__dirname, 'fixtures/sample-with-variables.scss'), {
+    variables: {
+      'grid-columns': 12
+    }
+  });
   describe('make-offset', function() {
-    var mixin = assert.standaloneMixin('make-offset');
+    var mixin;
+
+    beforeEach(function() {
+      mixin = sassaby.standaloneMixin('make-offset');
+    });
 
     it('should return 1 declarations', function() {
       mixin.calledWith('md', 6).hasNumDeclarations(1);

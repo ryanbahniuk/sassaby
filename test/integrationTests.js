@@ -1,14 +1,16 @@
 'use strict';
 
 var path = require('path');
-var sassaby = require('../src/sassaby');
-var assert = sassaby.assert;
-
-sassaby.setFile(path.resolve(__dirname, 'fixtures/sample.scss'));
+var Sassaby = require('../src/sassaby');
 
 describe('sample.scss', function() {
+  var sassaby = new Sassaby(path.resolve(__dirname, 'fixtures/sample.scss'));
+  var mixin;
+
   describe('appearance', function() {
-    var mixin = assert.includedMixin('appearance');
+    beforeEach(function() {
+      mixin = sassaby.includedMixin('appearance');
+    });
 
     it('should return 3 declarations', function() {
       mixin.calledWith('button').hasNumDeclarations(3);
@@ -33,7 +35,9 @@ describe('sample.scss', function() {
   });
 
   describe('make-column', function() {
-    var mixin = assert.standaloneMixin('make-column');
+    beforeEach(function() {
+      mixin = sassaby.standaloneMixin('make-column');
+    });
 
     it('should define the correct class', function() {
       mixin.calledWith('md', 6).createsSelector('.col-md-6');
@@ -67,39 +71,41 @@ describe('sample.scss', function() {
 
   describe('remy', function() {
     it('convert to px units to rem units', function() {
-      assert.func('remy').calledWith('32px', '16px').equals('2rem');
+      sassaby.func('remy').calledWith('32px', '16px').equals('2rem');
     });
 
     it('has the correct output unit', function() {
-      assert.func('remy').calledWith('32px', '16px').doesNotEqual('2em');
+      sassaby.func('remy').calledWith('32px', '16px').doesNotEqual('2em');
     });
   });
 
   describe('boolean-switch', function() {
     it('should return true if passed true', function() {
-      assert.func('boolean-switch').calledWith(true).isTrue();
+      sassaby.func('boolean-switch').calledWith(true).isTrue();
     });
 
     it('should return false if passed false', function() {
-      assert.func('boolean-switch').calledWith(false).isFalse();
+      sassaby.func('boolean-switch').calledWith(false).isFalse();
     });
   });
 
   describe('return-self', function() {
     it('testing truthy', function() {
-      assert.func('return-self').calledWith(true).isTruthy();
-      assert.func('return-self').calledWith(1).isTruthy();
-      assert.func('return-self').calledWith('a').isTruthy();
+      sassaby.func('return-self').calledWith(true).isTruthy();
+      sassaby.func('return-self').calledWith(1).isTruthy();
+      sassaby.func('return-self').calledWith('a').isTruthy();
     });
 
     it('testing falsy', function() {
-      assert.func('return-self').calledWith(false).isFalsy();
-      assert.func('return-self').calledWith(null).isFalsy();
+      sassaby.func('return-self').calledWith(false).isFalsy();
+      sassaby.func('return-self').calledWith(null).isFalsy();
     });
   });
 
   describe('make-general-alignments', function() {
-    var mixin = assert.standaloneMixin('make-general-alignments');
+    beforeEach(function() {
+      mixin = sassaby.standaloneMixin('make-general-alignments');
+    });
 
     it('should call the correct mixins', function() {
       mixin.calledWith('md').calls('make-align-left(md)');
@@ -113,7 +119,9 @@ describe('sample.scss', function() {
   });
 
   describe('animation', function() {
-    var mixin = assert.includedMixin('animation');
+    beforeEach(function() {
+      mixin = sassaby.includedMixin('animation');
+    });
 
     it('should have the correct output', function() {
       mixin.calledWith('test', 500).declares('animation-name', 'test');

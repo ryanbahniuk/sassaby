@@ -1,17 +1,21 @@
 'use strict';
 
 var path = require('path');
-var sassaby = require('../src/sassaby');
-var assert = sassaby.assert;
-
-sassaby.setFile(path.resolve(__dirname, 'fixtures/sample-with-dependencies.scss'));
-sassaby.setDependencies([
-  path.resolve(__dirname, 'fixtures/sample.scss')
-]);
+var Sassaby = require('../src/sassaby');
 
 describe('sample-with-dependencies.scss', function() {
+  var sassaby = new Sassaby(path.resolve(__dirname, 'fixtures/sample-with-dependencies.scss'), {
+    dependencies: [
+      path.resolve(__dirname, 'fixtures/sample.scss')
+    ]
+  });
+
   describe('make-offset', function() {
-    var mixin = assert.standaloneMixin('make-button');
+    var mixin;
+
+    beforeEach(function() {
+      mixin = sassaby.standaloneMixin('make-button');
+    });
 
     it('should return 3 declarations', function() {
       mixin.calledWith('md').hasNumDeclarations(3);
