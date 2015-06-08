@@ -21,12 +21,12 @@ Setting up Sassaby is simple with easy integration into your existing Javascript
 var sassaby = require('sassaby');
 var assert = sassaby.assert;
 
-describe('sample.scss', function() {
-  sassaby.setFile(__dirname + '/sample.scss');
+sassaby.setFile(__dirname + '/sample.scss');
 
+describe('sample.scss', function() {
   describe('#appearance', function() {
     it('should have a webkit prefixed declaration', function() {
-      assert.includedMixin("appearance(button)").declares("-webkit-appearance", "button");
+      assert.includedMixin("appearance").calledWith("button").declares("-webkit-appearance", "button");
     });
   });
 });
@@ -42,18 +42,18 @@ We recommend testing SASS files in isolation. However, depending on the setup of
 var sassaby = require('sassaby');
 var assert = sassaby.assert;
 
-describe('sample.scss', function() {
-  sassaby.setFile(__dirname + '/sample.scss');
-  sassaby.setVariables({
-    'grid-columns': 12
-  });
-  sassaby.setDependencies([
-    __dirname + '/need-this-to-compile.scss'
-  ]);
+sassaby.setFile(__dirname + '/sample.scss');
+sassaby.setVariables({
+  'grid-columns': 12
+});
+sassaby.setDependencies([
+  __dirname + '/need-this-to-compile.scss'
+]);
 
+describe('sample.scss', function() {
   describe('#appearance', function() {
     it('should have a webkit prefixed declaration', function() {
-      assert.includedMixin("appearance(button)").declares("-webkit-appearance", "button");
+      assert.includedMixin("appearance").calledWith("button").declares("-webkit-appearance", "button");
     });
   });
 });
@@ -107,37 +107,37 @@ Each of these types has their own set of functions, or rules, that assert certai
 #### equals
 Asserts that the function output equals a certain value.
 ```js
-assert.func('rems(32px, 16px)').equals('2rem');
+assert.func('rems').calledWith('32px', '16px').equals('2rem');
 ```
 
 #### doesNotEqual
 Assert that the function output does not equal a certain value.
 ```js
-assert.func('rems(32px, 16px)').doesNotEqual('3rem');
+assert.func('rems').calledWith('32px', '16px').doesNotEqual('3rem');
 ```
 
 #### isTrue
 Assert that the function output equals true.
 ```js
-assert.func('returns-true(true)').isTrue();
+assert.func('returns-true').calledWith(true).isTrue();
 ```
 
 #### isFalse
 Assert that the function output equals false.
 ```js
-assert.func('returns-false(false)').isFalse();
+assert.func('returns-false').calledWith(false).isFalse();
 ```
 
 #### isTruthy
-Assert that the function output is a truthy value in SASS.
+Assert that the function output is a truthy value in SASS. Keep in mind that this is SASS truthy, not Javascript truthy.
 ```js
-assert.func('returns-truthy("string")').isTruthy();
+assert.func('returns-truthy').calledWith('string').isTruthy();
 ```
 
 #### isFalsy
-Assert that the function output is a falsy value in SASS.
+Assert that the function output is a falsy value in SASS. Keep in mind that this is SASS truthy, not Javascript truthy.
 ```js
-assert.func('returns-falsy(null)').isFalsy();
+assert.func('returns-falsy').calledWith(null).isFalsy();
 ```
 
 
@@ -146,55 +146,55 @@ assert.func('returns-falsy(null)').isFalsy();
 #### createsSelector
 Assert that the mixin creates the given selector.
 ```js
-assert.standaloneMixin('align-right(md)').createsSelector('.align-right-md');
+assert.standaloneMixin('align-right').calledWith('md').createsSelector('.align-right-md');
 ```
 
 #### doesNotCreateSelector
 Assert that the mixin does not create the given selector.
 ```js
-assert.standaloneMixin('align-right(md)').doesNotCreateSelector('.align-right-lg');
+assert.standaloneMixin('align-right').calledWith('md').doesNotCreateSelector('.align-right-lg');
 ```
 
 #### hasNumDeclarations
 Assert that the mixin creates the given number of declarations.
 ```js
-assert.standaloneMixin('align-right(md)').hasNumDeclarations(1);
+assert.standaloneMixin('align-right').calledWith('md').hasNumDeclarations(1);
 ```
 
 #### declares
 Assert that the mixin makes a declaration of the given rule-property pair.
 ```js
-assert.standaloneMixin('align-right(md)').declares('justify-content', 'flex-end');
+assert.standaloneMixin('align-right').calledWith('md').declares('justify-content', 'flex-end');
 ```
 
 #### doesNotDeclare
 Assert that the mixin does not make a declaration of the given rule-property pair.
 ```js
-assert.standaloneMixin('align-right(md)').doesNotDeclare('text-align', 'right');
+assert.standaloneMixin('align-right').calledWith('md').doesNotDeclare('text-align', 'right');
 ```
 
 #### equals
 Assert that the mixin output equals the given string.
 ```js
-assert.standaloneMixin('align-right(md)').equals('.align-right-md { justify-content: flex-end; }');
+assert.standaloneMixin('align-right').calledWith('md').equals('.align-right-md { justify-content: flex-end; }');
 ```
 
 #### doesNotEqual
 Assert that the mixin output does not equal the given string.
 ```js
-assert.standaloneMixin('align-right(md)').doesNotEqual('.align-right-lg { justify-content: flex-end; }');
+assert.standaloneMixin('align-right').calledWith('md').doesNotEqual('.align-right-lg { justify-content: flex-end; }');
 ```
 
 #### calls
 Assert that the mixin calls another mixin.
 ```js
-assert.standaloneMixin('build-alignments(md)').calls('align-right(md)');
+assert.standaloneMixin('build-alignments').calledWith('md').calls('align-right(md)');
 ```
 
 #### doesNotCall
 Assert that the mixin does not call another mixin.
 ```js
-assert.standaloneMixin('build-alignments(md)').doesNotCall('align-right(lg)');
+assert.standaloneMixin('build-alignments').calledWith('md').doesNotCall('align-right(lg)');
 ```
 
 
@@ -203,43 +203,43 @@ assert.standaloneMixin('build-alignments(md)').doesNotCall('align-right(lg)');
 #### hasNumDeclarations
 Assert that the mixin creates the given number of declarations.
 ```js
-assert.includedMixin('appearance(button)').hasNumDeclarations(3);
+assert.includedMixin('appearance').calledWith('button').hasNumDeclarations(3);
 ```
 
 #### declares
 Assert that the mixin makes a declaration of the given rule-property pair.
 ```js
-assert.includedMixin('appearance(button)').declares('-webkit-appearance', 'button');
+assert.includedMixin('appearance').calledWith('button').declares('-webkit-appearance', 'button');
 ```
 
 #### doesNotDeclare
 Assert that the mixin does not make a declaration of the given rule-property pair.
 ```js
-assert.includedMixin('appearance(button)').doesNotDeclare('-o-appearance', 'button');
+assert.includedMixin('appearance').calledWith('button').doesNotDeclare('-o-appearance', 'button');
 ```
 
 #### equals
 Assert that the mixin output equals the given string.
 ```js
-assert.includedMixin('appearance(button)').equals('-webkit-appearance: button; -moz-appearance: button; appearance: button;');
+assert.includedMixin('appearance').calledWith('button').equals('-webkit-appearance: button; -moz-appearance: button; appearance: button;');
 ```
 
 #### doesNotEqual
 Assert that the mixin output does not equal the given string.
 ```js
-assert.includedMixin('appearance(button)').doesNotEqual('appearance: button;');
+assert.includedMixin('appearance').calledWith('button').doesNotEqual('appearance: button;');
 ```
 
 #### calls
 Assert that the mixin calls another mixin.
 ```js
-assert.includedMixin('appearance(button)').calls('prefixer(button)');
+assert.includedMixin('appearance').calledWith('button').calls('prefixer(button)');
 ```
 
 #### doesNotCall
 Assert that the mixin does not call another mixin.
 ```js
-assert.includedMixin('appearance(button)').doesNotCall('prefixer(-webkit-button)');
+assert.includedMixin('appearance').calledWith('button').doesNotCall('prefixer(-webkit-button)');
 ```
 
 ## Contributing
