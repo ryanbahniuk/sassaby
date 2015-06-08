@@ -5,22 +5,21 @@ var sinon = require('sinon');
 var proxyquire =  require('proxyquire');
 var utilities = require('../src/utilities');
 
-var FuncResult;
-var funcResult;
-var funcTrueResult;
-var funcFalseResult;
-var mockUtilities;
-
-var file = '@function test($input) { @return 2 * $input }';
-var call = 'test';
-var args = [5];
-var argString = '5';
-var result = '10';
-var wrappedResult = '.test{content:' + result + '}';
-var wrappedTrueResult = '.test{content:true}';
-var wrappedFalseResult = '.test{content:false}';
-
 describe('FuncResult', function() {
+  var FuncResult;
+  var funcResult;
+  var funcTrueResult;
+  var funcFalseResult;
+  var mockUtilities;
+  var args = [5];
+  var file = '@function test($input) { @return 2 * $input }';
+  var call = 'test';
+  var argString = '5';
+  var result = '10';
+  var wrappedResult = '.test{content:' + result + '}';
+  var wrappedTrueResult = '.test{content:true}';
+  var wrappedFalseResult = '.test{content:false}';
+
   beforeEach(function() {
     FuncResult = proxyquire('../src/funcResult', {
       './utilities': utilities

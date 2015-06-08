@@ -4,16 +4,17 @@ var assert = require('assert');
 var sinon = require('sinon');
 var proxyquire =  require('proxyquire');
 
-var renderSync;
-var cssmin;
-var parse;
-var utilities;
-
-var file = '@mixin test($input) { color: $input }';
-var string = 'test(red)';
-var combined = file + string;
 
 describe('Utilities', function() {
+  var renderSync;
+  var cssmin;
+  var parse;
+  var utilities;
+
+  var file = '@mixin test($input) { color: $input }';
+  var string = 'test(red)';
+  var combined = file + string;
+
   beforeEach(function() {
     renderSync = sinon.spy(function(options) { return { css: options.data }; });
     cssmin = sinon.spy(function(input) { return input; });

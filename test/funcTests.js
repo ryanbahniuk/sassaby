@@ -10,15 +10,16 @@ function MockFuncResult(file, call, args) {
   this.args = args;
 }
 
-var Func;
-var func;
-
-var variables = '$test:5;';
-var dependencies = "@import 'file';";
-var file = '@function test($input) { @return 2 * $input }';
-var call = 'test(5)';
 
 describe('Func', function() {
+  var Func;
+  var func;
+
+  var variables = '$test:5;';
+  var dependencies = "@import 'file';";
+  var file = '@function test($input) { @return 2 * $input }';
+  var call = 'test(5)';
+
   beforeEach(function() {
     Func = proxyquire('../src/types/func', {
       '../funcResult': MockFuncResult

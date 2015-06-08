@@ -9,6 +9,7 @@ describe('sample-with-variables.scss', function() {
       'grid-columns': 12
     }
   });
+
   describe('make-offset', function() {
     var mixin;
 

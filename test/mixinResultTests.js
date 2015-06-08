@@ -7,26 +7,27 @@ var utilities = require('../src/utilities');
 var parsers = require('../src/parsers');
 var ast = require('./fixtures/ast.json');
 
-var MixinResult;
-var cssmin;
-var mockUtilities;
-var mockParsers;
-var standaloneMixinResult;
-var includedMixinResult;
-
-var includedFile = '@mixin test($input) { color: $input }';
-var standaloneFile = '@mixin test($input) { .test { color: $input; } }';
-var call = '@include test(red)';
-var selector = '.test';
-var property = 'color';
-var value = 'red';
-var result = property + ':' + value;
-var wrappedResult = selector + '{' + result + '}';
-
-var args = [1, 2, 'hello', true];
-var argString = '1, 2, hello, true';
 
 describe('MixinResult', function() {
+  var MixinResult;
+  var cssmin;
+  var mockUtilities;
+  var mockParsers;
+  var standaloneMixinResult;
+  var includedMixinResult;
+
+  var includedFile = '@mixin test($input) { color: $input }';
+  var standaloneFile = '@mixin test($input) { .test { color: $input; } }';
+  var call = '@include test(red)';
+  var selector = '.test';
+  var property = 'color';
+  var value = 'red';
+  var result = property + ':' + value;
+  var wrappedResult = selector + '{' + result + '}';
+
+  var args = [1, 2, 'hello', true];
+  var argString = '1, 2, hello, true';
+
   beforeEach(function() {
     cssmin = sinon.spy(function(input) { return input; });
     MixinResult = proxyquire('../src/mixinResult', {

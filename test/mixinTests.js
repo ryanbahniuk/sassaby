@@ -11,16 +11,17 @@ function MockMixinResult(type, file, call, args) {
   this.args = args;
 }
 
-var Mixin;
-var mixin;
-
-var type = 'test';
-var variables = '$test:5;';
-var dependencies = "@import 'file';";
-var file = '@mixin test($input) { color: $input }';
-var call = '@include test(red)';
 
 describe('Mixin', function() {
+  var Mixin;
+  var mixin;
+
+  var type = 'test';
+  var variables = '$test:5;';
+  var dependencies = "@import 'file';";
+  var file = '@mixin test($input) { color: $input }';
+  var call = '@include test(red)';
+
   beforeEach(function() {
     Mixin = proxyquire('../src/types/mixin', {
       '../mixinResult': MockMixinResult

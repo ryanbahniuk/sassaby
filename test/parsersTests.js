@@ -2,7 +2,6 @@
 
 var assert = require('assert');
 var sinon = require('sinon');
-
 var parsers = require('../src/parsers');
 var ast = require('./fixtures/ast.json');
 
