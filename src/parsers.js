@@ -27,11 +27,13 @@ var Parsers = {
     var found = false;
 
     ast.stylesheet.rules.forEach(function(rule) {
-      rule.selectors.forEach(function(selector) {
-        if (selector === selectorValue) {
-          found = true;
-        }
-      });
+      if (rule.selectors) {
+        rule.selectors.forEach(function(selector) {
+          if (selector === selectorValue) {
+            found = true;
+          }
+        });
+      }
     });
 
     return found;

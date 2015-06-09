@@ -4,6 +4,7 @@ var assert = require('assert');
 var sinon = require('sinon');
 var parsers = require('../src/parsers');
 var ast = require('./fixtures/ast.json');
+var astNoSelectors = require('./fixtures/astNoSelectors.json');
 
 describe('Parsers', function() {
   describe('countDeclarations', function() {
@@ -80,6 +81,14 @@ describe('Parsers', function() {
 
     it('should return false if the selector not defined', function() {
       assert(!parsers.hasSelector(ast, '.not-defined'));
+    });
+
+    it('should return false if no stylesheet is defined', function() {
+      assert(!parsers.hasSelector(astNoSelectors, '.test'));
+    });
+
+    it('should return false if no rules are defined', function() {
+      assert(!parsers.hasSelector(astNoSelectors, '.test'));
     });
   });
 
