@@ -144,6 +144,38 @@ describe('MixinResult', function() {
     });
   });
 
+  describe('createsFontFace', function() {
+    it('should not throw an error if the selector is created by the standalone mixin', function() {
+      mockParsers.expects('hasFontFace').withArgs(ast).returns(true);
+      standaloneMixinResult.createsFontFace();
+    });
+
+    it('throws an error if the selector is not created by the standalone mixin', function() {
+      mockParsers.expects('hasFontFace').withArgs(ast).returns(false);
+      assert.throws(function() { standaloneMixinResult.createsFontFace(); });
+    });
+
+    it('throws an error if the function is called on an included mixin', function() {
+      assert.throws(function() { includedMixinResult.createsFontFace(); });
+    });
+  });
+
+  describe('doesNotCreateFontFace', function() {
+    it('should not throw an error if the selector is created by the standalone mixin', function() {
+      mockParsers.expects('hasFontFace').withArgs(ast).returns(false);
+      standaloneMixinResult.doesNotCreateFontFace();
+    });
+
+    it('throws an error if the selector is not created by the standalone mixin', function() {
+      mockParsers.expects('hasFontFace').withArgs(ast).returns(true);
+      assert.throws(function() { standaloneMixinResult.doesNotCreateFontFace(); });
+    });
+
+    it('throws an error if the function is called on an included mixin', function() {
+      assert.throws(function() { includedMixinResult.doesNotCreateFontFace(); });
+    });
+  });
+
   describe('hasNumDeclarations', function() {
     context('for a standalone mixin', function() {
       it('should not throw an error if mixin creates the given amount of declarations', function() {
