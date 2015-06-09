@@ -1,0 +1,11 @@
+@mixin make-offset($label, $width) {
+  .col-#{$label}-offset-#{$width} {
+    margin-left: percentage($width / $grid-columns);
+  }
+}
+
+@mixin make-button($label) {
+  .btn-#{$label} {
+    @include appearance(button);
+  }
+}

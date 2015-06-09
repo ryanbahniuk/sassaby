@@ -10,7 +10,7 @@ describe('sample-with-dependencies.scss', function() {
     ]
   });
 
-  describe('make-offset', function() {
+  describe('make-button', function() {
     var mixin;
 
     beforeEach(function() {
