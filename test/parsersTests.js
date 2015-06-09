@@ -91,4 +91,14 @@ describe('Parsers', function() {
       assert(!parsers.hasSelector(astNoSelectors, '.test'));
     });
   });
+
+  describe('hasFontFace', function() {
+    it('should return true if font-face is defined', function() {
+      assert(parsers.hasFontFace(astNoSelectors));
+    });
+
+    it('should return false if font-face not defined', function() {
+      assert(!parsers.hasFontFace(ast));
+    });
+  });
 });

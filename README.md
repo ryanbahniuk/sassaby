@@ -177,6 +177,18 @@ Assert that the mixin does not create the given selector.
 sassaby.standaloneMixin('align-right').calledWith('md').doesNotCreateSelector('.align-right-lg');
 ```
 
+#### createsFontFace
+Assert that the mixin creates a font-face rule.
+```js
+sassaby.standaloneMixin('make-font-face').calledWith('helvetica').createsFontFace();
+```
+
+#### doesNotCreateFontFace
+Assert that the mixin does not create a font-face rule.
+```js
+sassaby.standaloneMixin('align-right').calledWith('md').doesNotCreateFontFace();
+```
+
 #### hasNumDeclarations
 Assert that the mixin creates the given number of declarations.
 ```js

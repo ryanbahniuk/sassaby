@@ -56,6 +56,22 @@ MixinResult.prototype = {
     assert(!parsers.hasSelector(this.ast, selector), message);
   },
 
+  createsFontFace: function() {
+    if (this.type === 'included') {
+      throw 'createsFontFace is not available for included mixins.';
+    }
+    var message = 'Could not find a font-face rule.';
+    assert(parsers.hasFontFace(this.ast), message);
+  },
+
+  doesNotCreateFontFace: function() {
+    if (this.type === 'included') {
+      throw 'doesNotCreateFontFace is not available for included mixins.';
+    }
+    var message = 'Mixin created a font-face rule.';
+    assert(!parsers.hasFontFace(this.ast), message);
+  },
+
   hasNumDeclarations: function(num) {
     var numDeclarations = parsers.countDeclarations(this.ast);
     var message = 'Mixin has ' + numDeclarations + ' declarations, but you gave ' + num + '.';
