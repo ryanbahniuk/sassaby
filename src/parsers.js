@@ -35,6 +35,18 @@ var Parsers = {
     });
 
     return found;
+  },
+
+  hasFontFace: function(ast) {
+    var found = false;
+
+    ast.stylesheet.rules.forEach(function(rule) {
+      if (rule.type === 'font-face') {
+        found = true;
+      }
+    });
+
+    return found;
   }
 };
 
