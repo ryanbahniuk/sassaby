@@ -1,5 +1,12 @@
 'use strict';
 
+function escapeCharacters(string) {
+  var specials = ['/', '.', '*', '+', '?', '(', ')', '[', ']', '{', '}'];
+  var pattern = '([' + specials.join('') + '])';
+  var re = new RegExp(pattern, 'g');
+  return string.replace(re, '\\$1');
+}
+
 var Parsers = {
   countDeclarations: function(ast) {
     if (ast.stylesheet && ast.stylesheet.rules && ast.stylesheet.rules[0].declarations) {
@@ -49,7 +56,16 @@ var Parsers = {
     });
 
     return found;
+  },
+
+  hasImport: function(sass, importName) {
+    var pattern = new RegExp('@import[^;]*[\'\"]' + escapeCharacters(importName) + '[\'\"].*;');
+    return !!sass.match(pattern);
   }
 };
+
+if (process.env.NODE_ENV === 'test') {
+  Parsers.escapeCharacters = escapeCharacters;
+}
 
 module.exports = Parsers;
