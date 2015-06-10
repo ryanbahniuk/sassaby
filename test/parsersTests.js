@@ -101,4 +101,74 @@ describe('Parsers', function() {
       assert(!parsers.hasFontFace(ast));
     });
   });
+
+  describe('hasImport', function() {
+    var name = 'test';
+
+    context('should return true if the import exists', function() {
+      it('if it uses single quotes', function() {
+        var sass = "@import '" + name + "';";
+        assert(parsers.hasImport(sass, name));
+      });
+
+      it('if it uses double quotes', function() {
+        var sass = '@import "' + name + '";';
+        assert(parsers.hasImport(sass, name));
+      });
+
+      it('if it has no space', function() {
+        var sass = '@import"' + name + '";';
+        assert(parsers.hasImport(sass, name));
+      });
+
+      it('if it has multiple on the same line', function() {
+        var sass = '@import "hello"; @import"' + name + '";';
+        assert(parsers.hasImport(sass, name));
+      });
+
+      it('if it has multiple on different lines', function() {
+        var sass = '@import "hello";\n@import"' + name + '";';
+        assert(parsers.hasImport(sass, name));
+      });
+
+      it('if it has multiple in a comma separated list', function() {
+        var sass = '@import "hello", "' + name + '";';
+        assert(parsers.hasImport(sass, name));
+      });
+    });
+
+    context('should return false if the import does not exist', function() {
+      var alternate = 'nope';
+
+      it('if it uses single quotes', function() {
+        var sass = "@import '" + alternate + "';";
+        assert(!parsers.hasImport(sass, name));
+      });
+
+      it('if it uses double quotes', function() {
+        var sass = '@import "' + alternate + '";';
+        assert(!parsers.hasImport(sass, name));
+      });
+
+      it('if it has no space', function() {
+        var sass = '@import"' + alternate + '";';
+        assert(!parsers.hasImport(sass, name));
+      });
+
+      it('if it has multiple on the same line', function() {
+        var sass = '@import "hello"; @import"' + alternate + '";';
+        assert(!parsers.hasImport(sass, name));
+      });
+
+      it('if it has multiple on different lines', function() {
+        var sass = '@import "hello";\n@import"' + alternate + '";';
+        assert(!parsers.hasImport(sass, name));
+      });
+
+      it('if it has multiple in a comma separated list', function() {
+        var sass = '@import "hello", "' + alternate + '";';
+        assert(!parsers.hasImport(sass, name));
+      });
+    });
+  });
 });

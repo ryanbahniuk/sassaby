@@ -1,5 +1,7 @@
 'use strict';
 
+var querystring = require('querystring');
+
 var Parsers = {
   countDeclarations: function(ast) {
     if (ast.stylesheet && ast.stylesheet.rules && ast.stylesheet.rules[0].declarations) {
@@ -49,6 +51,11 @@ var Parsers = {
     });
 
     return found;
+  },
+
+  hasImport: function(sass, importName) {
+    var pattern = new RegExp('@import[^;]*[\'\"]' + querystring.escape(importName) + '[\'\"].*;');
+    return !!sass.match(pattern);
   }
 };
 
