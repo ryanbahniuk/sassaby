@@ -67,7 +67,7 @@ describe('sample.scss', function() {
 
 ## Features
 
-Sassaby breaks down testable features into three categories:
+Sassaby breaks down testable features into four categories:
 
 * Functions
 * Standalone Mixins
@@ -275,6 +275,24 @@ sassaby.includedMixin('appearance').calledWith('button').calls('prefixer(button)
 Assert that the mixin does not call another mixin.
 ```js
 sassaby.includedMixin('appearance').calledWith('button').doesNotCall('prefixer(-webkit-button)');
+```
+
+
+### Testing Imports
+
+Often your SASS project will have a single entry point from where all other files are imported. Sassaby exposes two assertion methods on the sassaby object itself to test this. These two methods take the same path that would be included in the `@import` statement in your SASS file.
+
+
+#### imports
+Assert that the file imports the given path.
+```js
+sassaby.imports('variables');
+```
+
+#### doesNotImport
+Assert that the file does not import the given path.
+```js
+sassaby.imports('nope');
 ```
 
 ## Contributing
