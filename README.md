@@ -177,6 +177,18 @@ Assert that the mixin does not create the given selector.
 sassaby.standaloneMixin('align-right').calledWith('md').doesNotCreateSelector('.align-right-lg');
 ```
 
+#### createsMediaQuery
+Assert that the mixin creates a media query with the given string.
+```js
+sassaby.standaloneMixin('make-button').calledWith('200px').createsMediaQuery('screen and (max-width: 200px)');
+```
+
+#### doesNotCreateMediaQuery
+Assert that the mixin does not create a media query with the given string.
+```js
+sassaby.standaloneMixin('make-button').calledWith('200px').doesNotCreateMediaQuery('screen and (max-width: 400px)');
+```
+
 #### createsFontFace
 Assert that the mixin creates a font-face rule.
 ```js

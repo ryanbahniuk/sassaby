@@ -13,4 +13,5 @@ Initial Release
 
 * Adds `imports` and `doesNotImport` assertions at the file level for testing entry point files.
 * Adds `createFontFace` and `doesNotCreateFontFace` for standalone mixins to test creation of a `@font-face` rule.
+* Adds `createsMediaQuery` and `doesNotCreateMediaQuery` for standalone mixins to test creation of a `@media` directive.
 * Fixes bug for standalone mixins which may not create a selector (for example `@font-face` rules).
