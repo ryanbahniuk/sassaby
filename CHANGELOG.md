@@ -1,0 +1,16 @@
+# Changelog
+
+## Version 1.0.2
+Initial Release
+
+## Version 2.0.0
+
+* Performance upgrades
+* Decoupled mixin/function call from arguments. Arguments are now added with the `calledWith` function. Now it is easier to test different arguments of the same mixin/function and is clear when SASS compilation happens (easier to optimize your tests for speed).
+* Each sassaby test file is now an instance of the Sassaby class. This fixes a bug that was persisting test state between files in the suite.
+
+## Version 2.1.0
+
+* Adds `imports` and `doesNotImport` assertions at the file level for testing entry point files.
+* Adds `createFontFace` and `doesNotCreateFontFace` for standalone mixins to test creation of a `@font-face` rule.
+* Fixes bug for standalone mixins which may not create a selector (for example `@font-face` rules).
