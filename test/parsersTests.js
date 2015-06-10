@@ -21,6 +21,60 @@ describe('Parsers', function() {
     });
   });
 
+  describe('hasSelectorValue', function() {
+    var ruleWithoutSelectors = {};
+    var rule = {
+      type: 'rule',
+      selectors: ['.test', '.second']
+    };
+
+    it('should return true if the selector is in the rule', function() {
+      assert(parsers.hasSelectorValue(rule, '.test'));
+      assert(parsers.hasSelectorValue(rule, '.second'));
+    });
+
+    it('should return false if the selector is not in the rule', function() {
+      assert(!parsers.hasSelectorValue(rule, '.blah'));
+    });
+
+    it('should return false if the rule has no selectors', function() {
+      assert(!parsers.hasSelectorValue(ruleWithoutSelectors, '.test'));
+    });
+  });
+
+  describe('findDeclarationProperty', function() {
+    var declaration = {
+      'type': 'declaration',
+      'property': 'color'
+    };
+    var ruleWithoutDeclarations = {
+      type: 'rule',
+      selectors: ['.test']
+    };
+    var ruleWithoutDeclaration = {
+      type: 'rule',
+      selectors: ['.test'],
+      declarations: []
+    };
+    var rule = {
+      type: 'rule',
+      selectors: ['.test'],
+      declarations: [declaration]
+    };
+
+    it('should return the declaration if it is in the rule', function() {
+      assert.equal(parsers.findDeclarationProperty(rule, 'color'), declaration);
+    });
+
+    it('should return undefined if the declaration is not in the rule', function() {
+      assert.equal(parsers.findDeclarationProperty(ruleWithoutDeclaration, 'color'), undefined);
+    });
+
+    it('should return undefined if the rule has no declarations', function() {
+      assert.equal(parsers.findDeclarationProperty(ruleWithoutDeclarations, 'color'), undefined);
+    });
+  });
+
   describe('countDeclarations', function() {
     it('should return the number of declarations in the first ruleset', function() {
       assert.equal(parsers.countDeclarations(ast), 1);
@@ -104,6 +158,10 @@ describe('Parsers', function() {
     it('should return true if the selector is defined in a list', function() {
       assert(parsers.hasSelector(ast, '.hello'));
       assert(parsers.hasSelector(ast, '.blah'));
+    });
+
+    it('should return true if the selector is defined in a media query', function() {
+      assert(parsers.hasSelector(astMediaQuery, 'body'));
     });
 
     it('should return false if the selector not defined', function() {
