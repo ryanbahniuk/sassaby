@@ -186,7 +186,7 @@ sassaby.standaloneMixin('make-button').calledWith('200px').createsMediaQuery('sc
 #### doesNotCreateMediaQuery
 Assert that the mixin does not create a media query with the given string.
 ```js
-sassaby.standaloneMixin('make-button').calledWith('200px').doesNotCreateMediaQuery('screen and (max-width: 4g00px)');
+sassaby.standaloneMixin('make-button').calledWith('200px').doesNotCreateMediaQuery('screen and (max-width: 400px)');
 ```
 
 #### createsFontFace
