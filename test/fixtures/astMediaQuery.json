@@ -1,0 +1,72 @@
+{
+  "type": "stylesheet",
+  "stylesheet": {
+    "rules": [
+      {
+        "type": "media",
+        "media": "screen and (min-width: 600px)",
+        "rules": [
+          {
+            "type": "rule",
+            "selectors": [
+              "body"
+            ],
+            "declarations": [
+              {
+                "type": "declaration",
+                "property": "background",
+                "value": "green",
+                "position": {
+                  "start": {
+                    "line": 3,
+                    "column": 5
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 22
+                  }
+                }
+              },
+              {
+                "type": "declaration",
+                "property": "font-size",
+                "value": "21px",
+                "position": {
+                  "start": {
+                    "line": 4,
+                    "column": 5
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 20
+                  }
+                }
+              }
+            ],
+            "position": {
+              "start": {
+                "line": 2,
+                "column": 3
+              },
+              "end": {
+                "line": 5,
+                "column": 4
+              }
+            }
+          }
+        ],
+        "position": {
+          "start": {
+            "line": 1,
+            "column": 1
+          },
+          "end": {
+            "line": 6,
+            "column": 2
+          }
+        }
+      }
+    ],
+    "parsingErrors": []
+  }
+}

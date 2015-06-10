@@ -30,6 +30,18 @@ var Parsers = {
     return found[0];
   },
 
+  findMedia: function(ast) {
+    var found = [];
+
+    ast.stylesheet.rules.forEach(function(rule) {
+      if (rule.type === 'media') {
+        found.push(rule);
+      }
+    });
+
+    return found[0];
+  },
+
   hasSelector: function(ast, selectorValue) {
     var found = false;
 

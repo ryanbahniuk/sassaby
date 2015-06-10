@@ -5,6 +5,7 @@ var sinon = require('sinon');
 var parsers = require('../src/parsers');
 var ast = require('./fixtures/ast.json');
 var astNoSelectors = require('./fixtures/astNoSelectors.json');
+var astMediaQuery = require('./fixtures/astMediaQuery.json');
 
 describe('Parsers', function() {
   describe('escapeCharacters', function() {
@@ -79,6 +80,19 @@ describe('Parsers', function() {
 
     it('should return undefined if the declaration is not found', function() {
       assert.equal(parsers.findDeclaration(ast, 'display'), undefined);
+    });
+  });
+
+  describe('findMedia', function() {
+    it('should return the first rule of the type media', function() {
+      var media = parsers.findMedia(astMediaQuery);
+      assert.equal(media.type, 'media');
+      assert.equal(media.media, 'screen and (min-width: 600px)');
+    });
+
+    it('should return undefined if there are no rules of the type media', function() {
+      var media = parsers.findMedia(ast);
+      assert.deepEqual(media, undefined);
     });
   });
 
