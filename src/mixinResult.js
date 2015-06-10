@@ -56,6 +56,26 @@ MixinResult.prototype = {
     assert(!parsers.hasSelector(this.ast, selector), message);
   },
 
+  createsMediaQuery: function(mediaQuery) {
+    if (this.type === 'included') {
+      throw 'createsMediaQuery is not available for included mixins.';
+    }
+    var rule = parsers.findMedia(this.ast);
+    var media = rule ? rule.media : '';
+    var message = 'Could not find a media query rule with the value: ' + mediaQuery + '.';
+    assert.equal(media, mediaQuery, message);
+  },
+
+  doesNotCreateMediaQuery: function(mediaQuery) {
+    if (this.type === 'included') {
+      throw 'doesNotCreateMediaQuery is not available for included mixins.';
+    }
+    var rule = parsers.findMedia(this.ast);
+    var media = rule ? rule.media : '';
+    var message = 'Found a media query rule with the value: ' + mediaQuery + '.';
+    assert.notEqual(media, mediaQuery, message);
+  },
+
   createsFontFace: function() {
     if (this.type === 'included') {
       throw 'createsFontFace is not available for included mixins.';

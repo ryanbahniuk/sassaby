@@ -144,6 +144,50 @@ describe('MixinResult', function() {
     });
   });
 
+  describe('createsMediaQuery', function() {
+    var mediaQuery = 'screen and (min-width: 600px)';
+    var rule = {
+      type: 'media',
+      media: mediaQuery
+    };
+
+    it('should not throw an error if the media query is created by the standalone mixin', function() {
+      mockParsers.expects('findMedia').withArgs(ast).returns(rule);
+      standaloneMixinResult.createsMediaQuery(mediaQuery);
+    });
+
+    it('throws an error if the media query is not created by the standalone mixin', function() {
+      mockParsers.expects('findMedia').withArgs(ast).returns(undefined);
+      assert.throws(function() { standaloneMixinResult.createsMediaQuery(mediaQuery); });
+    });
+
+    it('throws an error if the function is called on an included mixin', function() {
+      assert.throws(function() { includedMixinResult.createsMediaQuery(mediaQuery); });
+    });
+  });
+
+  describe('doesNotCreateMediaQuery', function() {
+    var mediaQuery = 'screen and (min-width: 600px)';
+    var rule = {
+      type: 'media',
+      media: mediaQuery
+    };
+
+    it('should not throw an error if the media query is not created by the standalone mixin', function() {
+      mockParsers.expects('findMedia').withArgs(ast).returns(undefined);
+      standaloneMixinResult.doesNotCreateMediaQuery(mediaQuery);
+    });
+
+    it('throws an error if the media query is created by the standalone mixin', function() {
+      mockParsers.expects('findMedia').withArgs(ast).returns(rule);
+      assert.throws(function() { standaloneMixinResult.doesNotCreateMediaQuery(mediaQuery); });
+    });
+
+    it('throws an error if the function is called on an included mixin', function() {
+      assert.throws(function() { includedMixinResult.doesNotCreateMediaQuery(mediaQuery); });
+    });
+  });
+
   describe('createsFontFace', function() {
     it('should not throw an error if the selector is created by the standalone mixin', function() {
       mockParsers.expects('hasFontFace').withArgs(ast).returns(true);
