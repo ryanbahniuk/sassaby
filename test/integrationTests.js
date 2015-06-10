@@ -83,6 +83,14 @@ describe('sample.scss', function() {
     it('should not create the incorrect media query', function() {
       compiled.doesNotCreateMediaQuery('screen and (max-width: 400px)');
     });
+
+    it('should create the button class', function() {
+      compiled.createsSelector('.button');
+    });
+
+    it('should declare the correct background-color', function() {
+      compiled.declares('background-color', 'red');
+    });
   });
 
   describe('remy', function() {
