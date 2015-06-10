@@ -1,8 +1,10 @@
 'use strict';
 
 var fs = require('fs');
+var assert = require('assert');
 var Mixin = require('./types/mixin');
 var Func = require('./types/func');
+var parsers = require('./parsers');
 
 function setVariables(varz) {
   var sassVariables = '';
@@ -37,6 +39,16 @@ function Sassaby(path, options) {
 }
 
 Sassaby.prototype = {
+  imports: function(name) {
+    var message = 'Could not find an import statement with ' + name + ' in file.';
+    assert(parsers.hasImport(this.file, name), message);
+  },
+
+  doesNotImport: function(name) {
+    var message = 'Found an import statement with ' + name + ' in file.';
+    assert(!parsers.hasImport(this.file, name), message);
+  },
+
   includedMixin: function(call) {
     return new Mixin('included', this.variables, this.dependencies, this.file, call);
   },
