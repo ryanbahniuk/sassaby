@@ -1,6 +1,11 @@
 'use strict';
 
-var querystring = require('querystring');
+function escapeCharacters(string) {
+  var specials = ['/', '.', '*', '+', '?', '(', ')', '[', ']', '{', '}'];
+  var pattern = '([' + specials.join('') + '])';
+  var re = new RegExp(pattern, 'g');
+  return string.replace(re, '\\$1');
+}
 
 var Parsers = {
   countDeclarations: function(ast) {
@@ -54,9 +59,13 @@ var Parsers = {
   },
 
   hasImport: function(sass, importName) {
-    var pattern = new RegExp('@import[^;]*[\'\"]' + querystring.escape(importName) + '[\'\"].*;');
+    var pattern = new RegExp('@import[^;]*[\'\"]' + escapeCharacters(importName) + '[\'\"].*;');
     return !!sass.match(pattern);
   }
 };
+
+if (process.env.NODE_ENV === 'test') {
+  Parsers.escapeCharacters = escapeCharacters;
+}
 
 module.exports = Parsers;

@@ -7,6 +7,19 @@ var ast = require('./fixtures/ast.json');
 var astNoSelectors = require('./fixtures/astNoSelectors.json');
 
 describe('Parsers', function() {
+  describe('escapeCharacters', function() {
+    it('should escape all special characters that can be used in a filename', function() {
+      assert.equal(parsers.escapeCharacters('test/this'), 'test\/this');
+      assert.equal(parsers.escapeCharacters('test.this'), 'test\.this');
+      assert.equal(parsers.escapeCharacters('test*this'), 'test\*this');
+      assert.equal(parsers.escapeCharacters('test?this'), 'test\?this');
+      assert.equal(parsers.escapeCharacters('test(this'), 'test\(this');
+      assert.equal(parsers.escapeCharacters('test)this'), 'test\)this');
+      assert.equal(parsers.escapeCharacters('test{this'), 'test\{this');
+      assert.equal(parsers.escapeCharacters('test}this'), 'test\}this');
+    });
+  });
+
   describe('countDeclarations', function() {
     it('should return the number of declarations in the first ruleset', function() {
       assert.equal(parsers.countDeclarations(ast), 1);
@@ -109,6 +122,11 @@ describe('Parsers', function() {
       it('if it uses single quotes', function() {
         var sass = "@import '" + name + "';";
         assert(parsers.hasImport(sass, name));
+      });
+
+      it('if it is nested in a directory', function() {
+        var sass = "@import 'testing/" + name + "';";
+        assert(parsers.hasImport(sass, 'testing/' + name));
       });
 
       it('if it uses double quotes', function() {
