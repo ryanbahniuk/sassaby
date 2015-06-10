@@ -6,6 +6,7 @@ var Sassaby = require('../src/sassaby');
 describe('sample.scss', function() {
   var sassaby = new Sassaby(path.resolve(__dirname, 'fixtures/sample.scss'));
   var mixin;
+  var compiled;
 
   describe('appearance', function() {
     beforeEach(function() {
@@ -66,6 +67,21 @@ describe('sample.scss', function() {
 
     it('should not have incorrect output', function() {
       mixin.calledWith('md', 6).doesNotEqual('.col-md-8 { flex-basis: 50%; max-width: 50%; }');
+    });
+  });
+
+  describe('make-sized-button', function() {
+    beforeEach(function() {
+      mixin = sassaby.standaloneMixin('make-sized-button');
+      compiled = mixin.calledWith('red', '200px');
+    });
+
+    it('should create the correct media query', function() {
+      compiled.createsMediaQuery('screen and (max-width: 200px)');
+    });
+
+    it('should not create the incorrect media query', function() {
+      compiled.doesNotCreateMediaQuery('screen and (max-width: 400px)');
     });
   });
 

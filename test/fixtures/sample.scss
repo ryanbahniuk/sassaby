@@ -63,3 +63,11 @@
   @include prefixer(webkit, animation-duration, $duration);
   @include prefixer(moz, animation-duration, $duration);
 }
+
+@mixin make-sized-button($color, $width) {
+  @media screen and (max-width: $width) {
+    .button {
+      background-color: $color;
+    }
+  }
+}

@@ -63,7 +63,7 @@ MixinResult.prototype = {
     var rule = parsers.findMedia(this.ast);
     var media = rule ? rule.media : '';
     var message = 'Could not find a media query rule with the value: ' + mediaQuery + '.';
-    assert.equal(media, mediaQuery, message);
+    assert.equal(media, cssmin(mediaQuery), message);
   },
 
   doesNotCreateMediaQuery: function(mediaQuery) {
@@ -73,7 +73,7 @@ MixinResult.prototype = {
     var rule = parsers.findMedia(this.ast);
     var media = rule ? rule.media : '';
     var message = 'Found a media query rule with the value: ' + mediaQuery + '.';
-    assert.notEqual(media, mediaQuery, message);
+    assert.notEqual(media, cssmin(mediaQuery), message);
   },
 
   createsFontFace: function() {

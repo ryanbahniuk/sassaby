@@ -154,11 +154,13 @@ describe('MixinResult', function() {
     it('should not throw an error if the media query is created by the standalone mixin', function() {
       mockParsers.expects('findMedia').withArgs(ast).returns(rule);
       standaloneMixinResult.createsMediaQuery(mediaQuery);
+      assert(cssmin.calledWith(mediaQuery));
     });
 
     it('throws an error if the media query is not created by the standalone mixin', function() {
       mockParsers.expects('findMedia').withArgs(ast).returns(undefined);
       assert.throws(function() { standaloneMixinResult.createsMediaQuery(mediaQuery); });
+      assert(cssmin.calledWith(mediaQuery));
     });
 
     it('throws an error if the function is called on an included mixin', function() {
@@ -176,11 +178,13 @@ describe('MixinResult', function() {
     it('should not throw an error if the media query is not created by the standalone mixin', function() {
       mockParsers.expects('findMedia').withArgs(ast).returns(undefined);
       standaloneMixinResult.doesNotCreateMediaQuery(mediaQuery);
+      assert(cssmin.calledWith(mediaQuery));
     });
 
     it('throws an error if the media query is created by the standalone mixin', function() {
       mockParsers.expects('findMedia').withArgs(ast).returns(rule);
       assert.throws(function() { standaloneMixinResult.doesNotCreateMediaQuery(mediaQuery); });
+      assert(cssmin.calledWith(mediaQuery));
     });
 
     it('throws an error if the function is called on an included mixin', function() {
