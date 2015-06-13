@@ -18,6 +18,16 @@ Mixin.prototype = {
   calledWithArgs: function() {
     var args = Array.prototype.slice.call(arguments);
     return new MixinResult(this.type, this.file, this.call, args);
+  },
+
+  calledWithBlock: function(block) {
+    return new MixinResult(this.type, this.file, this.call, [], block);
+  },
+
+  calledWithBlockAndArgs: function() {
+    var args = Array.prototype.slice.call(arguments);
+    var block = args.shift();
+    return new MixinResult(this.type, this.file, this.call, args, block);
   }
 };
 

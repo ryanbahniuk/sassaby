@@ -4,11 +4,12 @@ var assert = require('assert');
 var sinon = require('sinon');
 var proxyquire =  require('proxyquire');
 
-function MockMixinResult(type, file, call, args) {
+function MockMixinResult(type, file, call, args, block) {
   this.type = type;
   this.file = file;
   this.call = call;
   this.args = args;
+  this.block = block;
 }
 
 
@@ -64,6 +65,42 @@ describe('Mixin', function() {
       assert.equal(result.file, variables + dependencies + file);
       assert.equal(result.call, call);
       assert.deepEqual(result.args, [1, 2, 'hello', true]);
+    });
+  });
+
+  describe('calledWithBlock', function() {
+    var block = 'color: red;';
+
+    it('should return a new mixinResult', function() {
+      var result = mixin.calledWithBlock(block);
+      assert(result instanceof MockMixinResult);
+    });
+
+    it('should have the correct properties', function() {
+      var result = mixin.calledWithBlock(block);
+      assert.equal(result.type, type);
+      assert.equal(result.file, variables + dependencies + file);
+      assert.equal(result.call, call);
+      assert.deepEqual(result.args, []);
+      assert.equal(result.block, block);
+    });
+  });
+
+  describe('calledWithBlockAndArgs', function() {
+    var block = 'color: red;';
+
+    it('should return a new mixinResult', function() {
+      var result = mixin.calledWithBlockAndArgs(block, 1, 2, 'hello', true);
+      assert(result instanceof MockMixinResult);
+    });
+
+    it('should have the correct properties', function() {
+      var result = mixin.calledWithBlockAndArgs(block, 1, 2, 'hello', true);
+      assert.equal(result.type, type);
+      assert.equal(result.file, variables + dependencies + file);
+      assert.equal(result.call, call);
+      assert.deepEqual(result.args, [1, 2, 'hello', true]);
+      assert.equal(result.block, block);
     });
   });
 });
