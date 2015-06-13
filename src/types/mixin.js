@@ -10,6 +10,10 @@ function Mixin(type, variables, dependencies, file, call) {
 }
 
 Mixin.prototype = {
+  called: function() {
+    return new MixinResult(this.type, this.file, this.call, []);
+  },
+
   calledWith: util.deprecate(function() {
     var args = Array.prototype.slice.call(arguments);
     return new MixinResult(this.type, this.file, this.call, args);

@@ -38,6 +38,22 @@ describe('Mixin', function() {
     });
   });
 
+  describe('called', function() {
+    it('should return a new mixinResult', function() {
+      var result = mixin.called();
+      assert(result instanceof MockMixinResult);
+    });
+
+    it('should have the correct properties', function() {
+      var result = mixin.called();
+      assert.equal(result.type, type);
+      assert.equal(result.file, variables + dependencies + file);
+      assert.equal(result.call, call);
+      assert.deepEqual(result.args, []);
+      assert.equal(result.block, undefined);
+    });
+  });
+
   describe('calledWith', function() {
     it('should return a new mixinResult', function() {
       var result = mixin.calledWith(1, 2, 'hello', true);
@@ -50,6 +66,7 @@ describe('Mixin', function() {
       assert.equal(result.file, variables + dependencies + file);
       assert.equal(result.call, call);
       assert.deepEqual(result.args, [1, 2, 'hello', true]);
+      assert.equal(result.block, undefined);
     });
   });
 
@@ -65,6 +82,7 @@ describe('Mixin', function() {
       assert.equal(result.file, variables + dependencies + file);
       assert.equal(result.call, call);
       assert.deepEqual(result.args, [1, 2, 'hello', true]);
+      assert.equal(result.block, undefined);
     });
   });
 
