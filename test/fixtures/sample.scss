@@ -71,3 +71,14 @@
     }
   }
 }
+
+@mixin create-header {
+  header {
+    width: 100%;
+  }
+}
+
+@mixin color-red {
+  color: red;
+}
+

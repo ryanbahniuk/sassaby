@@ -163,4 +163,28 @@ describe('sample.scss', function() {
       mixin.calledWithArgs('test', 500).doesNotCall('prefixer(o, animation-name, test)');
     });
   });
+
+  describe('create-header', function() {
+    beforeEach(function() {
+      mixin = sassaby.standaloneMixin('create-header');
+    });
+
+    it('should have the correct output', function() {
+      mixin.called().declares('width', '100%');
+    });
+
+    it('should create a header selector', function() {
+      mixin.called().createsSelector('header');
+    });
+  });
+
+  describe('color-red', function() {
+    beforeEach(function() {
+      mixin = sassaby.includedMixin('color-red');
+    });
+
+    it('should have the correct output', function() {
+      mixin.called().declares('color', 'red');
+    });
+  });
 });
