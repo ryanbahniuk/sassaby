@@ -10,7 +10,6 @@ function MockFuncResult(file, call, args) {
   this.args = args;
 }
 
-
 describe('Func', function() {
   var Func;
   var func;
