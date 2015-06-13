@@ -11,7 +11,7 @@ function Mixin(type, variables, dependencies, file, call) {
 
 Mixin.prototype = {
   called: function() {
-    return new MixinResult(this.type, this.file, this.call, []);
+    return new MixinResult(this.type, this.file, this.call);
   },
 
   calledWith: util.deprecate(function() {
@@ -25,7 +25,7 @@ Mixin.prototype = {
   },
 
   calledWithBlock: function(block) {
-    return new MixinResult(this.type, this.file, this.call, [], block);
+    return new MixinResult(this.type, this.file, this.call, undefined, block);
   },
 
   calledWithBlockAndArgs: function() {

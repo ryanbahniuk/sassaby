@@ -49,7 +49,7 @@ describe('Mixin', function() {
       assert.equal(result.type, type);
       assert.equal(result.file, variables + dependencies + file);
       assert.equal(result.call, call);
-      assert.deepEqual(result.args, []);
+      assert.deepEqual(result.args, undefined);
       assert.equal(result.block, undefined);
     });
   });
@@ -99,7 +99,7 @@ describe('Mixin', function() {
       assert.equal(result.type, type);
       assert.equal(result.file, variables + dependencies + file);
       assert.equal(result.call, call);
-      assert.deepEqual(result.args, []);
+      assert.deepEqual(result.args, undefined);
       assert.equal(result.block, block);
     });
   });
