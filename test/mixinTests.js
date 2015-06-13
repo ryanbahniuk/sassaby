@@ -51,4 +51,19 @@ describe('Mixin', function() {
       assert.deepEqual(result.args, [1, 2, 'hello', true]);
     });
   });
+
+  describe('calledWithArgs', function() {
+    it('should return a new mixinResult', function() {
+      var result = mixin.calledWithArgs(1, 2, 'hello', true);
+      assert(result instanceof MockMixinResult);
+    });
+
+    it('should have the correct properties', function() {
+      var result = mixin.calledWithArgs(1, 2, 'hello', true);
+      assert.equal(result.type, type);
+      assert.equal(result.file, variables + dependencies + file);
+      assert.equal(result.call, call);
+      assert.deepEqual(result.args, [1, 2, 'hello', true]);
+    });
+  });
 });
