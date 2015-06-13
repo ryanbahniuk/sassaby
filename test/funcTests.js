@@ -34,6 +34,20 @@ describe('Func', function() {
     });
   });
 
+  describe('called', function() {
+    it('should return a new funcResult', function() {
+      var result = func.called();
+      assert(result instanceof MockFuncResult);
+    });
+
+    it('should have the correct properties', function() {
+      var result = func.called();
+      assert.equal(result.file, variables + dependencies + file);
+      assert.equal(result.call, call);
+      assert.equal(result.args, undefined);
+    });
+  });
+
   describe('calledWith', function() {
     it('should return a new funcResult', function() {
       var result = func.calledWith(1, 2, 'hello', true);
