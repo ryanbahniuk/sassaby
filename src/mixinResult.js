@@ -51,7 +51,7 @@ function compileCss(file, type, call, args, block) {
   } else if (block) {
     return utilities.createCss(file, wrapMixinWithBlock(type, call, block));
   } else {
-    return '';
+    return utilities.createCss(file, wrapMixin(type, call));
   }
 }
 

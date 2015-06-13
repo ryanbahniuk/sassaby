@@ -182,7 +182,17 @@ describe('MixinResult', function() {
 
     context('if given an empty argument array and no block', function() {
       it('returns an empty string', function() {
-        assert.equal(MixinResult.compileCss(standaloneFile, 'standalone', call, []), '');
+        var wrapped = MixinResult.wrapMixin('standalone', call);
+        mockUtilities.expects('createCss').withArgs(standaloneFile, wrapped).returns(wrappedResult);
+        assert.equal(MixinResult.compileCss(standaloneFile, 'standalone', call, [], undefined), wrappedResult);
+      });
+    });
+
+    context('if given undefined for args and the block', function() {
+      it('returns an empty string', function() {
+        var wrapped = MixinResult.wrapMixin('standalone', call);
+        mockUtilities.expects('createCss').withArgs(standaloneFile, wrapped).returns(wrappedResult);
+        assert.equal(MixinResult.compileCss(standaloneFile, 'standalone', call, undefined, undefined), wrappedResult);
       });
     });
   });
