@@ -52,7 +52,7 @@ describe('sample-with-blocks.scss', function() {
     var mixin;
 
     beforeEach(function() {
-      mixin = sassaby.includedMixin('sm-specific-styles');
+      mixin = sassaby.includedMixin('make-small-color');
     });
 
     it('should create the correct media query', function() {
