@@ -46,6 +46,11 @@ describe('sample-with-blocks.scss', function() {
       call.declares('color', 'red');
     });
 
+    it('should have the correct total output', function() {
+      var output = '@media only screen and (min-width: 0px) and (max-width: 400px) {' + block + '}';
+      call.equals(output);
+    });
+
     it('should call create-header', function() {
       var block = '@include create-header';
       mixin.calledWithBlock(block).calls('create-header');
