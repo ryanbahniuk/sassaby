@@ -187,4 +187,20 @@ describe('sample.scss', function() {
       mixin.called().declares('color', 'red');
     });
   });
+
+  describe('small-screen-header', function() {
+    var mediaQuery = 'only screen and (min-width: 0px) and (max-width: 400px)';
+
+    beforeEach(function() {
+      mixin = sassaby.standaloneMixin('small-screen-header');
+    });
+
+    it('should create a media query', function() {
+      mixin.called().createsMediaQuery(mediaQuery);
+    });
+
+    it('should call create-header', function() {
+      mixin.called().calls('create-header');
+    });
+  });
 });

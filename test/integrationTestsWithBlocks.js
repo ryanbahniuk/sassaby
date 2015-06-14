@@ -9,22 +9,66 @@ describe('sample-with-blocks.scss', function() {
   describe('sm-specific-styles', function() {
     var block = '.test {color: red;}';
     var mixin;
+    var call;
 
     beforeEach(function() {
       mixin = sassaby.standaloneMixin('sm-specific-styles');
+      call = mixin.calledWithBlock(block);
     });
 
     it('should create the correct media query', function() {
       var mediaQuery = 'only screen and (min-width: 0px) and (max-width: 400px)';
-      mixin.calledWithBlock(block).createsMediaQuery(mediaQuery);
+      call.createsMediaQuery(mediaQuery);
+    });
+
+    it('should not create the correct media query', function() {
+      var mediaQuery = 'only screen and (min-width: 0px) and (max-width: 600px)';
+      call.doesNotCreateMediaQuery(mediaQuery);
     });
 
     it('should create the correct class', function() {
-      mixin.calledWithBlock(block).createsSelector('.test');
+      call.createsSelector('.test');
+    });
+
+    it('should not create the correct class', function() {
+      call.doesNotCreateSelector('.blah');
+    });
+
+    it('should have the correct number of declarations', function() {
+      call.hasNumDeclarations(1);
     });
 
     it('should have the correct color declaration', function() {
-      mixin.calledWithBlock(block).declares('color', 'red');
+      call.declares('color', 'red');
+    });
+  });
+
+  describe('make-font-face', function() {
+    var block = 'font-family: Helvetica';
+    var mixin;
+    var call;
+
+    beforeEach(function() {
+      mixin = sassaby.standaloneMixin('make-font-face');
+      call = mixin.calledWithBlock(block);
+    });
+
+    it('should create the correct media query', function() {
+      var mediaQuery = 'only screen and (min-width: 0px) and (max-width: 400px)';
+      call.createsMediaQuery(mediaQuery);
+    });
+
+    it('should not create the correct media query', function() {
+      var mediaQuery = 'only screen and (min-width: 0px) and (max-width: 600px)';
+      call.doesNotCreateMediaQuery(mediaQuery);
+    });
+
+    it('should create the correct class', function() {
+      call.createsFontFace();
+    });
+
+    it('should have the correct font-family declaration', function() {
+      call.declares('font-family', 'Helvetica');
     });
   });
 
