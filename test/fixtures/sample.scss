@@ -82,3 +82,9 @@
   color: red;
 }
 
+@mixin small-screen-header {
+  @media only screen and (min-width: 0px) and (max-width: 400px) {
+    @include create-header;
+  }
+}
+

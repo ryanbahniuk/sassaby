@@ -4,7 +4,11 @@ var path = require('path');
 var Sassaby = require('../src/sassaby');
 
 describe('sample-with-blocks.scss', function() {
-  var sassaby = new Sassaby(path.resolve(__dirname, 'fixtures/sample-with-blocks.scss'));
+  var sassaby = new Sassaby(path.resolve(__dirname, 'fixtures/sample-with-blocks.scss'), {
+    dependencies: [
+      path.resolve(__dirname, 'fixtures/sample.scss')
+    ]
+  });
 
   describe('sm-specific-styles', function() {
     var block = '.test {color: red;}';
@@ -40,6 +44,11 @@ describe('sample-with-blocks.scss', function() {
 
     it('should have the correct color declaration', function() {
       call.declares('color', 'red');
+    });
+
+    it('should call create-header', function() {
+      var block = '@include create-header';
+      mixin.calledWithBlock(block).calls('create-header');
     });
   });
 
