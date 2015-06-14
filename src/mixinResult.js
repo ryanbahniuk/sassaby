@@ -80,9 +80,6 @@ MixinResult.prototype = {
   },
 
   createsMediaQuery: function(mediaQuery) {
-    if (this.type === 'included') {
-      throw 'createsMediaQuery is not available for included mixins.';
-    }
     var rule = parsers.findMedia(this.ast);
     var media = rule ? rule.media : '';
     var message = 'Could not find a media query rule with the value: ' + mediaQuery + '.';
@@ -90,9 +87,6 @@ MixinResult.prototype = {
   },
 
   doesNotCreateMediaQuery: function(mediaQuery) {
-    if (this.type === 'included') {
-      throw 'doesNotCreateMediaQuery is not available for included mixins.';
-    }
     var rule = parsers.findMedia(this.ast);
     var media = rule ? rule.media : '';
     var message = 'Found a media query rule with the value: ' + mediaQuery + '.';

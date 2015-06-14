@@ -263,10 +263,6 @@ describe('MixinResult', function() {
       assert.throws(function() { standaloneMixinResult.createsMediaQuery(mediaQuery); });
       assert(cssmin.calledWith(mediaQuery));
     });
-
-    it('throws an error if the function is called on an included mixin', function() {
-      assert.throws(function() { includedMixinResult.createsMediaQuery(mediaQuery); });
-    });
   });
 
   describe('doesNotCreateMediaQuery', function() {
@@ -286,10 +282,6 @@ describe('MixinResult', function() {
       mockParsers.expects('findMedia').withArgs(ast).returns(rule);
       assert.throws(function() { standaloneMixinResult.doesNotCreateMediaQuery(mediaQuery); });
       assert(cssmin.calledWith(mediaQuery));
-    });
-
-    it('throws an error if the function is called on an included mixin', function() {
-      assert.throws(function() { includedMixinResult.doesNotCreateMediaQuery(mediaQuery); });
     });
   });
 
