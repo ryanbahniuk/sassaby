@@ -44,11 +44,18 @@ function isFontFace(rule) {
 
 var Parsers = {
   countDeclarations: function(ast) {
-    if (ast.stylesheet && ast.stylesheet.rules && ast.stylesheet.rules[0].declarations) {
-      return ast.stylesheet.rules[0].declarations.length;
-    } else {
-      return 0;
-    }
+    var count = 0;
+
+    ast.stylesheet.rules.forEach(function(rule) {
+      if (rule.type === 'media') {
+        rule.rules.forEach(function(rule) {
+          count = count + rule.declarations.length;
+        });
+      } else {
+        count = count + rule.declarations.length;
+      }
+    });
+    return count;
   },
 
   findDeclaration: function(ast, property) {

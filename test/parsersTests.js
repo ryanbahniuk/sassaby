@@ -95,20 +95,12 @@ describe('Parsers', function() {
   });
 
   describe('countDeclarations', function() {
-    it('should return the number of declarations in the first ruleset', function() {
-      assert.equal(parsers.countDeclarations(ast), 1);
+    it('should return the number of declarations in output', function() {
+      assert.equal(parsers.countDeclarations(ast), 4);
     });
 
-    it('should return 0 if stylesheet does not exist', function() {
-      assert.equal(parsers.countDeclarations({}), 0);
-    });
-
-    it('should return 0 if stylesheet.rules does not exist', function() {
-      assert.equal(parsers.countDeclarations({stylesheet: {}}), 0);
-    });
-
-    it('should return 0 if stylesheet.rules[0].declarations does not exist', function() {
-      assert.equal(parsers.countDeclarations({stylesheet: {rules: [{}]}}), 0);
+    it('should return 0 if there are no declarations', function() {
+      assert.equal(parsers.countDeclarations({stylesheet: {rules: [{declarations: []}]}}), 0);
     });
   });
 
