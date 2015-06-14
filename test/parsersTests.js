@@ -6,6 +6,7 @@ var parsers = require('../src/parsers');
 var ast = require('./fixtures/ast.json');
 var astNoSelectors = require('./fixtures/astNoSelectors.json');
 var astMediaQuery = require('./fixtures/astMediaQuery.json');
+var astMediaQueryFontFace = require('./fixtures/astMediaQueryFontFace.json');
 
 describe('Parsers', function() {
   describe('escapeCharacters', function() {
@@ -72,6 +73,24 @@ describe('Parsers', function() {
 
     it('should return undefined if the rule has no declarations', function() {
       assert.equal(parsers.findDeclarationProperty(ruleWithoutDeclarations, 'color'), undefined);
+    });
+  });
+
+  describe('isFontFace', function() {
+    var font = {
+      type: 'font-face'
+    };
+
+    var media = {
+      type: 'media'
+    };
+
+    it('should return true if the rule is a font-face type', function() {
+      assert(parsers.isFontFace(font));
+    });
+
+    it('should return false if the rule is not a font-face type', function() {
+      assert(!parsers.isFontFace(media));
     });
   });
 
@@ -180,6 +199,10 @@ describe('Parsers', function() {
   describe('hasFontFace', function() {
     it('should return true if font-face is defined', function() {
       assert(parsers.hasFontFace(astNoSelectors));
+    });
+
+    it('should return true if font-face is defined inside a media query', function() {
+      assert(parsers.hasFontFace(astMediaQueryFontFace));
     });
 
     it('should return false if font-face not defined', function() {

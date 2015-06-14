@@ -10,3 +10,11 @@
     @content;
   }
 }
+
+@mixin make-font-face {
+  @media only screen and (min-width: 0px) and (max-width: 400px) {
+    @font-face {
+      @content;
+    }
+  }
+}
