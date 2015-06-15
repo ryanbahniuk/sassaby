@@ -2,6 +2,9 @@
 
 ## Version 2.1.0
 
+* Adds support for mixins that take blocks. Adds `calledWithBlock` and `calledWithBlockAndArgs` functions to set this up.
+* Deprecates `calledWith` in favor of `calledWithArgs`.
+* Adds `called` for calls without arguments.
 * Adds `imports` and `doesNotImport` assertions at the file level for testing entry point files.
 * Adds `createFontFace` and `doesNotCreateFontFace` for standalone mixins to test creation of a `@font-face` rule.
 * Adds `createsMediaQuery` and `doesNotCreateMediaQuery` for standalone mixins to test creation of a `@media` directive.
