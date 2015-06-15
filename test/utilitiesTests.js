@@ -49,9 +49,10 @@ describe('Utilities', function() {
   });
 
   describe('createAst', function() {
-    it('should parse the result of createCss', function() {
-      sinon.mock(utilities).expects('createCss').withArgs(file, string).returns(combined);
-      assert.equal(utilities.createAst(file, string), combined);
+    var css = '.test { color: red; }';
+
+    it('should parse the given css', function() {
+      assert.equal(utilities.createAst(css), css);
       parse.calledWith(combined);
     });
   });

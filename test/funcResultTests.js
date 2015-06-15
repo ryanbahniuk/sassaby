@@ -28,13 +28,13 @@ describe('FuncResult', function() {
     mockUtilities = sinon.mock(utilities);
 
     mockUtilities.expects('createCss').withArgs(file, FuncResult.wrapFunctionWithArgs(call, args)).returns(wrappedResult);
-    mockUtilities.expects('createCss').withArgs(file, FuncResult.wrapFunctionWithTruthy(call, args)).returns(wrappedTrueResult);
+    mockUtilities.expects('createCss').withArgs(file, FuncResult.wrapTruthyFunctionWithArgs(call, args)).returns(wrappedTrueResult);
     funcResult = new FuncResult(file, call, args);
     mockUtilities.expects('createCss').withArgs(file, FuncResult.wrapFunctionWithArgs(call, args)).returns(wrappedTrueResult);
-    mockUtilities.expects('createCss').withArgs(file, FuncResult.wrapFunctionWithTruthy(call, args)).returns(wrappedTrueResult);
+    mockUtilities.expects('createCss').withArgs(file, FuncResult.wrapTruthyFunctionWithArgs(call, args)).returns(wrappedTrueResult);
     funcTrueResult = new FuncResult(file, call, args);
     mockUtilities.expects('createCss').withArgs(file, FuncResult.wrapFunctionWithArgs(call, args)).returns(wrappedFalseResult);
-    mockUtilities.expects('createCss').withArgs(file, FuncResult.wrapFunctionWithTruthy(call, args)).returns(wrappedFalseResult);
+    mockUtilities.expects('createCss').withArgs(file, FuncResult.wrapTruthyFunctionWithArgs(call, args)).returns(wrappedFalseResult);
     funcFalseResult = new FuncResult(file, call, args);
   });
 
@@ -49,10 +49,16 @@ describe('FuncResult', function() {
     });
   });
 
-  describe('wrapFunctionWithTruthy', function() {
+  describe('wrapTruthyFunctionWithArgs', function() {
     it('wraps the function and truthy with the necessary SCSS to not fail the compiler', function() {
       mockUtilities.expects('concatArgs').withArgs(args).returns(argString);
-      assert.equal(FuncResult.wrapFunctionWithTruthy(call, args), FuncResult.sassTruthy() + FuncResult.wrapFunction("truthy(" + call + '(' + argString + '))'));
+      assert.equal(FuncResult.wrapTruthyFunctionWithArgs(call, args), FuncResult.sassTruthy() + FuncResult.wrapFunction("truthy(" + call + '(' + argString + '))'));
+    });
+  });
+
+  describe('wrapTruthyFunction', function() {
+    it('wraps the function and truthy with the necessary SCSS to not fail the compiler', function() {
+      assert.equal(FuncResult.wrapTruthyFunction(call), FuncResult.sassTruthy() + FuncResult.wrapFunction("truthy(" + call + ')'));
     });
   });
 
@@ -68,7 +74,90 @@ describe('FuncResult', function() {
     });
   });
 
+  describe('compileCss', function() {
+    context('if given an argument array with items', function() {
+      it('calls utilities.createCss with wrapFunctionWithArgs', function() {
+        var wrapped = FuncResult.wrapFunctionWithArgs(call, args);
+        mockUtilities.expects('createCss').withArgs(file, wrapped).returns(wrappedResult);
+        assert.equal(FuncResult.compileCss(file, call, args), wrappedResult);
+      });
+    });
+
+    context('if given an empty argument array', function() {
+      it('calls utilities.createCss with wrapFunction', function() {
+        var wrapped = FuncResult.wrapFunction(call);
+        mockUtilities.expects('createCss').withArgs(file, wrapped).returns(wrappedResult);
+        assert.equal(FuncResult.compileCss(file, call, []), wrappedResult);
+      });
+    });
+
+    context('if given an null for arguments', function() {
+      it('calls utilities.createCss with wrapFunction', function() {
+        var wrapped = FuncResult.wrapFunction(call);
+        mockUtilities.expects('createCss').withArgs(file, wrapped).returns(wrappedResult);
+        assert.equal(FuncResult.compileCss(file, call, null), wrappedResult);
+      });
+    });
+
+    context('if given an undefined for arguments', function() {
+      it('calls utilities.createCss with wrapFunction', function() {
+        var wrapped = FuncResult.wrapFunction(call);
+        mockUtilities.expects('createCss').withArgs(file, wrapped).returns(wrappedResult);
+        assert.equal(FuncResult.compileCss(file, call, undefined), wrappedResult);
+      });
+    });
+  });
+
+describe('compileTruthyCss', function() {
+    context('if given an argument array with items', function() {
+      it('calls utilities.createCss with wrapFunctionWithArgs', function() {
+        var wrapped = FuncResult.wrapTruthyFunctionWithArgs(call, args);
+        mockUtilities.expects('createCss').withArgs(file, wrapped).returns(wrappedTrueResult);
+        assert.equal(FuncResult.compileTruthyCss(file, call, args), wrappedTrueResult);
+      });
+    });
+
+    context('if given an empty argument array', function() {
+      it('calls utilities.createCss with wrapFunction', function() {
+        var wrapped = FuncResult.wrapTruthyFunction(call);
+        mockUtilities.expects('createCss').withArgs(file, wrapped).returns(wrappedTrueResult);
+        assert.equal(FuncResult.compileTruthyCss(file, call, []), wrappedTrueResult);
+      });
+    });
+
+    context('if given an null for arguments', function() {
+      it('calls utilities.createCss with wrapFunction', function() {
+        var wrapped = FuncResult.wrapTruthyFunction(call);
+        mockUtilities.expects('createCss').withArgs(file, wrapped).returns(wrappedTrueResult);
+        assert.equal(FuncResult.compileTruthyCss(file, call, null), wrappedTrueResult);
+      });
+    });
+
+    context('if given an undefined for arguments', function() {
+      it('calls utilities.createCss with wrapFunction', function() {
+        var wrapped = FuncResult.wrapTruthyFunction(call);
+        mockUtilities.expects('createCss').withArgs(file, wrapped).returns(wrappedTrueResult);
+        assert.equal(FuncResult.compileTruthyCss(file, call, undefined), wrappedTrueResult);
+      });
+    });
+  });
+
   describe('new', function() {
+    beforeEach(function() {
+      mockUtilities.expects('createCss').withArgs(file, FuncResult.wrapFunctionWithArgs(call, args)).returns(wrappedResult);
+      mockUtilities.expects('createCss').withArgs(file, FuncResult.wrapTruthyFunctionWithArgs(call, args)).returns(wrappedTrueResult);
+      sinon.spy(FuncResult, 'compileCss');
+      sinon.spy(FuncResult, 'compileTruthyCss');
+      funcResult = new FuncResult(file, call, args);
+      FuncResult.compileCss.calledWith(file, call, args);
+      FuncResult.compileTruthyCss.calledWith(file, call, args);
+    });
+
+    afterEach(function() {
+      FuncResult.compileCss.restore();
+      FuncResult.compileTruthyCss.restore();
+    });
+
     it('should set file and call from the arguments', function() {
       assert.equal(funcResult.css, wrappedResult);
       assert.equal(funcResult.truthyCss, wrappedTrueResult);

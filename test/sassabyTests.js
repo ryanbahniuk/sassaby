@@ -5,10 +5,12 @@ var sinon = require('sinon');
 var proxyquire =  require('proxyquire');
 var Mixin = require('../src/types/mixin');
 var Func = require('../src/types/func');
+var parsers = require('../src/parsers');
 
 describe('Sassaby', function() {
   var Sassaby;
   var readFileSync;
+  var mockParsers;
   var filename = 'file.scss';
   var dependency = 'depends-on-this.scss';
   var fileContents = 'File Contents!!!!!!';
@@ -16,8 +18,15 @@ describe('Sassaby', function() {
   beforeEach(function() {
     readFileSync = sinon.spy(function(filename) { return fileContents; });
     Sassaby = proxyquire('../src/sassaby', {
-      'fs': { 'readFileSync': readFileSync }
+      'fs': { 'readFileSync': readFileSync },
+      './parsers': parsers
     });
+
+    mockParsers = sinon.mock(parsers);
+  });
+
+  afterEach(function() {
+    mockParsers.restore();
   });
 
   describe('setVariables', function() {
@@ -104,6 +113,38 @@ describe('Sassaby', function() {
       assert.equal(sassaby.file, fileContents);
       assert.equal(sassaby.variables, '$test:1;');
       assert.equal(sassaby.dependencies, "@import '" + dependency + "';");
+    });
+  });
+
+  describe('imports', function() {
+    var name = 'test';
+
+    it('should not throw an error if parsers.hasImport is true', function() {
+      mockParsers.expects('hasImport').withArgs(fileContents, name).returns(true);
+      var sassaby = new Sassaby(filename);
+      sassaby.imports(name);
+    });
+
+    it('throws an error if parsers.hasImport is false', function() {
+      mockParsers.expects('hasImport').withArgs(fileContents, name).returns(false);
+      var sassaby = new Sassaby(filename);
+      assert.throws(function() { sassaby.imports(name); });
+    });
+  });
+
+  describe('doesNotImport', function() {
+    var name = 'test';
+
+    it('should throw an error if parsers.hasImport is true', function() {
+      mockParsers.expects('hasImport').withArgs(fileContents, name).returns(true);
+      var sassaby = new Sassaby(filename);
+      assert.throws(function() { sassaby.doesNotImport(name); });
+    });
+
+    it('should not throw an error if parsers.hasImport is false', function() {
+      mockParsers.expects('hasImport').withArgs(fileContents, name).returns(false);
+      var sassaby = new Sassaby(filename);
+      sassaby.doesNotImport(name);
     });
   });
 

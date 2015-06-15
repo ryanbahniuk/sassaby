@@ -14,7 +14,11 @@ describe('MixinResult', function() {
   var mockUtilities;
   var mockParsers;
   var standaloneMixinResult;
+  var standaloneMixinResultWithBlock;
+  var standaloneMixinResultWithBlockAndArgs;
   var includedMixinResult;
+  var includedMixinResultWithBlock;
+  var includedMixinResultWithBlockAndArgs;
 
   var includedFile = '@mixin test($input) { color: $input }';
   var standaloneFile = '@mixin test($input) { .test { color: $input; } }';
@@ -40,11 +44,28 @@ describe('MixinResult', function() {
     mockParsers = sinon.mock(parsers);
 
     mockUtilities.expects('createCss').withArgs(standaloneFile, MixinResult.wrapMixinWithArgs('standalone', call, args)).returns(wrappedResult);
-    mockUtilities.expects('createAst').withArgs(standaloneFile, MixinResult.wrapMixinWithArgs('standalone', call, args)).returns(ast);
+    mockUtilities.expects('createAst').withArgs(wrappedResult).returns(ast);
     standaloneMixinResult = new MixinResult('standalone', standaloneFile, call, args);
+
+    mockUtilities.expects('createCss').withArgs(standaloneFile, MixinResult.wrapMixinWithBlock('standalone', call, wrappedResult)).returns(wrappedResult);
+    mockUtilities.expects('createAst').withArgs(wrappedResult).returns(ast);
+    standaloneMixinResultWithBlock = new MixinResult('standalone', standaloneFile, call, [], wrappedResult);
+
+    mockUtilities.expects('createCss').withArgs(standaloneFile, MixinResult.wrapMixinWithBlockAndArgs('standalone', call, wrappedResult, args)).returns(wrappedResult);
+    mockUtilities.expects('createAst').withArgs(wrappedResult).returns(ast);
+    standaloneMixinResultWithBlockAndArgs = new MixinResult('standalone', standaloneFile, call, args, wrappedResult);
+
     mockUtilities.expects('createCss').withArgs(includedFile, MixinResult.wrapMixinWithArgs('included', call, args)).returns(wrappedResult);
-    mockUtilities.expects('createAst').withArgs(includedFile, MixinResult.wrapMixinWithArgs('included', call, args)).returns(ast);
+    mockUtilities.expects('createAst').withArgs(wrappedResult).returns(ast);
     includedMixinResult = new MixinResult('included', includedFile, call, args);
+
+    mockUtilities.expects('createCss').withArgs(includedFile, MixinResult.wrapMixinWithBlock('included', call, result)).returns(wrappedResult);
+    mockUtilities.expects('createAst').withArgs(wrappedResult).returns(ast);
+    includedMixinResultWithBlock = new MixinResult('included', includedFile, call, [], result);
+
+    mockUtilities.expects('createCss').withArgs(includedFile, MixinResult.wrapMixinWithBlockAndArgs('included', call, result, args)).returns(wrappedResult);
+    mockUtilities.expects('createAst').withArgs(wrappedResult).returns(ast);
+    includedMixinResultWithBlockAndArgs = new MixinResult('included', includedFile, call, args, result);
   });
 
   afterEach(function() {
@@ -61,6 +82,28 @@ describe('MixinResult', function() {
     it('wraps the included mixin to not fail the compiler', function() {
       mockUtilities.expects('concatArgs').withArgs(args).returns(argString);
       assert.equal(MixinResult.wrapMixinWithArgs('included', call, args), '.test{@include ' + call + '(' + argString +  ');}');
+    });
+  });
+
+  describe('wrapMixinWithBlock', function() {
+    it('wraps the standalone mixin to not fail the compiler', function() {
+      assert.equal(MixinResult.wrapMixinWithBlock('standalone', call, result), '@include ' + call + '{' + result + '}');
+    });
+
+    it('wraps the included mixin to not fail the compiler', function() {
+      assert.equal(MixinResult.wrapMixinWithBlock('included', call, result), '.test{@include ' + call + '{' + result + '}}');
+    });
+  });
+
+  describe('wrapMixinWithBlockAndArgs', function() {
+    it('wraps the standalone mixin to not fail the compiler', function() {
+      mockUtilities.expects('concatArgs').withArgs(args).returns(argString);
+      assert.equal(MixinResult.wrapMixinWithBlockAndArgs('standalone', call, result, args), '@include ' + call + '(' + argString +  ') ' + '{' + result + '}');
+    });
+
+    it('wraps the included mixin to not fail the compiler', function() {
+      mockUtilities.expects('concatArgs').withArgs(args).returns(argString);
+      assert.equal(MixinResult.wrapMixinWithBlockAndArgs('included', call, result, args), '.test{@include ' + call + '(' + argString +  ') ' + '{' + result + '}}');
     });
   });
 
@@ -93,6 +136,64 @@ describe('MixinResult', function() {
 
     it('unwraps the included output', function() {
       assert.equal(MixinResult.unwrapOutput('included', wrappedResult), result);
+    });
+  });
+
+  describe('compileCss', function() {
+    context('if given an argument array with items and a block', function() {
+      it('calls utilities.createCss with wrapMixinWithBlockAndArgs', function() {
+        var wrapped = MixinResult.wrapMixinWithBlockAndArgs('standalone', call, result, args);
+        mockUtilities.expects('createCss').withArgs(standaloneFile, wrapped).returns(wrappedResult);
+        assert.equal(MixinResult.compileCss(standaloneFile, 'standalone', call, args, result), wrappedResult);
+      });
+    });
+
+    context('if given an argument array with items and no block', function() {
+      it('calls utilities.createCss with wrapMixinWithArgs', function() {
+        var wrapped = MixinResult.wrapMixinWithArgs('standalone', call, args);
+        mockUtilities.expects('createCss').withArgs(standaloneFile, wrapped).returns(wrappedResult);
+        assert.equal(MixinResult.compileCss(standaloneFile, 'standalone', call, args), wrappedResult);
+      });
+    });
+
+    context('if given an empty argument array and a block', function() {
+      it('calls utilities.createCss with wrapMixinWithBlock', function() {
+        var wrapped = MixinResult.wrapMixinWithBlock('standalone', call, result);
+        mockUtilities.expects('createCss').withArgs(standaloneFile, wrapped).returns(wrappedResult);
+        assert.equal(MixinResult.compileCss(standaloneFile, 'standalone', call, [], result), wrappedResult);
+      });
+    });
+
+    context('if given null for arguments and a block', function() {
+      it('calls utilities.createCss with wrapMixinWithBlock', function() {
+        var wrapped = MixinResult.wrapMixinWithBlock('standalone', call, result);
+        mockUtilities.expects('createCss').withArgs(standaloneFile, wrapped).returns(wrappedResult);
+        assert.equal(MixinResult.compileCss(standaloneFile, 'standalone', call, null, result), wrappedResult);
+      });
+    });
+
+    context('if given undefined for arguments and a block', function() {
+      it('calls utilities.createCss with wrapMixinWithBlock', function() {
+        var wrapped = MixinResult.wrapMixinWithBlock('standalone', call, result);
+        mockUtilities.expects('createCss').withArgs(standaloneFile, wrapped).returns(wrappedResult);
+        assert.equal(MixinResult.compileCss(standaloneFile, 'standalone', call, undefined, result), wrappedResult);
+      });
+    });
+
+    context('if given an empty argument array and no block', function() {
+      it('returns an empty string', function() {
+        var wrapped = MixinResult.wrapMixin('standalone', call);
+        mockUtilities.expects('createCss').withArgs(standaloneFile, wrapped).returns(wrappedResult);
+        assert.equal(MixinResult.compileCss(standaloneFile, 'standalone', call, [], undefined), wrappedResult);
+      });
+    });
+
+    context('if given undefined for args and the block', function() {
+      it('returns an empty string', function() {
+        var wrapped = MixinResult.wrapMixin('standalone', call);
+        mockUtilities.expects('createCss').withArgs(standaloneFile, wrapped).returns(wrappedResult);
+        assert.equal(MixinResult.compileCss(standaloneFile, 'standalone', call, undefined, undefined), wrappedResult);
+      });
     });
   });
 
@@ -141,6 +242,78 @@ describe('MixinResult', function() {
 
     it('throws an error if the function is called on an included mixin', function() {
       assert.throws(function() { includedMixinResult.doesNotCreateSelector(selector); });
+    });
+  });
+
+  describe('createsMediaQuery', function() {
+    var mediaQuery = 'screen and (min-width: 600px)';
+    var rule = {
+      type: 'media',
+      media: mediaQuery
+    };
+
+    it('should not throw an error if the media query is created by the standalone mixin', function() {
+      mockParsers.expects('findMedia').withArgs(ast).returns(rule);
+      standaloneMixinResult.createsMediaQuery(mediaQuery);
+      assert(cssmin.calledWith(mediaQuery));
+    });
+
+    it('throws an error if the media query is not created by the standalone mixin', function() {
+      mockParsers.expects('findMedia').withArgs(ast).returns(undefined);
+      assert.throws(function() { standaloneMixinResult.createsMediaQuery(mediaQuery); });
+      assert(cssmin.calledWith(mediaQuery));
+    });
+  });
+
+  describe('doesNotCreateMediaQuery', function() {
+    var mediaQuery = 'screen and (min-width: 600px)';
+    var rule = {
+      type: 'media',
+      media: mediaQuery
+    };
+
+    it('should not throw an error if the media query is not created by the standalone mixin', function() {
+      mockParsers.expects('findMedia').withArgs(ast).returns(undefined);
+      standaloneMixinResult.doesNotCreateMediaQuery(mediaQuery);
+      assert(cssmin.calledWith(mediaQuery));
+    });
+
+    it('throws an error if the media query is created by the standalone mixin', function() {
+      mockParsers.expects('findMedia').withArgs(ast).returns(rule);
+      assert.throws(function() { standaloneMixinResult.doesNotCreateMediaQuery(mediaQuery); });
+      assert(cssmin.calledWith(mediaQuery));
+    });
+  });
+
+  describe('createsFontFace', function() {
+    it('should not throw an error if the selector is created by the standalone mixin', function() {
+      mockParsers.expects('hasFontFace').withArgs(ast).returns(true);
+      standaloneMixinResult.createsFontFace();
+    });
+
+    it('throws an error if the selector is not created by the standalone mixin', function() {
+      mockParsers.expects('hasFontFace').withArgs(ast).returns(false);
+      assert.throws(function() { standaloneMixinResult.createsFontFace(); });
+    });
+
+    it('throws an error if the function is called on an included mixin', function() {
+      assert.throws(function() { includedMixinResult.createsFontFace(); });
+    });
+  });
+
+  describe('doesNotCreateFontFace', function() {
+    it('should not throw an error if the selector is created by the standalone mixin', function() {
+      mockParsers.expects('hasFontFace').withArgs(ast).returns(false);
+      standaloneMixinResult.doesNotCreateFontFace();
+    });
+
+    it('throws an error if the selector is not created by the standalone mixin', function() {
+      mockParsers.expects('hasFontFace').withArgs(ast).returns(true);
+      assert.throws(function() { standaloneMixinResult.doesNotCreateFontFace(); });
+    });
+
+    it('throws an error if the function is called on an included mixin', function() {
+      assert.throws(function() { includedMixinResult.doesNotCreateFontFace(); });
     });
   });
 

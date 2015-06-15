@@ -19,8 +19,8 @@ var Utilities = {
     return cssmin(this.compileWithFile(file, call));
   },
 
-  createAst: function(file, call) {
-    return css.parse(this.createCss(file, call));
+  createAst: function(cssString) {
+    return css.parse(cssString);
   },
 
   scrubQuotes: function(string) {

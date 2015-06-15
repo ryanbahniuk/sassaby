@@ -18,15 +18,15 @@ describe('sample-with-dependencies.scss', function() {
     });
 
     it('should return 3 declarations', function() {
-      mixin.calledWith('md').hasNumDeclarations(3);
+      mixin.calledWithArgs('md').hasNumDeclarations(3);
     });
 
     it('should create the correct class', function() {
-      mixin.calledWith('md').createsSelector('.btn-md');
+      mixin.calledWithArgs('md').createsSelector('.btn-md');
     });
 
     it('should have a webkit prefixed declaration', function() {
-      mixin.calledWith('md').declares('-webkit-appearance', 'button');
+      mixin.calledWithArgs('md').declares('-webkit-appearance', 'button');
     });
   });
 });

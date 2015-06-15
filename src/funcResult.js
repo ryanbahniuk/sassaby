@@ -8,9 +8,13 @@ function wrapFunctionWithArgs(call, args) {
   return wrapFunction(call + '(' + argString + ')');
 }
 
-function wrapFunctionWithTruthy(call, args) {
+function wrapTruthyFunctionWithArgs(call, args) {
   var argString = utilities.concatArgs(args);
   return sassTruthy() + wrapFunction('truthy(' + call + '(' + argString + '))');
+}
+
+function wrapTruthyFunction(call) {
+  return sassTruthy() + wrapFunction('truthy(' + call + ')');
 }
 
 function wrapFunction(call) {
@@ -21,10 +25,25 @@ function sassTruthy() {
   return '@function truthy($value) { @if $value { @return true } @else { @return false } }';
 }
 
+function compileCss(file, call, args) {
+  if (args && args.length > 0) {
+    return utilities.createCss(file, wrapFunctionWithArgs(call, args));
+  } else {
+    return utilities.createCss(file, wrapFunction(call));
+  }
+}
+
+function compileTruthyCss(file, call, args) {
+  if (args && args.length > 0) {
+    return utilities.createCss(file, wrapTruthyFunctionWithArgs(call, args));
+  } else {
+    return utilities.createCss(file, wrapTruthyFunction(call));
+  }
+}
 
 function FuncResult(file, call, args) {
-  this.css = utilities.createCss(file, wrapFunctionWithArgs(call, args));
-  this.truthyCss = utilities.createCss(file, wrapFunctionWithTruthy(call, args));
+  this.css = compileCss(file, call, args);
+  this.truthyCss = compileTruthyCss(file, call, args);
 }
 
 FuncResult.prototype = {
@@ -61,9 +80,12 @@ FuncResult.prototype = {
 
 if (process.env.NODE_ENV === 'test') {
   FuncResult.wrapFunctionWithArgs = wrapFunctionWithArgs;
-  FuncResult.wrapFunctionWithTruthy = wrapFunctionWithTruthy;
+  FuncResult.wrapTruthyFunctionWithArgs = wrapTruthyFunctionWithArgs;
+  FuncResult.wrapTruthyFunction = wrapTruthyFunction;
   FuncResult.wrapFunction = wrapFunction;
   FuncResult.sassTruthy = sassTruthy;
+  FuncResult.compileCss = compileCss;
+  FuncResult.compileTruthyCss = compileTruthyCss;
 }
 
 module.exports = FuncResult;

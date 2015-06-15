@@ -67,7 +67,7 @@ describe('sample.scss', function() {
 
 ## Features
 
-Sassaby breaks down testable features into three categories:
+Sassaby breaks down testable features into four categories:
 
 * Functions
 * Standalone Mixins
@@ -110,12 +110,36 @@ var testStandaloneMixin = sassaby.standaloneMixin('align-right');
 var testIncludedMixin = sassaby.includedMixin('appearance');
 ```
 
-These functions will read the given file (with variables and dependencies if given) and return an object that will take a `calledWith` function with arguments. SASS compilation will occur at this step. For example:
+These functions will read the given file (with variables and dependencies if given) and return an object that will takes one of the "called" functions documented below. SASS compilation will occur at this step.
 
+### calledWithArgs
+Calls the mixin or function with the given arguments.
 ```js
-testFunction.calledWith(32, 16)
-testStandaloneMixin.calledWith(32, 16)
-testIncludedMixin.calledWith(32, 16)
+sassaby.func('rems').calledWithArgs('32px', '16px');
+sassaby.standaloneMixin('align-right').calledWithArgs('md');
+sassaby.includedMixin('appearance').calledWithArgs('button')
+```
+
+### called
+Calls the mixin or function with no arguments.
+```js
+sassaby.func('rems').called();
+sassaby.standaloneMixin('align-right').called();
+sassaby.includedMixin('appearance').called();
+```
+
+### calledWithBlock
+Calls the mixin with a block. This is only available on mixins and the block is to be given as a string without wrapping brackets.
+```js
+sassaby.standaloneMixin('align-right').calledWithBlock('.test { color: red; }');
+sassaby.includedMixin('appearance').calledWithBlock('.test { color: red; }')
+```
+
+### calledWithBlockAndArgs
+Calls the mixin with a block and arguments. This is only available on mixins and the block is to be given as a string without wrapping brackets. The block is always the first argument of this function and the mixin arguments will follow.
+```js
+sassaby.standaloneMixin('align-right').calledWithBlock('.test { color: red; }', true, 1);
+sassaby.includedMixin('appearance').calledWithBlock('.test { color: red; }', true, 1)
 ```
 
 ## Rules
@@ -128,37 +152,37 @@ Each of these types has their own set of functions, or rules, that assert certai
 #### equals
 Asserts that the function output equals a certain value.
 ```js
-sassaby.func('rems').calledWith('32px', '16px').equals('2rem');
+sassaby.func('rems').calledWithArgs('32px', '16px').equals('2rem');
 ```
 
 #### doesNotEqual
 Assert that the function output does not equal a certain value.
 ```js
-sassaby.func('rems').calledWith('32px', '16px').doesNotEqual('3rem');
+sassaby.func('rems').calledWithArgs('32px', '16px').doesNotEqual('3rem');
 ```
 
 #### isTrue
 Assert that the function output equals true.
 ```js
-sassaby.func('returns-true').calledWith(true).isTrue();
+sassaby.func('returns-true').calledWithArgs(true).isTrue();
 ```
 
 #### isFalse
 Assert that the function output equals false.
 ```js
-sassaby.func('returns-false').calledWith(false).isFalse();
+sassaby.func('returns-false').calledWithArgs(false).isFalse();
 ```
 
 #### isTruthy
 Assert that the function output is a truthy value in SASS. Keep in mind that this is SASS truthy, not Javascript truthy.
 ```js
-sassaby.func('returns-truthy').calledWith('string').isTruthy();
+sassaby.func('returns-truthy').calledWithArgs('string').isTruthy();
 ```
 
 #### isFalsy
 Assert that the function output is a falsy value in SASS. Keep in mind that this is SASS truthy, not Javascript truthy.
 ```js
-sassaby.func('returns-falsy').calledWith(null).isFalsy();
+sassaby.func('returns-falsy').calledWithArgs(null).isFalsy();
 ```
 
 
@@ -168,55 +192,79 @@ sassaby.func('returns-falsy').calledWith(null).isFalsy();
 #### createsSelector
 Assert that the mixin creates the given selector.
 ```js
-sassaby.standaloneMixin('align-right').calledWith('md').createsSelector('.align-right-md');
+sassaby.standaloneMixin('align-right').calledWithArgs('md').createsSelector('.align-right-md');
 ```
 
 #### doesNotCreateSelector
 Assert that the mixin does not create the given selector.
 ```js
-sassaby.standaloneMixin('align-right').calledWith('md').doesNotCreateSelector('.align-right-lg');
+sassaby.standaloneMixin('align-right').calledWithArgs('md').doesNotCreateSelector('.align-right-lg');
+```
+
+#### createsMediaQuery
+Assert that the mixin creates a media query with the given string.
+```js
+sassaby.standaloneMixin('make-button').calledWithArgs('200px').createsMediaQuery('screen and (max-width: 200px)');
+```
+
+#### doesNotCreateMediaQuery
+Assert that the mixin does not create a media query with the given string.
+```js
+sassaby.standaloneMixin('make-button').calledWithArgs('200px').doesNotCreateMediaQuery('screen and (max-width: 400px)');
+```
+
+#### createsFontFace
+Assert that the mixin creates a font-face rule.
+```js
+sassaby.standaloneMixin('make-font-face').calledWithArgs('helvetica').createsFontFace();
+```
+
+#### doesNotCreateFontFace
+Assert that the mixin does not create a font-face rule.
+```js
+sassaby.standaloneMixin('align-right').calledWithArgs('md').doesNotCreateFontFace();
 ```
 
 #### hasNumDeclarations
 Assert that the mixin creates the given number of declarations.
 ```js
-sassaby.standaloneMixin('align-right').calledWith('md').hasNumDeclarations(1);
+sassaby.standaloneMixin('align-right').calledWithArgs('md').hasNumDeclarations(1);
 ```
 
 #### declares
 Assert that the mixin makes a declaration of the given rule-property pair.
 ```js
-sassaby.standaloneMixin('align-right').calledWith('md').declares('justify-content', 'flex-end');
+sassaby.standaloneMixin('align-right').calledWithArgs('md').declares('justify-content', 'flex-end');
 ```
 
 #### doesNotDeclare
 Assert that the mixin does not make a declaration of the given rule-property pair.
 ```js
-sassaby.standaloneMixin('align-right').calledWith('md').doesNotDeclare('text-align', 'right');
+sassaby.standaloneMixin('align-right').calledWithArgs('md').doesNotDeclare('text-align', 'right');
 ```
 
 #### equals
 Assert that the mixin output equals the given string.
 ```js
-sassaby.standaloneMixin('align-right').calledWith('md').equals('.align-right-md { justify-content: flex-end; }');
+sassaby.standaloneMixin('align-right').calledWithArgs('md').equals('.align-right-md { justify-content: flex-end; }');
 ```
 
 #### doesNotEqual
 Assert that the mixin output does not equal the given string.
 ```js
-sassaby.standaloneMixin('align-right').calledWith('md').doesNotEqual('.align-right-lg { justify-content: flex-end; }');
+sassaby.standaloneMixin('align-right').calledWithArgs('md').doesNotEqual('.align-right-lg { justify-content: flex-end; }');
 ```
 
 #### calls
 Assert that the mixin calls another mixin.
 ```js
-sassaby.standaloneMixin('build-alignments').calledWith('md').calls('align-right(md)');
+sassaby.standaloneMixin('build-alignments').calledWithArgs('md').calls('align-right(md)');
 ```
 
 #### doesNotCall
 Assert that the mixin does not call another mixin.
 ```js
-sassaby.standaloneMixin('build-alignments').calledWith('md').doesNotCall('align-right(lg)');
+sassaby.standaloneMixin('build-alignments').calledWithArgs('md').doesNotCall('align-right(lg)');
 ```
 
 
@@ -226,43 +274,61 @@ sassaby.standaloneMixin('build-alignments').calledWith('md').doesNotCall('align-
 #### hasNumDeclarations
 Assert that the mixin creates the given number of declarations.
 ```js
-sassaby.includedMixin('appearance').calledWith('button').hasNumDeclarations(3);
+sassaby.includedMixin('appearance').calledWithArgs('button').hasNumDeclarations(3);
 ```
 
 #### declares
 Assert that the mixin makes a declaration of the given rule-property pair.
 ```js
-sassaby.includedMixin('appearance').calledWith('button').declares('-webkit-appearance', 'button');
+sassaby.includedMixin('appearance').calledWithArgs('button').declares('-webkit-appearance', 'button');
 ```
 
 #### doesNotDeclare
 Assert that the mixin does not make a declaration of the given rule-property pair.
 ```js
-sassaby.includedMixin('appearance').calledWith('button').doesNotDeclare('-o-appearance', 'button');
+sassaby.includedMixin('appearance').calledWithArgs('button').doesNotDeclare('-o-appearance', 'button');
 ```
 
 #### equals
 Assert that the mixin output equals the given string.
 ```js
-sassaby.includedMixin('appearance').calledWith('button').equals('-webkit-appearance: button; -moz-appearance: button; appearance: button;');
+sassaby.includedMixin('appearance').calledWithArgs('button').equals('-webkit-appearance: button; -moz-appearance: button; appearance: button;');
 ```
 
 #### doesNotEqual
 Assert that the mixin output does not equal the given string.
 ```js
-sassaby.includedMixin('appearance').calledWith('button').doesNotEqual('appearance: button;');
+sassaby.includedMixin('appearance').calledWithArgs('button').doesNotEqual('appearance: button;');
 ```
 
 #### calls
 Assert that the mixin calls another mixin.
 ```js
-sassaby.includedMixin('appearance').calledWith('button').calls('prefixer(button)');
+sassaby.includedMixin('appearance').calledWithArgs('button').calls('prefixer(button)');
 ```
 
 #### doesNotCall
 Assert that the mixin does not call another mixin.
 ```js
-sassaby.includedMixin('appearance').calledWith('button').doesNotCall('prefixer(-webkit-button)');
+sassaby.includedMixin('appearance').calledWithArgs('button').doesNotCall('prefixer(-webkit-button)');
+```
+
+
+### Testing Imports
+
+Often your SASS project will have a single entry point from where all other files are imported. Sassaby exposes two assertion methods on the sassaby object itself to test this. These two methods take the same path that would be included in the `@import` statement in your SASS file.
+
+
+#### imports
+Assert that the file imports the given path.
+```js
+sassaby.imports('variables');
+```
+
+#### doesNotImport
+Assert that the file does not import the given path.
+```js
+sassaby.imports('nope');
 ```
 
 ## Contributing

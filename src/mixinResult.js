@@ -11,6 +11,17 @@ function wrapMixinWithArgs(type, call, args) {
   return type === 'included' ? '.test{' + includeString + '}' : includeString;
 }
 
+function wrapMixinWithBlock(type, call, block) {
+  var includeString =  '@include ' + call + '{' + block + '}';
+  return type === 'included' ? '.test{' + includeString + '}' : includeString;
+}
+
+function wrapMixinWithBlockAndArgs(type, call, block, args) {
+  var argString = utilities.concatArgs(args);
+  var includeString =  '@include ' + call + '(' + argString +  ') ' + '{' + block + '}';
+  return type === 'included' ? '.test{' + includeString + '}' : includeString;
+}
+
 function wrapMixin(type, call) {
   var includeString = '@include ' + call + ';';
   return type === 'included' ? '.test{' + includeString + '}' : includeString;
@@ -32,11 +43,23 @@ function unwrapOutput(type, css) {
   }
 }
 
-function MixinResult(type, file, call, args) {
+function compileCss(file, type, call, args, block) {
+  if (args && args.length > 0 && block) {
+    return utilities.createCss(file, wrapMixinWithBlockAndArgs(type, call, block, args));
+  } else if (args && args.length > 0) {
+    return utilities.createCss(file, wrapMixinWithArgs(type, call, args));
+  } else if (block) {
+    return utilities.createCss(file, wrapMixinWithBlock(type, call, block));
+  } else {
+    return utilities.createCss(file, wrapMixin(type, call));
+  }
+}
+
+function MixinResult(type, file, call, args, block) {
   this.type = type;
   this.file = file;
-  this.css = utilities.createCss(file, wrapMixinWithArgs(type, call, args));
-  this.ast = utilities.createAst(file, wrapMixinWithArgs(type, call, args));
+  this.css = compileCss(file, type, call, args, block);
+  this.ast = utilities.createAst(this.css);
 }
 
 MixinResult.prototype = {
@@ -54,6 +77,36 @@ MixinResult.prototype = {
     }
     var message = 'Mixin created selector ' + selector + '.';
     assert(!parsers.hasSelector(this.ast, selector), message);
+  },
+
+  createsMediaQuery: function(mediaQuery) {
+    var rule = parsers.findMedia(this.ast);
+    var media = rule ? rule.media : '';
+    var message = 'Could not find a media query rule with the value: ' + mediaQuery + '.';
+    assert.equal(media, cssmin(mediaQuery), message);
+  },
+
+  doesNotCreateMediaQuery: function(mediaQuery) {
+    var rule = parsers.findMedia(this.ast);
+    var media = rule ? rule.media : '';
+    var message = 'Found a media query rule with the value: ' + mediaQuery + '.';
+    assert.notEqual(media, cssmin(mediaQuery), message);
+  },
+
+  createsFontFace: function() {
+    if (this.type === 'included') {
+      throw 'createsFontFace is not available for included mixins.';
+    }
+    var message = 'Could not find a font-face rule.';
+    assert(parsers.hasFontFace(this.ast), message);
+  },
+
+  doesNotCreateFontFace: function() {
+    if (this.type === 'included') {
+      throw 'doesNotCreateFontFace is not available for included mixins.';
+    }
+    var message = 'Mixin created a font-face rule.';
+    assert(!parsers.hasFontFace(this.ast), message);
   },
 
   hasNumDeclarations: function(num) {
@@ -103,9 +156,12 @@ MixinResult.prototype = {
 
 if (process.env.NODE_ENV === 'test') {
   MixinResult.wrapMixinWithArgs = wrapMixinWithArgs;
+  MixinResult.wrapMixinWithBlock = wrapMixinWithBlock;
+  MixinResult.wrapMixinWithBlockAndArgs = wrapMixinWithBlockAndArgs;
   MixinResult.wrapMixin = wrapMixin;
   MixinResult.wrapOutput = wrapOutput;
   MixinResult.unwrapOutput = unwrapOutput;
+  MixinResult.compileCss = compileCss;
 }
 
 module.exports = MixinResult;
