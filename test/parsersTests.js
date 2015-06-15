@@ -6,6 +6,7 @@ var parsers = require('../src/parsers');
 var ast = require('./fixtures/ast.json');
 var astNoSelectors = require('./fixtures/astNoSelectors.json');
 var astMediaQuery = require('./fixtures/astMediaQuery.json');
+var astMediaQueryFontFace = require('./fixtures/astMediaQueryFontFace.json');
 
 describe('Parsers', function() {
   describe('escapeCharacters', function() {
@@ -75,21 +76,31 @@ describe('Parsers', function() {
     });
   });
 
+  describe('isFontFace', function() {
+    var font = {
+      type: 'font-face'
+    };
+
+    var media = {
+      type: 'media'
+    };
+
+    it('should return true if the rule is a font-face type', function() {
+      assert(parsers.isFontFace(font));
+    });
+
+    it('should return false if the rule is not a font-face type', function() {
+      assert(!parsers.isFontFace(media));
+    });
+  });
+
   describe('countDeclarations', function() {
-    it('should return the number of declarations in the first ruleset', function() {
-      assert.equal(parsers.countDeclarations(ast), 1);
+    it('should return the number of declarations in output', function() {
+      assert.equal(parsers.countDeclarations(ast), 4);
     });
 
-    it('should return 0 if stylesheet does not exist', function() {
-      assert.equal(parsers.countDeclarations({}), 0);
-    });
-
-    it('should return 0 if stylesheet.rules does not exist', function() {
-      assert.equal(parsers.countDeclarations({stylesheet: {}}), 0);
-    });
-
-    it('should return 0 if stylesheet.rules[0].declarations does not exist', function() {
-      assert.equal(parsers.countDeclarations({stylesheet: {rules: [{}]}}), 0);
+    it('should return 0 if there are no declarations', function() {
+      assert.equal(parsers.countDeclarations({stylesheet: {rules: [{declarations: []}]}}), 0);
     });
   });
 
@@ -180,6 +191,10 @@ describe('Parsers', function() {
   describe('hasFontFace', function() {
     it('should return true if font-face is defined', function() {
       assert(parsers.hasFontFace(astNoSelectors));
+    });
+
+    it('should return true if font-face is defined inside a media query', function() {
+      assert(parsers.hasFontFace(astMediaQueryFontFace));
     });
 
     it('should return false if font-face not defined', function() {

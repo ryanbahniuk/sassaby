@@ -10,7 +10,6 @@ function MockFuncResult(file, call, args) {
   this.args = args;
 }
 
-
 describe('Func', function() {
   var Func;
   var func;
@@ -31,6 +30,20 @@ describe('Func', function() {
     it('should set file and call from the arguments', function() {
       assert.equal(func.file, variables + dependencies + file);
       assert.equal(func.call, call);
+    });
+  });
+
+  describe('called', function() {
+    it('should return a new funcResult', function() {
+      var result = func.called();
+      assert(result instanceof MockFuncResult);
+    });
+
+    it('should have the correct properties', function() {
+      var result = func.called();
+      assert.equal(result.file, variables + dependencies + file);
+      assert.equal(result.call, call);
+      assert.equal(result.args, undefined);
     });
   });
 

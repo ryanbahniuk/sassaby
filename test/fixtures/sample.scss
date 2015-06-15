@@ -71,3 +71,20 @@
     }
   }
 }
+
+@mixin create-header {
+  header {
+    width: 100%;
+  }
+}
+
+@mixin color-red {
+  color: red;
+}
+
+@mixin small-screen-header {
+  @media only screen and (min-width: 0px) and (max-width: 400px) {
+    @include create-header;
+  }
+}
+

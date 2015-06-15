@@ -35,13 +35,27 @@ function findDeclarationProperty(rule, declarationProperty) {
   return foundDeclaration;
 }
 
+function isFontFace(rule) {
+  if (rule.type === 'font-face') {
+    return true;
+  }
+  return false;
+}
+
 var Parsers = {
   countDeclarations: function(ast) {
-    if (ast.stylesheet && ast.stylesheet.rules && ast.stylesheet.rules[0].declarations) {
-      return ast.stylesheet.rules[0].declarations.length;
-    } else {
-      return 0;
-    }
+    var count = 0;
+
+    ast.stylesheet.rules.forEach(function(rule) {
+      if (rule.type === 'media') {
+        rule.rules.forEach(function(rule) {
+          count = count + rule.declarations.length;
+        });
+      } else {
+        count = count + rule.declarations.length;
+      }
+    });
+    return count;
   },
 
   findDeclaration: function(ast, property) {
@@ -92,8 +106,12 @@ var Parsers = {
     var found = false;
 
     ast.stylesheet.rules.forEach(function(rule) {
-      if (rule.type === 'font-face') {
-        found = true;
+      if (rule.type === 'media') {
+        rule.rules.forEach(function(rule) {
+          found = found || isFontFace(rule);
+        });
+      } else {
+        found = found || isFontFace(rule);
       }
     });
 
@@ -110,6 +128,7 @@ if (process.env.NODE_ENV === 'test') {
   Parsers.escapeCharacters = escapeCharacters;
   Parsers.hasSelectorValue = hasSelectorValue;
   Parsers.findDeclarationProperty = findDeclarationProperty;
+  Parsers.isFontFace = isFontFace;
 }
 
 module.exports = Parsers;
