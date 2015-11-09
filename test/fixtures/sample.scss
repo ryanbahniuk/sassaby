@@ -51,6 +51,12 @@
   @include make-align-right($label);
 }
 
+@mixin test-included-mixin-include {
+  .test {
+    @include appearance(none);
+  }
+}
+
 @mixin prefixer($prefix, $property, $value) {
   -#{$prefix}-#{$property}: $value;
 }
