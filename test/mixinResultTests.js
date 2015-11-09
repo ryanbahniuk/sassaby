@@ -27,7 +27,9 @@ describe('MixinResult', function() {
   var property = 'color';
   var value = 'red';
   var result = property + ':' + value;
+  var resultWithSemicolon = property + ':' + value + ';';
   var wrappedResult = selector + '{' + result + '}';
+  var wrappedResultWithSemicolon = selector + '{' + resultWithSemicolon + '}';
 
   var args = [1, 2, 'hello', true];
   var argString = '1, 2, hello, true';
@@ -135,7 +137,7 @@ describe('MixinResult', function() {
     });
 
     it('unwraps the included output', function() {
-      assert.equal(MixinResult.unwrapOutput('included', wrappedResult), result);
+      assert.equal(MixinResult.unwrapOutput('included', wrappedResultWithSemicolon), result);
     });
   });
 

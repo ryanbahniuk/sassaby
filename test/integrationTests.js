@@ -142,6 +142,21 @@ describe('sample.scss', function() {
     });
   });
 
+  describe('test-included-mixin-include', function() {
+    beforeEach(function() {
+      mixin = sassaby.standaloneMixin('test-included-mixin-include');
+      compiled = mixin.called();
+    });
+
+    it('should create the correct selector', function() {
+      compiled.createsSelector('.test');
+    });
+
+    it('should call the correct mixin', function() {
+      compiled.calls('appearance(none)');
+    });
+  });
+
   describe('animation', function() {
     beforeEach(function() {
       mixin = sassaby.includedMixin('animation');

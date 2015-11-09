@@ -36,11 +36,12 @@ function wrapOutput(type, css) {
 }
 
 function unwrapOutput(type, css) {
+  var unwrapped = css;
   if (type === 'included') {
-    return css.replace('.test{', '').replace('}', '');
-  } else {
-    return css;
+    unwrapped = unwrapped.replace(/^.test{/g, '').replace(/\}$/g, '');
   }
+
+  return unwrapped.replace(/;$/g, '');
 }
 
 function compileCss(file, type, call, args, block) {
