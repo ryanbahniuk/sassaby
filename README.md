@@ -5,6 +5,52 @@ A Unit Testing Library for SASS
 
 Sassaby is a unit testing library for SASS mixins and functions. It is written in Node to provide a consistent interface with other front-end tests in your system and for easy integration into a build system. Its interface can be used with any Node testing library ([Mocha](https://www.npmjs.com/package/mocha "Mocha"), [Jasmine](https://www.npmjs.com/package/jasmine "Jasmine"), etc.).
 
+## Table of Contents
+- [Installation](#installation)
+- [Setup](#setup)
+- [Dependencies](#dependencies)
+- [Features](#features)
+  - [calledWithArgs](#calledWithArgs)
+  - [called](#called)
+  - [calledWithBlock](#calledWithBlock)
+  - [calledWithBlockAndArgs](#calledWithBlockAndArgs)
+- [Rules](#rules)
+  - [Function Rules](#function-rules)
+    - [equals](#equals)
+    - [doesNotEqual](#doesNotEqual)
+    - [isTrue](#isTrue)
+    - [isFalse](#isFalse)
+    - [isTruthy](#isTruthy)
+    - [isFalsy](#isFalsy)
+  - [Standalone Mixin Rules](#standalone-mixin-rules)
+    - [createsSelector](#createsSelector)
+    - [doesNotCreateSelector](#doesNotCreateSelector)
+    - [createsMediaQuery](#createsMediaQuery)
+    - [doesNotCreateMediaQuery](#doesNotCreateMediaQuery)
+    - [createsFontFace](#createsFontFace)
+    - [doesNotCreateFontFace](#doesNotCreateFontFace)
+    - [hasNumDeclarations](#hasNumDeclarations)
+    - [declares](#declares)
+    - [doesNotDeclare](#doesNotDeclare)
+    - [equals](#equals-1)
+    - [doesNotEqual](#doesNotEqual-1)
+    - [calls](#calls)
+    - [doesNotCall](#doesNotCall)
+  - [Included Mixin Rules](#included-mixin-rules)
+    - [hasNumDeclarations](#hasNumDeclarations-1)
+    - [declares](#declares-1)
+    - [doesNotDeclare](#doesNotDeclare-1)
+    - [equals](#equals-2)
+    - [doesNotEqual](#doesNotEqual-2)
+    - [calls](#calls-1)
+    - [doesNotCall](#doesNotCall-1)
+  - [Testing Imports](#testing-imports)
+    - [imports](#imports)
+    - [doesNotImport](#doesNotImport)
+- [Contributing](#contributing)
+- [License](#license)
+
+
 ## Installation
 
 Install via npm:
