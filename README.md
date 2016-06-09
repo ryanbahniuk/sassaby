@@ -188,6 +188,8 @@ sassaby.standaloneMixin('align-right').calledWithBlock('.test { color: red; }', 
 sassaby.includedMixin('appearance').calledWithBlock('.test { color: red; }', true, 1)
 ```
 
+**[:arrow_up: back to top](#table-of-contents)**
+
 ## Rules
 
 Each of these types has their own set of functions, or rules, that assert certain conditions on the result of the function or mixin. The arguments of these rules are normalized to match the output from the SASS compilation, so it can be formatted however you wish as long as it is compilable SASS.
@@ -231,6 +233,7 @@ Assert that the function output is a falsy value in SASS. Keep in mind that this
 sassaby.func('returns-falsy').calledWithArgs(null).isFalsy();
 ```
 
+**[:arrow_up: back to top](#table-of-contents)**
 
 ### Standalone Mixin Rules
 
@@ -313,6 +316,7 @@ Assert that the mixin does not call another mixin.
 sassaby.standaloneMixin('build-alignments').calledWithArgs('md').doesNotCall('align-right(lg)');
 ```
 
+**[:arrow_up: back to top](#table-of-contents)**
 
 ### Included Mixin Rules
 
@@ -359,6 +363,7 @@ Assert that the mixin does not call another mixin.
 sassaby.includedMixin('appearance').calledWithArgs('button').doesNotCall('prefixer(-webkit-button)');
 ```
 
+**[:arrow_up: back to top](#table-of-contents)**
 
 ### Testing Imports
 
@@ -388,3 +393,5 @@ MIT © Ryan Bahniuk
 
 [ci]:      https://travis-ci.org/ryanbahniuk/sassaby
 [npm]:     https://www.npmjs.com/package/sassaby
+
+**[:arrow_up: back to top](#table-of-contents)**
