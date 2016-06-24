@@ -17,7 +17,7 @@ Sassaby is a unit testing library for SASS mixins and functions. It is written i
 - [Rules](#rules)
   - [Function Rules](#function-rules)
     - [equals](#equals)
-    - [doesNotEqual](#doesnotaqual)
+    - [doesNotEqual](#doesnotequal)
     - [isTrue](#istrue)
     - [isFalse](#isfalse)
     - [isTruthy](#istruthy)
